@@ -211,6 +211,38 @@ strong{color:var(--blue);font-weight:700}
 .step .v{color:var(--ink);font-size:15.5px;word-break:keep-all}
 .step .v small{display:block;color:var(--soft);margin-top:2px;font-size:13.5px}
 
+/* ===== FAQ ===== */
+.faq{background:linear-gradient(180deg,var(--white),var(--mist))}
+.faq-list{margin-top:10px}
+.faq-item{
+  border-bottom:1px solid rgba(27,58,92,.12);
+}
+.faq-item summary{
+  list-style:none;cursor:pointer;
+  display:flex;align-items:baseline;gap:12px;
+  padding:20px 4px;
+  font-size:16.5px;font-weight:700;color:var(--navy);
+  word-break:keep-all;
+  transition:color .2s;
+}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::before{
+  content:'Q.';flex:none;color:var(--blue);
+  font-family:'Noto Serif KR',serif;font-weight:700;
+}
+.faq-item summary::after{
+  content:'+';margin-left:auto;color:var(--aqua);
+  font-size:22px;font-weight:300;line-height:1;
+  transition:transform .25s;
+}
+.faq-item[open] summary::after{transform:rotate(45deg)}
+.faq-item .faq-a{
+  padding:0 4px 24px 34px;
+  font-size:15.5px;color:var(--ink);line-height:1.8;
+  word-break:keep-all;
+}
+.faq-item .faq-a b{color:var(--blue);font-weight:700}
+
 /* ===== 마무리 CTA ===== */
 .finale{
   background:linear-gradient(180deg,var(--navy) 0%,#12293f 100%);
@@ -377,6 +409,32 @@ footer b{color:rgba(255,255,255,.75);font-weight:500}
         <div class="k">지원금 입금</div>
         <div class="v">제출 후 2~3주 내 순차 지급</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="section faq">
+  <div class="wrap reveal">
+    <p class="eyebrow">FAQ</p>
+    <h2>자주 묻는 질문</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>누가 샘지기가 될 수 있나요?</summary>
+        <div class="faq-a">사랑의교회 청년부 <b>큐티학교를 수료하셨다면 누구나</b> 가능합니다. 함께 말씀을 나누고 싶은 샘원들을 모아 샘터를 구성하고 신청해 주세요.</div>
+      </details>
+      <details class="faq-item">
+        <summary>샘원은 누구나 참여할 수 있나요?</summary>
+        <div class="faq-a">네, <b>누구나 참여할 수 있습니다.</b> 샘지기 1명과 샘원 1~4명, 총 2~5명이 모이면 하나의 샘터를 열 수 있습니다. 직장 동료, 교회 친구, 다른 교회에 다니는 지인, 아직 교회가 낯선 전도 대상자까지 — 함께 말씀을 나누고 싶은 분이라면 누구나 샘원이 될 수 있습니다.</div>
+      </details>
+      <details class="faq-item">
+        <summary>매주 모이는 것이 부담스러워요.</summary>
+        <div class="faq-a">부득이하게 모임을 진행하지 못하는 주가 있어도 <b>괜찮습니다.</b> 한 달에 2~3번이라도 함께 말씀을 나누며, 일터와 도시를 살리는 소명자의 삶에 동참해 보세요. 청년샘터는 매달 새롭게 신청하는 방식이라, 상황에 따라 계속 이어가거나 잠시 쉬어갈 수도 있고 새로운 샘원들과 다시 시작할 수도 있습니다.</div>
+      </details>
+      <details class="faq-item">
+        <summary>모임 인도가 부담스러워요.</summary>
+        <div class="faq-a">샘지기는 모임을 구성하는 대표자로, <b>말씀 나눔을 리드하거나 가르치는 자리가 아닙니다.</b> 부담 없이 샘원들과 함께 말씀 앞에 모여 각자의 삶과 묵상을 나누시면 됩니다. 모임을 위한 <b>나눔 가이드</b>도 함께 제공되니 걱정하지 않으셔도 됩니다.</div>
+      </details>
     </div>
   </div>
 </section>
