@@ -42,12 +42,21 @@ body{
 /* ===== 히어로 ===== */
 .hero{
   position:relative;
-  min-height:100svh;
+  min-height:100vh;
+  min-height:100dvh;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:flex-end;
   background:#0d1f33;
+}
+/* iframe 등 낮은 뷰포트에서 포스터가 짓눌리지 않도록 최소 높이 확보 */
+@media (max-height:560px){
+  .hero{min-height:560px}
+}
+/* 좁은 화면: 이미지 초점을 물방울 타이틀 쪽으로 */
+@media (max-width:480px){
+  .hero-img{object-position:center 22%}
 }
 .hero-img{
   position:absolute;inset:0;
