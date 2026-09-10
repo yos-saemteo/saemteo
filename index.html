@@ -302,6 +302,33 @@ strong{color:var(--blue);font-weight:700}
 .btn:hover{transform:translateY(-2px)}
 .finale .meta{margin-top:34px;font-size:13.5px;color:rgba(255,255,255,.55);line-height:2}
 
+/* ===== 플로팅 문의 버튼 ===== */
+.float-ask{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:99;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:var(--navy);
+  color:#fff;
+  text-decoration:none;
+  padding:12px 18px;
+  border-radius:999px;
+  font-size:14.5px;
+  font-weight:500;
+  box-shadow:0 6px 22px rgba(13,31,51,.35);
+  transition:transform .25s, box-shadow .25s;
+}
+.float-ask:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(13,31,51,.45)}
+.float-ask.hide{opacity:0;transform:translateY(14px);pointer-events:none}
+.float-ask{transition:transform .3s, box-shadow .3s, opacity .3s}
+.float-ask svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:1.8;flex:none}
+@media (max-width:480px){
+  .float-ask{right:14px;bottom:14px;padding:11px 16px;font-size:14px}
+}
+
 footer{
   background:#0d1f33;color:rgba(255,255,255,.45);
   text-align:center;padding:30px 24px;font-size:13px;
@@ -467,7 +494,7 @@ footer b{color:rgba(255,255,255,.75);font-weight:500}
     <h2 class="serif">당신이 보냄받은 바로 그곳에,<br><em>도시를 살리는 샘터</em>를 여세요.</h2>
     <div class="cta-row">
       <a class="btn primary" href="https://forms.gle/7uQZ7tqPUk4V9ria6" target="_blank" rel="noopener">10월 청년샘터 신청하기</a>
-      <a class="btn ghost" href="https://open.kakao.com/o/sWdAUBFi" target="_blank" rel="noopener">카톡으로 문의하기</a>
+      <a class="btn ghost" href="https://open.kakao.com/o/sWdAUBFi" target="_blank" rel="noopener">문의하기</a>
     </div>
     <p class="meta">
       신청은 샘지기(큐티학교 수료자)만 가능합니다<br>
@@ -475,6 +502,11 @@ footer b{color:rgba(255,255,255,.75);font-weight:500}
     </p>
   </div>
 </section>
+
+<a class="float-ask" href="https://open.kakao.com/o/sWdAUBFi" target="_blank" rel="noopener" aria-label="카카오톡 오픈채팅으로 문의하기">
+  <svg viewBox="0 0 24 24"><path d="M21 12c0 4.1-4 7.4-9 7.4-1 0-2-.13-2.9-.37L4.5 21l1.2-3.6C4 16.1 3 14.2 3 12c0-4.1 4-7.4 9-7.4s9 3.3 9 7.4z"/></svg>
+  문의하기
+</a>
 
 <footer>
   <b>사랑의교회 청년부 · 양육국</b> &nbsp;|&nbsp; 청년샘터
@@ -486,6 +518,15 @@ const io = new IntersectionObserver(es => {
   es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// 피날레 구간에서 플로팅 문의 버튼 숨김
+const floatBtn = document.querySelector('.float-ask');
+const finale = document.querySelector('.finale');
+if (floatBtn && finale) {
+  new IntersectionObserver(es => {
+    es.forEach(e => floatBtn.classList.toggle('hide', e.isIntersecting));
+  }, { threshold: 0.2 }).observe(finale);
+}
 </script>
 </body>
 </html>
