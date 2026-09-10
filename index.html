@@ -202,6 +202,7 @@ strong{color:var(--blue);font-weight:700}
   padding:16px 0;border-bottom:1px solid rgba(46,124,196,.15);
   font-size:16px;word-break:keep-all;
 }
+.support li b{color:var(--blue);font-weight:700}
 .support li::before{
   content:'';flex:none;width:9px;height:9px;border-radius:50%;
   background:var(--aqua);margin-top:11px;
@@ -220,6 +221,19 @@ strong{color:var(--blue);font-weight:700}
 .step .k{font-weight:700;color:var(--blue);font-size:16px}
 .step .v{color:var(--ink);font-size:15.5px;word-break:keep-all}
 .step .v small{display:block;color:var(--soft);margin-top:2px;font-size:13.5px}
+.step .v b{color:var(--blue);font-weight:700}
+.badge{
+  display:inline-block;
+  background:rgba(46,124,196,.12);
+  color:var(--blue);
+  border:1px solid rgba(46,124,196,.3);
+  border-radius:999px;
+  padding:2px 12px;
+  font-size:13.5px;
+  font-weight:700;
+  vertical-align:1px;
+  white-space:nowrap;
+}
 
 /* ===== FAQ ===== */
 .faq{background:linear-gradient(180deg,var(--white),var(--mist))}
@@ -389,7 +403,7 @@ footer b{color:rgba(255,255,255,.75);font-weight:500}
     <h2>샘터가 당신의 일상에서<br>시작되도록, 교회가 함께합니다</h2>
     <ul>
       <li>1인당 주 1회 5,000원 모임비 지원</li>
-      <li>주중(월~금) 팀이 정한 요일과 시간에, 원하는 장소에서</li>
+      <li><b>주중</b>(월~금) 팀이 정한 요일과 시간에, 원하는 장소에서</li>
       <li>매달 새로 신청하는 유연한 운영 — 이번 달만 함께해도 괜찮습니다</li>
     </ul>
   </div>
@@ -403,7 +417,7 @@ footer b{color:rgba(255,255,255,.75);font-weight:500}
     <div class="timeline">
       <div class="step">
         <div class="k">신청</div>
-        <div class="v">전달 중 상시 접수 · 샘지기가 구글폼 신청<small>다음 달 샘터를 전달 말일까지 언제든 신청할 수 있어요</small></div>
+        <div class="v">전달 중 상시 접수 <span class="badge">익월부터 참여</span><small>이번 달 말일까지 신청하면, 다음 달 1일부터 샘터가 시작돼요</small></div>
       </div>
       <div class="step">
         <div class="k">모임</div>
