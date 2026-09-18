@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B3A5C">
+<title>샘지기 매뉴얼 — 청년샘터</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1B3A5C; --blue:#2E7DD1; --blue-soft:#EAF2FB;
+  --paper:#FFFFFF; --canvas:#F7F9FC; --ink:#1F2A37; --ink-soft:#64748B;
+  --rule:#E3E9F0;
+  --red:#C0392B; --red-bg:#FDF2F1; --amber:#B7791F; --amber-bg:#FDF8ED;
+  --green:#2F855A; --green-bg:#EFF7F1;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --navy:#9CC4E8; --blue:#6FB0EA; --blue-soft:#152534;
+    --paper:#131B24; --canvas:#0D141B; --ink:#E5ECF3; --ink-soft:#93A4B5;
+    --rule:#253240;
+    --red:#EE9A92; --red-bg:#2A1917; --amber:#E0BC74; --amber-bg:#26200F;
+    --green:#94D2AC; --green-bg:#15251B;
+  }
+}
+:root[data-theme="dark"]{
+  --navy:#9CC4E8; --blue:#6FB0EA; --blue-soft:#152534;
+  --paper:#131B24; --canvas:#0D141B; --ink:#E5ECF3; --ink-soft:#93A4B5;
+  --rule:#253240;
+  --red:#EE9A92; --red-bg:#2A1917; --amber:#E0BC74; --amber-bg:#26200F;
+  --green:#94D2AC; --green-bg:#15251B;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+body{
+  margin:0; background:var(--canvas); color:var(--ink);
+  font-family:"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
+  font-size:15.5px; line-height:1.78; word-break:keep-all;
+}
+.wrap{max-width:780px; margin:0 auto; background:var(--paper); min-height:100vh}
+.pad{padding:0 22px}
+@media(min-width:640px){ .pad{padding:0 42px} }
+
+/* 헤더 */
+.top{
+  display:flex; align-items:center; gap:10px;
+  padding:16px 22px; border-bottom:1px solid var(--rule);
+  position:sticky; top:0; background:var(--paper); z-index:30;
+}
+@media(min-width:640px){ .top{padding:16px 42px} }
+.top img{height:26px; width:auto}
+.top .lbl{margin-left:auto; font-size:12px; color:var(--ink-soft); letter-spacing:.06em}
+
+/* 타이틀 */
+.head{padding-top:34px; padding-bottom:26px}
+.eyebrow{
+  color:var(--blue); font-size:11.5px; font-weight:700;
+  letter-spacing:.22em; margin:0 0 12px;
+}
+h1{font-size:clamp(26px,6.6vw,34px); font-weight:700; margin:0 0 8px; letter-spacing:-.02em; line-height:1.3}
+.sub{margin:0; color:var(--ink-soft); font-size:14px}
+.rule-blue{height:3px; background:var(--blue); margin:22px 0 0}
+
+/* 바로가기 칩 */
+.chips{display:flex; flex-wrap:wrap; gap:7px; padding:20px 0 4px}
+.chips a{
+  font-size:13px; text-decoration:none; color:var(--navy);
+  background:var(--blue-soft); border-radius:999px; padding:5px 13px;
+}
+.chips a:hover{background:var(--blue); color:#fff}
+
+/* 한눈에 보기 */
+.glance{
+  background:var(--blue-soft); border-radius:12px; padding:22px 24px; margin:22px 0 10px;
+}
+.glance h2{font-size:16.5px; font-weight:700; margin:0 0 14px; color:var(--navy)}
+.steps{list-style:none; margin:0 0 16px; padding:0}
+.steps li{display:flex; gap:10px; margin:9px 0; font-size:14.8px}
+.steps .n{
+  flex:none; width:21px; height:21px; border-radius:50%; background:var(--blue); color:#fff;
+  font-size:11.5px; font-weight:700; display:grid; place-items:center; margin-top:4px;
+}
+.glance hr{border:0; border-top:1px solid rgba(46,125,209,.28); margin:14px 0}
+.glance dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:7px 14px; font-size:14.3px}
+.glance dt{font-weight:700; color:var(--navy); white-space:nowrap}
+.glance dd{margin:0}
+
+/* 섹션 */
+.sections{padding-bottom:10px}
+details{border-bottom:1px solid var(--rule)}
+details[open]{padding-bottom:12px}
+summary{
+  list-style:none; cursor:pointer; padding:17px 0;
+  display:flex; align-items:center; gap:10px;
+  font-size:17.5px; font-weight:700; letter-spacing:-.01em;
+}
+summary::-webkit-details-marker{display:none}
+summary .no{color:var(--blue); font-size:16px}
+summary .must{
+  font-size:10.5px; font-weight:700; color:#fff; background:var(--red);
+  border-radius:3px; padding:1px 6px; letter-spacing:.02em;
+}
+summary .caret{
+  margin-left:auto; color:var(--ink-soft); font-size:13px; font-weight:400;
+  transition:transform .18s;
+}
+details[open] summary .caret{transform:rotate(180deg)}
+summary:hover{color:var(--blue)}
+.body{padding-bottom:6px}
+.body>*:first-child{margin-top:0}
+
+h3{font-size:15.5px; font-weight:700; margin:24px 0 10px}
+p{margin:0 0 13px}
+ul{margin:0 0 14px; padding-left:20px}
+li{margin:6px 0}
+strong{font-weight:700}
+.dim{color:var(--ink-soft); font-size:14px}
+
+/* 박스 */
+.box{border-radius:10px; padding:15px 18px; margin:16px 0; font-size:14.5px}
+.box p:last-child,.box ul:last-child{margin-bottom:0}
+.box .bt{display:block; font-weight:700; margin-bottom:6px}
+.box.tip{background:var(--blue-soft); border-left:4px solid var(--blue)}
+.box.warn{background:var(--amber-bg); border-left:4px solid var(--amber)}
+.box.must{background:var(--red-bg); border-left:4px solid var(--red)}
+.box.must .bt{color:var(--red)}
+
+/* 두 칸 카드 */
+.duo{display:grid; gap:12px; margin:16px 0}
+@media(min-width:620px){ .duo{grid-template-columns:1fr 1fr} }
+.pane{border:1px solid var(--rule); border-radius:10px; padding:15px 17px; font-size:14.3px; background:var(--paper)}
+.pane h4{margin:0 0 9px; font-size:14.5px; font-weight:700}
+.pane.yes h4{color:var(--blue)}
+.pane.no h4{color:var(--red)}
+.pane ol,.pane ul{margin:0; padding-left:18px}
+.pane li{margin:5px 0}
+
+/* 그림 */
+figure{margin:18px 0}
+figure img{width:100%; height:auto; border-radius:10px; display:block; border:1px solid var(--rule)}
+figcaption{font-size:12.8px; color:var(--ink-soft); margin-top:8px; text-align:center}
+
+/* 표 */
+.t-wrap{overflow-x:auto; margin:14px 0 16px}
+table{border-collapse:collapse; width:100%; font-size:14.3px; min-width:400px}
+th,td{border-bottom:1px solid var(--rule); padding:10px 12px; text-align:left}
+th{color:var(--ink-soft); font-weight:500; font-size:13px; border-bottom:1px solid var(--rule)}
+td.r{text-align:right; white-space:nowrap}
+td.hi{font-weight:700}
+
+/* 체크리스트 */
+.check{list-style:none; padding:0; margin:6px 0 0}
+.check li{margin:0}
+.check label{
+  display:flex; gap:11px; align-items:flex-start; padding:11px 2px;
+  border-bottom:1px solid var(--rule); cursor:pointer; font-size:14.7px;
+}
+.check li:last-child label{border-bottom:0}
+.check input{margin-top:6px; width:17px; height:17px; accent-color:var(--blue); flex:none}
+.check input:checked+span{color:var(--ink-soft); text-decoration:line-through}
+
+/* 문의 */
+.contact{
+  background:var(--canvas); border-radius:10px; padding:17px 20px; margin:26px 0 0;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap; font-size:14.3px;
+}
+.contact b{color:var(--navy)}
+.contact a{color:var(--blue); margin-left:auto}
+
+.nextdoc{
+  display:block; margin:16px 0 0; padding:16px 20px; border:1px solid var(--rule);
+  border-radius:10px; text-decoration:none; color:var(--ink);
+}
+.nextdoc:hover{border-color:var(--blue)}
+.nextdoc b{display:block; font-size:15.5px; margin-bottom:2px}
+.nextdoc span{font-size:13.3px; color:var(--ink-soft)}
+
+footer{
+  margin-top:40px; border-top:1px solid var(--rule); padding:20px 22px 54px;
+  font-size:12.5px; color:var(--ink-soft); display:flex; gap:12px; flex-wrap:wrap;
+}
+@media(min-width:640px){ footer{padding:20px 42px 54px} }
+footer a{color:var(--ink-soft)}
+footer .right{margin-left:auto}
+:focus-visible{outline:2px solid var(--blue); outline-offset:2px; border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="top">
+  <img src="img/logo.png" alt="청년샘터">
+  <span class="lbl">샘지기 매뉴얼</span>
+</div>
+
+<div class="pad">
+
+  <div class="head">
+    <p class="eyebrow">SAEMTEO · LEADER GUIDE</p>
+    <h1>청년샘터 샘지기 매뉴얼</h1>
+    <p class="sub">사랑의교회 청년부 · 양육국</p>
+    <div class="rule-blue"></div>
+  </div>
+
+  <div class="glance">
+    <h2>한눈에 보기</h2>
+    <ul class="steps">
+      <li><span class="n">1</span><span><b>매주 모임 후</b> — 그 주차 폴더에 인증샷 + 영수증 사진 업로드</span></li>
+      <li><span class="n">2</span><span><b>월말</b> — 정산폼에 모임일 · 참석자 이름 · 영수증 금액 입력 (나머지는 자동 계산)</span></li>
+      <li><span class="n">3</span><span><b>마감까지</b> — 실물 영수증(품목 + 카드 승인번호)을 10층 청년부 교역자실 앞 테이블에 제출</span></li>
+    </ul>
+    <hr>
+    <dl>
+      <dt>지원금</dt><dd>1인당 5,000원 / 주 1회 (월~금 대면 모임)</dd>
+      <dt>마감</dt><dd>정산폼·사진은 익월 첫 번째 주일 오후 8시까지. 실물 영수증은 운영월 마지막 주일 또는 익월 첫 번째 주일, 각 오후 8시까지. 정확한 날짜는 그달 환영 메일에 있습니다.</dd>
+    </dl>
+  </div>
+
+  <nav class="chips">
+    <a href="#s1">내 폴더</a>
+    <a href="#s2">사진 업로드</a>
+    <a href="#s3">사진·영수증 기준</a>
+    <a href="#s4">정산폼 작성</a>
+    <a href="#s5">지원금 계산</a>
+    <a href="#s6">마감·제출</a>
+    <a href="#s7">체크리스트</a>
+  </nav>
+
+  <div class="sections">
+
+    <details id="s1">
+      <summary><span class="no">1</span>시작하기 — 내 폴더<span class="caret">⌄</span></summary>
+      <div class="body">
+        <ul>
+          <li>신청이 승인되면 환영 메일로 내 전용 폴더와 정산폼 링크가 옵니다.</li>
+          <li>내 폴더 안에는 정산폼 1개와 주차별 폴더(1~4주차, 5주 있는 달은 5주차)가 있습니다.</li>
+          <li>폴더와 정산폼은 구글 계정으로 열립니다. 신청 때 적은 구글 주소로 로그인해 주세요.</li>
+        </ul>
+        <div class="box tip">
+          <span class="bt">「날마다 솟는 샘물」 큐티책을 꼭 구매해 진행해 주세요</span>
+          <p>앱 QT 화면으로도 모임은 가능하지만, 샘지기는 큐티책으로 진행하시길 권합니다. 책에는 그 달 본문의 개관과 D형 큐티 방법 등 나눔을 이끌 때 참고할 자료가 실려 있어, 흐름을 잡는 데 큰 도움이 됩니다.</p>
+        </div>
+      </div>
+    </details>
+
+    <details id="s2">
+      <summary><span class="no">2</span>매주 할 일 — 사진 업로드<span class="caret">⌄</span></summary>
+      <div class="body">
+        <p>매주 모임이 끝나면 그 주차 폴더에 두 가지를 올립니다.</p>
+        <ul>
+          <li><strong>인증샷</strong> — 모임이 실제 있었다는 사진 (참석자와 현장이 보이게)</li>
+          <li><strong>영수증 사진</strong> — 품목과 카드 승인번호가 보이게</li>
+        </ul>
+        <div class="box warn">
+          <span class="bt">주차를 헷갈리지 마세요</span>
+          <p>2주차 모임 사진은 반드시 '2주차' 폴더에 올립니다. 폴더를 잘못 올리면 그 주차가 비어 있는 것으로 처리됩니다.</p>
+        </div>
+      </div>
+    </details>
+
+    <details id="s3" open>
+      <summary><span class="no">3</span>사진·영수증 기준<span class="must">필수</span><span class="caret">⌄</span></summary>
+      <div class="body">
+        <h3>영수증 — 실물 또는 전자, 둘 중 하나</h3>
+        <figure>
+          <img src="img/receipt.jpg" alt="실물 영수증과 전자영수증 예시 비교">
+          <figcaption>왼쪽은 실물 영수증, 오른쪽은 주문 캡처와 전자영수증</figcaption>
+        </figure>
+
+        <div class="duo">
+          <div class="pane yes">
+            <h4>이 세 가지가 보여야 합니다</h4>
+            <ol>
+              <li><strong>품목</strong> — 무엇을 샀는지(메뉴·수량)</li>
+              <li><strong>카드 승인번호</strong> — 승인번호 숫자</li>
+              <li><strong>카드 결제</strong> — 카드로 결제한 영수증만 증빙이 됩니다</li>
+            </ol>
+            <p class="dim" style="margin-top:9px">밝고 선명하게, 접히거나 잘리지 않게 전체가 나오도록.</p>
+          </div>
+          <div class="pane no">
+            <h4>이런 영수증은 다시 받아야 합니다</h4>
+            <ul>
+              <li>흐릿하거나 일부가 잘린 사진</li>
+              <li>카드 승인번호가 안 보이는 사진</li>
+              <li>품목이 없는 간이영수증</li>
+              <li>현금 · 기프티콘 · 충전식 선불카드로 결제한 영수증</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="box must">
+          <span class="bt">실물 영수증 제출은 필수입니다</span>
+          <p>사진 업로드는 확인용일 뿐입니다. 카드 영수증이 전자영수증이 아니라면 반드시 실물을 10층 청년부 교역자실 앞 테이블에 제출해야 정산됩니다.</p>
+        </div>
+
+        <h3>인증샷 — 이렇게 찍어주세요</h3>
+        <figure>
+          <img src="img/photo.jpg" alt="좋은 인증샷 예시">
+          <figcaption>얼굴 보이게 · 「날마다 솟는 샘물」 책 또는 앱 QT 화면 들고 · 왼쪽부터 명단 순서</figcaption>
+        </figure>
+        <ul>
+          <li>참석자 전원이 한 프레임에, 얼굴이 보이게 함께 찍습니다.</li>
+          <li>「날마다 솟는 샘물」 큐티책 또는 사랑의교회 앱 QT 화면을 손에 들고 찍어주세요.</li>
+          <li>밝은 곳에서 흔들리지 않게 또렷하게. 초대 손님도 함께 찍습니다.</li>
+          <li><strong>보정 없는 원본 사진</strong>으로 올려주세요. 인증샷은 교회 재정 정산을 위한 증빙 자료입니다.</li>
+          <li>정산폼 명단은 사진 왼쪽부터 차례로 적습니다. 사진 속 사람 순서를 기억해두세요.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details id="s4">
+      <summary><span class="no">4</span>월말 — 정산폼 작성<span class="caret">⌄</span></summary>
+      <div class="body">
+        <p>정산폼은 환영 메일 링크로 엽니다. 계좌와 등록 샘원 명단은 이미 채워져 있습니다. 아래 세 가지만 입력하면 됩니다.</p>
+        <h3>영수증 1장 = 1줄</h3>
+        <ul>
+          <li><strong>모임일</strong> — 그 모임 날짜</li>
+          <li><strong>참석자 명단</strong> — 그날 온 사람 이름을 쉼표로 구분. 인증샷에서 왼쪽부터 차례로 (예: 김믿음, 김사랑)</li>
+          <li><strong>영수증 금액</strong> — 그 영수증 금액</li>
+        </ul>
+        <p class="dim">인원·인당·받을 금액은 자동 계산됩니다. 회색 칸은 만지지 마세요.</p>
+        <ul>
+          <li>초대 손님도 그날 왔으면 참석자 명단에 이름만 적으면 인원에 자동 포함됩니다.</li>
+          <li>영수증이 2장 이상인 모임은 줄을 영수증 수만큼 쓰고, 모임일과 참석자 명단은 똑같이 반복하고 금액만 각각 적습니다. (폼 안 [작성 예시] 탭 참고)</li>
+        </ul>
+      </div>
+    </details>
+
+    <details id="s5">
+      <summary><span class="no">5</span>지원금은 이렇게 계산됩니다<span class="caret">⌄</span></summary>
+      <div class="body">
+        <p>1인당 5,000원, 주 1회. 받을 금액은 영수증 합계와 5,000원 × 인원 중 작은 쪽입니다.</p>
+        <div class="t-wrap">
+          <table>
+            <tr><th>예시</th><th>인원</th><th>영수증</th><th>받을 금액</th></tr>
+            <tr><td>3명, 15,000원</td><td class="r">3</td><td class="r">15,000</td><td class="r hi">15,000 <span class="dim">(1인 5,000 상한)</span></td></tr>
+            <tr><td>3명, 12,000원</td><td class="r">3</td><td class="r">12,000</td><td class="r hi">12,000 <span class="dim">(1인 4,000, 실비)</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details id="s6">
+      <summary><span class="no">6</span>마감 · 제출<span class="caret">⌄</span></summary>
+      <div class="body">
+        <div class="t-wrap">
+          <table>
+            <tr><th>구분</th><th>내용</th></tr>
+            <tr><td><strong>온라인</strong></td><td>정산폼 작성과 사진 업로드 — 익월 첫 번째 주일 오후 8시까지</td></tr>
+            <tr><td><strong>오프라인</strong></td><td>실물 영수증(품목 + 카드 승인번호)을 10층 청년부 교역자실 앞 테이블에 제출. 운영월 마지막 주일 또는 익월 첫 번째 주일, 각 오후 8시까지</td></tr>
+            <tr><td><strong>지급</strong></td><td>제출 후 2~3주 내 순차 지급</td></tr>
+          </table>
+        </div>
+        <p class="dim">이 기간이 지나면 정산이 어려우니 꼭 기간 안에 부탁드립니다. 정확한 날짜는 그달 환영 메일에 안내되고, 마감 3일 전까지 미작성이면 리마인드 메일이 갑니다.</p>
+      </div>
+    </details>
+
+    <details id="s7">
+      <summary><span class="no">7</span>제출 전 체크리스트<span class="caret">⌄</span></summary>
+      <div class="body">
+        <ul class="check">
+          <li><label><input type="checkbox" data-ck="c1"><span>매주 주차 폴더에 인증샷과 영수증을 올렸다</span></label></li>
+          <li><label><input type="checkbox" data-ck="c2"><span>영수증에 품목과 카드 승인번호가 보인다</span></label></li>
+          <li><label><input type="checkbox" data-ck="c3"><span>정산폼에 모임일·참석자 이름·금액을 다 넣었다 (초대 손님 포함)</span></label></li>
+          <li><label><input type="checkbox" data-ck="c4"><span>실물 영수증을 10층 청년부 교역자실 앞 테이블에 제출했다</span></label></li>
+        </ul>
+      </div>
+    </details>
+
+  </div>
+
+  <a class="nextdoc" href="../guide/">
+    <b>샘지기 나눔 가이드 →</b>
+    <span>모임 진행 순서와 청년샘터 에티켓</span>
+  </a>
+
+  <div class="contact">
+    <b>문의</b> 양육국
+    <a href="mailto:yossaemteo@gmail.com">yossaemteo@gmail.com</a>
+  </div>
+
+</div>
+
+<footer>
+  <span>사랑의교회 청년부 · 양육국</span>
+  <span class="right">최종 수정 2026-09-18</span>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  // 링크로 들어온 섹션 자동 펼침
+  function openTarget(){
+    var id = location.hash.replace('#','');
+    if(!id) return;
+    var el = document.getElementById(id);
+    if(el && el.tagName === 'DETAILS'){
+      el.open = true;
+      setTimeout(function(){ el.scrollIntoView({block:'start'}); }, 40);
+    }
+  }
+  window.addEventListener('hashchange', openTarget);
+  openTarget();
+
+  document.querySelectorAll('.chips a').forEach(function(a){
+    a.addEventListener('click', function(){
+      var el = document.querySelector(a.getAttribute('href'));
+      if(el) el.open = true;
+    });
+  });
+
+  // 체크리스트 상태 기억 (이 기기에서만)
+  var boxes = document.querySelectorAll('[data-ck]');
+  boxes.forEach(function(b){
+    var k = 'saemteo-manual-' + b.getAttribute('data-ck');
+    try{ if(localStorage.getItem(k) === '1') b.checked = true; }catch(e){}
+    b.addEventListener('change', function(){
+      try{ localStorage.setItem(k, b.checked ? '1' : '0'); }catch(e){}
+    });
+  });
+})();
+</script>
+</body>
+</html>
