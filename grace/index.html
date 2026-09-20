@@ -2,6 +2,13 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<!-- ══════════════════════════════════════════════════════════
+     은혜 나눔 설정 — 아래 따옴표 안에 웹앱 주소만 넣으면 됩니다.
+     Apps Script → 배포 → 웹 앱 주소 (https://script.google.com/... /exec)
+     비워두면 은혜 나눔 요소가 숨겨진 채로 페이지는 정상 동작합니다.
+══════════════════════════════════════════════════════════ -->
+<script>window.GRACE_API = 'https://script.google.com/macros/s/AKfycbwfNWhb0vSKiM4hj0OErNKjJam-PM3pXo4NEbD6Oq4AHhMjmTE2efklWUTBvfEJliab/exec';</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>은혜 나눔 | 청년샘터</title>
@@ -106,10 +113,8 @@
 </div>
 
 <script>
-  // ▼▼▼ 여기 한 줄만 채우면 됩니다 ▼▼▼
-  // Apps Script → 배포 → 웹 앱에서 받은 주소 (/exec 로 끝남)
-  const API_URL = '';
-  // ▲▲▲ 나머지는 건드리지 않아도 됩니다 ▲▲▲
+  // 주소는 이 파일 맨 위 <head> 안에서 설정합니다 (window.GRACE_API).
+  const API_URL = window.GRACE_API || '';
   const list = document.getElementById('list');
 
   const esc = s => String(s).replace(/[&<>"']/g, c =>
