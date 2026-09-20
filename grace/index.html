@@ -62,37 +62,47 @@
   .write:focus-visible { outline: 3px solid var(--deep); outline-offset: 3px; }
   .note { display: block; margin-top: 10px; font-size: .85rem; color: var(--stone); }
 
-  #list { margin-top: 48px; border-top: 1px solid var(--line); }
-  article { padding: 30px 0; border-bottom: 1px solid var(--line); }
-  article h2 { font-family: "Noto Serif KR", serif; font-size: 1.3rem; line-height: 1.5; margin: 0 0 10px; font-weight: 700; word-break: keep-all; }
-  .verse {
-    margin: 0 0 14px;
-    padding-left: 12px;
-    border-left: 3px solid var(--stream);
-    color: var(--stream);
-    font-size: .92rem;
+  .count { margin: 44px 0 0; font-size: .88rem; color: var(--stone); }
+
+  #list { margin-top: 14px; border-top: 1px solid var(--line); }
+  article { border-bottom: 1px solid var(--line); }
+
+  /* 목록 한 줄 — 클릭하면 펼쳐진다 */
+  summary {
+    list-style: none; cursor: pointer;
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 22px 2px;
   }
-  .answers { position: relative; }
+  summary::-webkit-details-marker { display: none; }
+  summary:focus-visible { outline: 2px solid var(--stream); outline-offset: 2px; }
+  .head { flex: 1; min-width: 0; }
+  .t {
+    font-family: "Noto Serif KR", serif;
+    font-size: 1.12rem; line-height: 1.5; font-weight: 700;
+    word-break: keep-all; transition: color .2s;
+  }
+  summary:hover .t { color: var(--stream); }
+  .meta { margin-top: 6px; font-size: .82rem; color: var(--stone); }
+  .sign {
+    flex: none; width: 22px; text-align: center;
+    color: var(--stream); font-size: 1.3rem; font-weight: 300; line-height: 1.5;
+    transition: transform .25s;
+  }
+  details[open] .sign { transform: rotate(45deg); }
+
+  /* 제목만 있는 글 — 펼칠 내용이 없으니 클릭 대상이 아니다 */
+  .flat { padding: 22px 2px; }
+  .flat .t { font-weight: 600; }
+
+  /* 펼쳐진 본문 */
+  .answers { padding: 2px 2px 26px; }
   .qa + .qa { margin-top: 18px; }
   .q { margin: 0 0 4px; font-size: .82rem; font-weight: 700; color: var(--stream); }
   .body {
     font-family: "Noto Serif KR", serif;
-    font-size: 1.05rem;
-    line-height: 1.95;
-    white-space: pre-wrap;
-    word-break: keep-all;
-    margin: 0;
+    font-size: 1.05rem; line-height: 1.95;
+    white-space: pre-wrap; word-break: keep-all; margin: 0;
   }
-  .answers.folded { max-height: 12.5em; overflow: hidden; }
-  .answers.folded::after {
-    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3.5em;
-    background: linear-gradient(to bottom, rgba(235,244,250,0), var(--water));
-  }
-  .more {
-    background: none; border: 0; padding: 6px 0; margin-top: 4px;
-    color: var(--stream); font: inherit; font-size: .9rem; cursor: pointer;
-  }
-  .meta { margin-top: 14px; font-size: .85rem; color: var(--stone); }
 
   .state { padding: 40px 0; color: var(--stone); text-align: center; }
 </style>
@@ -107,6 +117,8 @@
     <span class="note">보내주신 글은 양육국 확인 후 올라갑니다.</span>
   </header>
 
+  <p class="count" id="count"></p>
+
   <section id="list" aria-live="polite">
     <div class="state">나눔을 불러오고 있어요</div>
   </section>
@@ -120,39 +132,42 @@
   const esc = s => String(s).replace(/[&<>"']/g, c =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
+  const 기본펼침 = 3;   // 최근 몇 개를 펼친 채로 보여줄지 (글이 적으면 전부 펼침)
+
   function render(posts) {
     if (!posts.length) {
       list.innerHTML = '<div class="state">아직 올라온 나눔이 없어요. 첫 번째 은혜를 나눠주세요.</div>';
       return;
     }
-    list.innerHTML = posts.map(p => {
-      const who = esc(p.author);   // 스크립트가 동의 범위에 맞춰 만든 표시명
-      const answers = (p.answers || []).map(x => `
-          <div class="qa">
-            <p class="q">${esc(x.q)}</p>
-            <p class="body">${esc(x.a)}</p>
-          </div>`).join('');
-      return `
-      <article>
-        <h2>${esc(p.title)}</h2>
-        ${p.verse ? `<p class="verse">${esc(p.verse)}</p>` : ''}
-        ${answers ? `<div class="answers">${answers}</div>` : ''}
-        <div class="meta">${who} · ${esc(p.date)}</div>
+
+    const 펼칠개수 = posts.length <= 5 ? posts.length : 기본펼침;
+
+    list.innerHTML = posts.map((p, i) => {
+      const 머리 = `<div class="head">
+            <div class="t">${esc(p.title)}</div>
+            <div class="meta">${esc(p.author)} · ${esc(p.date)}</div>
+          </div>`;
+      const 답변 = (p.answers || []).map(x => `
+            <div class="qa">
+              <p class="q">${esc(x.q)}</p>
+              <p class="body">${esc(x.a)}</p>
+            </div>`).join('');
+
+      // 펼칠 내용이 없으면 클릭 대상으로 만들지 않는다
+      if (!답변) return `<article><div class="flat">${머리}</div></article>`;
+
+      return `<article>
+        <details${i < 펼칠개수 ? ' open' : ''}>
+          <summary>${머리}<div class="sign" aria-hidden="true">+</div></summary>
+          <div class="answers">${답변}</div>
+        </details>
       </article>`;
     }).join('');
 
-    list.querySelectorAll('.answers').forEach(el => {
-      el.classList.add('folded');
-      if (el.scrollHeight <= el.clientHeight + 2) { el.classList.remove('folded'); return; }
-      const btn = document.createElement('button');
-      btn.className = 'more';
-      btn.textContent = '전체 보기';
-      btn.addEventListener('click', () => {
-        const folded = el.classList.toggle('folded');
-        btn.textContent = folded ? '전체 보기' : '접기';
-      });
-      el.after(btn);
-    });
+    const 안내 = document.getElementById('count');
+    안내.textContent = posts.length === 1
+      ? '첫 번째 이야기가 올라왔어요'
+      : `지금까지 ${posts.length}개의 이야기가 모였어요`;
   }
 
   (function () {
