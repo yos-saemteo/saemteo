@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>은혜 나눔 | 청년샘터</title>
+<meta property="og:title" content="은혜 나눔 | 청년샘터">
+<meta property="og:description" content="샘터에서 받은 은혜를 함께 나눠요">
+<!-- 카톡 미리보기: 지금은 메인 커버를 사용, 전용 이미지를 만들면 grace/og-grace.jpg로 교체 -->
+<meta property="og:image" content="https://yos-saemteo.github.io/saemteo/og-cover.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+  :root {
+    --water: #EBF4FA;     /* 메인 페이지 mist */
+    --deep: #1B3A5C;      /* 메인 navy */
+    --stream: #2E7CC4;    /* 메인 blue */
+    --stone: #5A7186;     /* 메인 soft */
+    --line: rgba(46,124,196,.18);
+    --paper: #FFFFFF;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--water);
+    color: var(--deep);
+    font-family: "Noto Sans KR", -apple-system, "Apple SD Gothic Neo", sans-serif;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 56px 22px 80px; }
+
+  .home { display: inline-block; margin-bottom: 36px; color: var(--stone); text-decoration: none; font-size: .9rem; }
+  .home:hover, .home:focus-visible { color: var(--stream); }
+  header h1 {
+    font-family: "Noto Serif KR", serif;
+    font-size: clamp(2.4rem, 9vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 0 0 14px;
+    letter-spacing: -0.02em;
+  }
+  header p { margin: 0 0 28px; color: var(--stone); font-size: 1rem; }
+
+  .write {
+    display: inline-block;
+    background: var(--stream);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 13px 22px;
+    border-radius: 999px;
+  }
+  .write:focus-visible { outline: 3px solid var(--deep); outline-offset: 3px; }
+  .note { display: block; margin-top: 10px; font-size: .85rem; color: var(--stone); }
+
+  #list { margin-top: 48px; border-top: 1px solid var(--line); }
+  article { padding: 30px 0; border-bottom: 1px solid var(--line); }
+  article h2 { font-family: "Noto Serif KR", serif; font-size: 1.3rem; line-height: 1.5; margin: 0 0 10px; font-weight: 700; word-break: keep-all; }
+  .verse {
+    margin: 0 0 14px;
+    padding-left: 12px;
+    border-left: 3px solid var(--stream);
+    color: var(--stream);
+    font-size: .92rem;
+  }
+  .answers { position: relative; }
+  .qa + .qa { margin-top: 18px; }
+  .q { margin: 0 0 4px; font-size: .82rem; font-weight: 700; color: var(--stream); }
+  .body {
+    font-family: "Noto Serif KR", serif;
+    font-size: 1.05rem;
+    line-height: 1.95;
+    white-space: pre-wrap;
+    word-break: keep-all;
+    margin: 0;
+  }
+  .answers.folded { max-height: 12.5em; overflow: hidden; }
+  .answers.folded::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3.5em;
+    background: linear-gradient(to bottom, rgba(235,244,250,0), var(--water));
+  }
+  .more {
+    background: none; border: 0; padding: 6px 0; margin-top: 4px;
+    color: var(--stream); font: inherit; font-size: .9rem; cursor: pointer;
+  }
+  .meta { margin-top: 14px; font-size: .85rem; color: var(--stone); }
+
+  .state { padding: 40px 0; color: var(--stone); text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="home" href="../">청년샘터로 돌아가기</a>
+    <h1>은혜 나눔</h1>
+    <p>샘터에서 받은 은혜를 청년부 여러분과 함께 나눠요.</p>
+    <a class="write" href="https://docs.google.com/forms/d/e/1FAIpQLSc1eo1RhGAOT8-e1M_r064WItjHNwf2iZlP3Rbs5Z72HyIiZw/viewform" target="_blank" rel="noopener">은혜 나누기</a>
+    <span class="note">보내주신 글은 양육국 확인 후 올라갑니다.</span>
+  </header>
+
+  <section id="list" aria-live="polite">
+    <div class="state">나눔을 불러오고 있어요</div>
+  </section>
+</div>
+
+<script>
+  // ▼▼▼ 여기 한 줄만 채우면 됩니다 ▼▼▼
+  // Apps Script → 배포 → 웹 앱에서 받은 주소 (/exec 로 끝남)
+  const API_URL = '';
+  // ▲▲▲ 나머지는 건드리지 않아도 됩니다 ▲▲▲
+  const list = document.getElementById('list');
+
+  const esc = s => String(s).replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  function render(posts) {
+    if (!posts.length) {
+      list.innerHTML = '<div class="state">아직 올라온 나눔이 없어요. 첫 번째 은혜를 나눠주세요.</div>';
+      return;
+    }
+    list.innerHTML = posts.map(p => {
+      const who = esc(p.author);   // 스크립트가 동의 범위에 맞춰 만든 표시명
+      const answers = (p.answers || []).map(x => `
+          <div class="qa">
+            <p class="q">${esc(x.q)}</p>
+            <p class="body">${esc(x.a)}</p>
+          </div>`).join('');
+      return `
+      <article>
+        <h2>${esc(p.title)}</h2>
+        ${p.verse ? `<p class="verse">${esc(p.verse)}</p>` : ''}
+        ${answers ? `<div class="answers">${answers}</div>` : ''}
+        <div class="meta">${who} · ${esc(p.date)}</div>
+      </article>`;
+    }).join('');
+
+    list.querySelectorAll('.answers').forEach(el => {
+      el.classList.add('folded');
+      if (el.scrollHeight <= el.clientHeight + 2) { el.classList.remove('folded'); return; }
+      const btn = document.createElement('button');
+      btn.className = 'more';
+      btn.textContent = '전체 보기';
+      btn.addEventListener('click', () => {
+        const folded = el.classList.toggle('folded');
+        btn.textContent = folded ? '전체 보기' : '접기';
+      });
+      el.after(btn);
+    });
+  }
+
+  (function () {
+  if (!API_URL) {
+    list.innerHTML = '<div class="state">게시판을 준비하고 있어요. 곧 만나요 💧</div>';
+    return;
+  }
+
+  fetch(API_URL)
+    .then(r => r.json())
+    .then(d => {
+      if (!d.ok) throw new Error(d.error);
+      render(d.posts);
+    })
+    .catch(() => {
+      list.innerHTML = '<div class="state">나눔을 불러오지 못했어요. 잠시 후 새로고침해 주세요.</div>';
+    });
+  })();
+</script>
+</body>
+</html>
