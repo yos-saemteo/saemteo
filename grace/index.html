@@ -18,6 +18,9 @@
 <meta property="og:image" content="https://yos-saemteo.github.io/saemteo/og-cover.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- 구글 서버와 미리 손을 잡아두면 첫 연결이 그만큼 빨라집니다 -->
+<link rel="preconnect" href="https://script.google.com" crossorigin>
+<link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
   :root {
@@ -105,6 +108,18 @@
   }
 
   .state { padding: 40px 0; color: var(--stone); text-align: center; }
+
+  /* 불러오는 동안 보여줄 뼈대 — 빈 화면보다 덜 답답하게 */
+  .skel { padding: 22px 2px; border-bottom: 1px solid var(--line); }
+  .skel i {
+    display: block; height: 15px; border-radius: 4px;
+    background: linear-gradient(90deg, rgba(46,124,196,.10), rgba(46,124,196,.20), rgba(46,124,196,.10));
+    background-size: 200% 100%;
+    animation: shine 1.4s ease-in-out infinite;
+  }
+  .skel i + i { height: 11px; width: 42%; margin-top: 10px; }
+  @keyframes shine { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  @media (prefers-reduced-motion: reduce) { .skel i { animation: none; } }
 </style>
 </head>
 <body>
@@ -119,8 +134,10 @@
 
   <p class="count" id="count"></p>
 
-  <section id="list" aria-live="polite">
-    <div class="state">나눔을 불러오고 있어요</div>
+  <section id="list" aria-live="polite" aria-busy="true">
+    <div class="skel"><i></i><i></i></div>
+    <div class="skel"><i></i><i></i></div>
+    <div class="skel"><i></i><i></i></div>
   </section>
 </div>
 
@@ -164,10 +181,33 @@
       </article>`;
     }).join('');
 
+    list.setAttribute('aria-busy', 'false');
+
     const 안내 = document.getElementById('count');
     안내.textContent = posts.length === 1
       ? '첫 번째 이야기가 올라왔어요'
       : `지금까지 ${posts.length}개의 이야기가 모였어요`;
+  }
+
+  // ── 같은 사람이 다시 들어왔을 때는 지난번 목록을 먼저 그려 둡니다 ──
+  //    구글 서버 응답이 오면 그 내용으로 곧바로 덮어씁니다.
+  //    30분이 지난 기록은 쓰지 않습니다 — 내린 글이 잠깐이라도 다시 보이면 안 되니까요.
+  const 저장칸 = 'grace_last_v1';
+  const 유효시간 = 30 * 60 * 1000;
+
+  function 지난목록() {
+    try {
+      const raw = localStorage.getItem(저장칸);
+      if (!raw) return null;
+      const d = JSON.parse(raw);
+      if (!d || !d.t || Date.now() - d.t > 유효시간) return null;
+      return d.posts;
+    } catch (e) { return null; }
+  }
+
+  function 목록저장(posts) {
+    try { localStorage.setItem(저장칸, JSON.stringify({ t: Date.now(), posts: posts })); }
+    catch (e) { /* 저장 공간이 막혀 있어도 화면은 그대로 동작합니다 */ }
   }
 
   (function () {
@@ -176,13 +216,20 @@
     return;
   }
 
+  const 미리 = 지난목록();
+  if (미리) render(미리);
+  const 지문 = JSON.stringify(미리 || null);
+
   fetch(API_URL)
     .then(r => r.json())
     .then(d => {
       if (!d.ok) throw new Error(d.error);
-      render(d.posts);
+      // 내용이 지난번과 같으면 다시 그리지 않습니다 (펼쳐 둔 글이 도로 접히지 않게)
+      if (JSON.stringify(d.posts) !== 지문) render(d.posts);
+      목록저장(d.posts);
     })
     .catch(() => {
+      if (미리) return;   // 지난 목록이라도 떠 있으면 그대로 둡니다
       list.innerHTML = '<div class="state">나눔을 불러오지 못했어요. 잠시 후 새로고침해 주세요.</div>';
     });
   })();
