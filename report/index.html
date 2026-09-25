@@ -20,7 +20,7 @@
     color-scheme: light;
     --navy: #1B3A5C; --ink: #18283A; --sub: #56636F; --sub2: #3E4D5B; --ground: #EEF3F7;
     --line: #C5D1DC; --line2: #D5DEE6; --link: #1F6FB5;
-    --amber-bg: #FBEFD9; --amber: #7D5208; --red-bg: #FBE9E9; --red: #A0302B;
+    --amber-bg: #FBEFD9; --amber: #7D5208; --red-bg: #FBE9E9; --red: #A0302B; --blue-bg: #E9F2FA;
     --sans: 'IBM Plex Sans KR', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
     --serif: 'Noto Serif KR', 'Noto Serif CJK KR', serif;
   }
@@ -29,6 +29,7 @@
   body { color: var(--ink); font-family: var(--sans); word-break: keep-all; -webkit-text-size-adjust: 100%; }
   a { color: var(--link); }
   button, input { font-family: inherit; }
+  button { -webkit-tap-highlight-color: transparent; }
   :focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
@@ -58,7 +59,7 @@
   .field { display: flex; flex-direction: column; gap: 8px; }
   .field label { font-size: 14px; font-weight: 600; }
   .field input { height: 54px; padding: 0 16px; border: 1px solid var(--line); border-radius: 12px; background: #fff; font-size: 17px; color: var(--ink); }
-  .field input::placeholder { color: #66727E; }
+  .field input::placeholder, .addrow input::placeholder, .amt input::placeholder { color: #66727E; }
   .field input.digits { letter-spacing: .3em; }
   .check { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; }
   .check input { width: 20px; height: 20px; margin: 0; accent-color: var(--navy); }
@@ -71,11 +72,13 @@
          background: var(--navy); color: #fff; font-size: 17px; font-weight: 600; text-decoration: none; cursor: pointer; }
   .btn[disabled] { background: #A9B7C4; cursor: default; }
   .btn.busy[disabled] { background: var(--navy); opacity: .85; }
+  .btn.block[disabled] { background: #C9D3DC; color: var(--sub2); font-size: 16px; }
   .btn.ghost { height: 50px; background: #fff; box-shadow: inset 0 0 0 1.5px var(--line); color: var(--navy); font-size: 16px; }
   .stack { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
   .foot { margin: 2px 0 0; text-align: center; font-size: 13px; line-height: 1.6; color: var(--sub); }
   .spin { width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,.45); border-top-color: #fff; border-radius: 50%; animation: spin .8s linear infinite; }
   .spin.dark { border-color: rgba(27,58,92,.2); border-top-color: var(--navy); width: 28px; height: 28px; }
+  .spin.sm { width: 14px; height: 14px; border-width: 2px; border-color: rgba(27,58,92,.2); border-top-color: var(--navy); flex-shrink: 0; margin-top: 2px; }
   @keyframes spin { to { transform: rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .spin { animation-duration: 2.4s; } }
 
@@ -114,6 +117,95 @@
   .chip { padding: 8px 14px; border-radius: 999px; background: var(--ground); box-shadow: inset 0 0 0 1px var(--line2); font-size: 15px; font-weight: 600; color: var(--ink); }
   .center { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; color: var(--sub); font-size: 15px; }
   .setup { margin: 12px 4px 0; padding: 10px 12px; border-radius: 10px; background: var(--red-bg); color: var(--red); font-size: 13px; line-height: 1.5; }
+
+  /* ---------- 모임 보고 ---------- */
+  .back { display: inline-flex; align-items: center; gap: 2px; min-height: 44px; margin-left: -6px; padding: 0 10px 0 2px; border: 0; background: none;
+          color: var(--navy); font-size: 15px; font-weight: 600; cursor: pointer; }
+  .place { margin: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 5px 6px; font-size: 14px; font-weight: 600; color: var(--navy); }
+  .sec { margin-top: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px; background: #fff; border-radius: 18px; box-shadow: 0 1px 2px rgba(27,58,92,.08); }
+  .sec:first-of-type { margin-top: 20px; }
+  .sec h2, .sec .h2 { margin: 0; font-size: 16px; font-weight: 700; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .sec-head.start { justify-content: flex-start; align-items: center; }
+  .count { font-size: 15px; font-weight: 700; color: var(--navy); }
+  .hint { font-size: 13px; color: var(--sub); }
+  .need { padding: 3px 7px; border-radius: 6px; background: var(--amber-bg); color: var(--amber); font-size: 12px; font-weight: 700; }
+  .note { margin: 0; font-size: 14px; line-height: 1.6; color: var(--sub); }
+  .note.ink { color: var(--sub2); }
+  .note.sm { font-size: 13px; line-height: 1.55; }
+  .inp { width: 100%; height: 52px; padding: 0 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff; font-size: 17px; color: var(--ink); }
+  .inp:disabled { background: #F3F6F9; }
+  .box { margin: 0; display: flex; align-items: flex-start; gap: 8px; padding: 10px 12px; border-radius: 10px; font-size: 14px; line-height: 1.55; }
+  .box svg { flex-shrink: 0; margin-top: 1px; }
+  .box.blue { background: var(--blue-bg); color: var(--navy); }
+  .box.amber { background: var(--amber-bg); color: var(--amber); }
+  .box.red { background: var(--red-bg); color: var(--red); }
+  .names { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .name { display: flex; align-items: center; gap: 6px; height: 44px; padding: 0 4px 0 7px; border-radius: 22px; background: #E4EFF8; max-width: 100%; }
+  .name .no { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; flex-shrink: 0; border-radius: 12px; background: var(--navy); color: #fff; font-size: 12px; font-weight: 700; }
+  .name .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; font-weight: 600; }
+  .x { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; flex-shrink: 0; padding: 0; border: 0; border-radius: 18px; background: transparent; color: var(--sub2); cursor: pointer; }
+  .empty { margin: 0; padding: 12px; border-radius: 10px; background: #F3F6F9; font-size: 14px; color: var(--sub); text-align: center; }
+  .addrow { display: flex; gap: 8px; }
+  .addrow input { flex-grow: 1; min-width: 0; height: 48px; padding: 0 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff; font-size: 16px; color: var(--ink); }
+  .addrow button { flex-shrink: 0; height: 48px; padding: 0 18px; border: 0; border-radius: 12px; background: var(--navy); color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .sugg-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .sugg-title { font-size: 13px; font-weight: 600; color: var(--sub); }
+  .sugg { display: flex; align-items: center; gap: 4px; height: 44px; padding: 0 14px 0 10px; border: 1px solid var(--line); border-radius: 22px; background: #fff;
+          color: var(--navy); font-size: 15px; font-weight: 600; cursor: pointer; }
+  .shots { display: flex; flex-wrap: wrap; gap: 10px; }
+  .thumb { position: relative; width: 104px; height: 104px; flex-shrink: 0; border-radius: 12px; overflow: hidden; background: #D6E3EE; }
+  .thumb.sm { width: 60px; height: 92px; border-radius: 10px; }
+  .thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .thumb .ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #56708A; font-size: 12px; font-weight: 700; }
+  .thumb .ov { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 0; border: 0;
+               background: rgba(24,40,58,.42); color: #fff; font-size: 13px; font-weight: 700; }
+  .thumb .ov.bad { background: rgba(160,48,43,.78); cursor: pointer; }
+  .thumb .done { position: absolute; left: 5px; bottom: 5px; display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 11px;
+                 background: #fff; color: var(--navy); box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+  .thumb .del { position: absolute; top: 4px; right: 4px; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; border: 0;
+                border-radius: 16px; background: rgba(24,40,58,.72); color: #fff; cursor: pointer; }
+  .tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 104px; height: 104px; flex-shrink: 0;
+          border: 1.5px dashed #9FB1C2; border-radius: 12px; background: #F7FAFC; color: var(--navy); font-size: 14px; font-weight: 600; cursor: pointer; }
+  #pick-shot:focus-visible ~ #shot-box .tile, #pick-rc:focus-visible + label { outline: 2px solid var(--link); outline-offset: 2px; }
+  .rc-list { display: flex; flex-direction: column; gap: 12px; }
+  .rc-list:empty { display: none; }
+  .rc { display: flex; flex-direction: column; gap: 10px; padding: 10px 12px 12px; border: 1px solid #DCE4EB; border-radius: 14px; }
+  .rc-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 15px; font-weight: 700; }
+  .rc-head .x { width: 44px; height: 44px; margin: -6px -8px -6px 0; border-radius: 22px; }
+  .rc-body { display: flex; align-items: flex-start; gap: 12px; }
+  .rc-right { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+  .seg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 3px; border-radius: 11px; background: var(--ground); }
+  .seg button { height: 38px; padding: 0; border: 0; border-radius: 8px; background: transparent; color: var(--sub); font-size: 14px; font-weight: 600; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: #fff; color: var(--navy); box-shadow: 0 1px 2px rgba(27,58,92,.18); }
+  @media (max-width: 359px) { .seg .w { display: none; } }
+  .amt { display: flex; align-items: center; gap: 6px; font-size: 15px; }
+  .amt input { width: 100%; min-width: 0; height: 46px; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff;
+               font-size: 17px; font-weight: 600; text-align: right; color: var(--ink); }
+  .rc-msg { display: flex; flex-direction: column; gap: 8px; }
+  .rc-msg:empty { display: none; }
+  .st { margin: 0; display: flex; align-items: flex-start; gap: 6px; font-size: 13px; line-height: 1.5; color: var(--sub); }
+  .st svg { flex-shrink: 0; margin-top: 1px; }
+  .st.okc { color: var(--navy); }
+  .st.warn { padding: 8px 10px; border-radius: 8px; background: var(--amber-bg); color: var(--amber); }
+  .st.bad { color: var(--red); }
+  .nw { white-space: nowrap; }
+  .linkbtn { display: inline; padding: 0; border: 0; background: none; color: var(--link); font-size: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; }
+  .cands { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .cands-t { width: 100%; font-size: 13px; color: var(--sub); }
+  .cand { height: 36px; padding: 0 12px; border: 1px solid var(--line); border-radius: 18px; background: #fff; color: var(--navy); font-size: 14px; font-weight: 600; cursor: pointer; }
+  .more { display: flex; align-items: center; justify-content: center; gap: 6px; height: 48px; border: 1.5px dashed #9FB1C2; border-radius: 12px; background: #F7FAFC;
+          color: var(--navy); font-size: 15px; font-weight: 600; cursor: pointer; }
+  .sum { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border-radius: 12px; background: #F3F7FA; }
+  .sum .r { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; color: var(--sub2); }
+  .sum .hr { height: 1px; background: #DCE4EB; }
+  .sum .tot { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 15px; font-weight: 700; }
+  .sum .tot b { font-size: 18px; color: var(--navy); }
+  #rc-sum { display: flex; flex-direction: column; gap: 10px; }
+  #rc-sum:empty { display: none; }
+  .toast { position: fixed; left: 50%; bottom: max(24px, env(safe-area-inset-bottom)); transform: translate(-50%, 20px); max-width: calc(100% - 32px); padding: 12px 16px;
+           border-radius: 12px; background: rgba(24,40,58,.92); color: #fff; font-size: 14px; line-height: 1.5; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
+  .toast.on { opacity: 1; transform: translate(-50%, 0); }
 </style>
 </head>
 <body>
@@ -122,20 +214,31 @@
 
 <script>
 // ============================================================
-//  청년샘터 모임 보고 — 샘지기 화면 (시범: 본인 확인 · 샘터 고르기)
+//  청년샘터 모임 보고 — 샘지기 화면 (시범: 본인 확인 · 샘터 고르기 · 모임 보고 작성 — 사진 올리기 · 금액 읽기)
 //  ★ 아래 API에 Apps Script 웹앱 배포 주소(…/exec)를 넣습니다.
 // ============================================================
 const API = "https://script.google.com/macros/s/AKfycbwZFOS7D9T4-haOAyQxBPy0SP0NJ4m4uO3KgTt6d81g8RA2BpXGCID2YpVaJlPI9zQj/exec";   // ★ Apps Script 배포 주소 (/exec로 끝남). 바꿀 때는 따옴표 안만 바꿈
 const API주소 = /^https?:\/\/\S+\/exec(\?\S*)?$/.test(API.trim()) ? API.trim() : "";   // /exec 주소가 아니면 비어 있는 것으로 봄
 const API가dev = /\/dev(\?\S*)?$/.test(API.trim());
 const 문의기본 = "https://open.kakao.com/o/sWdAUBFi";
+const 영수증제출안내 = "https://yos-saemteo.github.io/saemteo/receipt/";
 const 저장키 = "saemteo.report.v1";
+const 사진최대 = 20 * 1048576;      // 원본 한 장 한도 — 서버 MB.사진최대MB와 같게
+const 사본최대 = 1.8 * 1048576;     // 금액 읽기용 사본 한도 — 서버 MB.판독최대KB(1900KB)보다 조금 작게
+const 최대장수 = { 인증샷: 4, 영수증: 20 };
 
 const S = {
-  화면: "확인",        // 확인 · 여는중 · 고르기 · 샘터
+  화면: "확인",        // 확인 · 여는중 · 고르기 · 샘터 · 보고
   이름: "", 번호: "", 전체: "", 전체필요: false, 기억: true,
   보내는중: false, 메시지: "", 메시지종류: "",
   결과: null, 고른: "", 문의: 문의기본,
+  로그인: null,        // 확인된 { 이름, 번호 } — 토큰이 풀리면 이것으로 조용히 다시 확인
+  토큰: "",            // 본인 확인 때 서버가 준 토큰 (6시간) — 사진 · 금액 요청에 붙임
+  다시확인실패: false, 다시확인안내: "",
+  초안: {},            // 샘터 id → 쓰고 있는 보고 { 날짜, 참석[], 사진[] } (이 창을 닫으면 사라짐 — 제출은 3단계)
+  초안주인: "",        // 초안을 쓴 사람 (다른 사람이 확인하면 초안을 비움)
+  기록: false,         // 보고 화면을 열 때 브라우저 뒤로 가기용 기록을 남겼는지
+  서버옛날: false,     // 서버가 사진 · 금액 요청을 모름 (웹앱을 새 버전으로 배포하기 전)
 };
 
 // ---------- 저장 (이 폰에서는 다음부터 바로 열기) ----------
@@ -143,10 +246,10 @@ function 읽기() { try { return JSON.parse(localStorage.getItem(저장키) || "
 function 쓰기(v) { try { v ? localStorage.setItem(저장키, JSON.stringify(v)) : localStorage.removeItem(저장키); } catch (e) {} }
 
 // ---------- 서버 ----------
-async function 보내기(내용) {
+async function 보내기(내용, 초) {
   if (!API주소) throw new Error("설정");
   const ctl = new AbortController();
-  const t = setTimeout(() => ctl.abort(), 25000);
+  const t = setTimeout(() => ctl.abort(), (초 || 25) * 1000);
   try {
     // 머리글을 따로 붙이지 않음 → text/plain으로 가서 사전 요청(CORS) 없이 바로 전달
     const r = await fetch(API주소, { method: "POST", body: JSON.stringify(내용), signal: ctl.signal, redirect: "follow" });
@@ -168,18 +271,32 @@ function 링크고치기() { document.querySelectorAll("a[data-kakao]").forEach(
 const 요일 = "일월화수목금토";
 function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
 function 숫자만(v) { return String(v || "").replace(/\D/g, ""); }
-function 날짜(ymd) { const p = String(ymd || "").split("-").map(Number); return p.length === 3 ? new Date(p[0], p[1] - 1, p[2]) : null; }
-function 날글(ymd) { const d = 날짜(ymd); return d ? `${d.getMonth() + 1}월 ${d.getDate()}일(${요일[d.getDay()]})` : ""; }
+function 날짜(ymd) { const p = String(ymd || "").split("-").map(Number); return p.length === 3 && p[0] ? new Date(p[0], p[1] - 1, p[2]) : null; }
+function ymd(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function 날글(v) { const d = 날짜(v); return d ? `${d.getMonth() + 1}월 ${d.getDate()}일(${요일[d.getDay()]})` : ""; }
+function 날짧게(v) { const d = 날짜(v); return d ? `${d.getMonth() + 1}월 ${d.getDate()}일` : ""; }
 function 월글(ym) { const p = String(ym || "").split("-"); return p.length === 2 ? `${Number(p[0])}년 ${Number(p[1])}월` : ""; }
 function 요일글(t) { return /^[월화수목금토일]$/.test(t) ? t + "요일" : t; }
+function 원(v) { return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+function 이름키(v) { let s = String(v || ""); try { s = s.normalize("NFC"); } catch (e) {} return s.replace(/\s+/g, "").toLowerCase(); }
 function 오늘요일() { const d = 날짜(S.결과 && S.결과.오늘); return d ? d.getDay() : new Date().getDay(); }
 function 샘터들() { return (S.결과 && S.결과.샘터) || []; }
 function 지금샘터() { const a = 샘터들(); return a.find(t => t.id === S.고른) || a[0]; }
 function 언제(t) { return [t.요일 ? "매주 " + 요일글(t.요일) : "", t.시간].filter(Boolean).join(" "); }
+function 달숫자(t) { return Number(String(t.운영월).slice(5)); }
 
 const 물방울 = (w, h) => `<svg width="${w}" height="${h}" viewBox="0 0 22 28" aria-hidden="true"><path d="M11 1.5C11 1.5 2.5 11.2 2.5 17.3a8.5 8.5 0 0 0 17 0C19.5 11.2 11 1.5 11 1.5Z" fill="#1B3A5C"/><path d="M6.8 17.6a4.3 4.3 0 0 0 3.6 4.2" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>`;
 const 말풍선 = `<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5c-4.2 0-7.5 2.7-7.5 6 0 2 1.2 3.8 3.1 4.9l-.6 2.6 3-1.7c.6.1 1.3.2 2 .2 4.2 0 7.5-2.7 7.5-6s-3.3-6-7.5-6z"/></svg>`;
 const 달력 = `<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="4.8" width="13" height="11.5" rx="2"/><path d="M3.5 8.6h13M7 3v3.2M13 3v3.2"/></svg>`;
+const 꺾쇠 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.5 4.5 7 10l5.5 5.5"/></svg>`;
+const 핀 = `<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17.5s5.5-5.2 5.5-9.3a5.5 5.5 0 0 0-11 0c0 4.1 5.5 9.3 5.5 9.3z"/><circle cx="10" cy="8.2" r="1.9"/></svg>`;
+const 폴더그림 = `<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M2.8 5.5h5l1.6 1.8h7.8v8.2H2.8z"/></svg>`;
+const 느낌표 = (n = 18) => `<svg width="${n}" height="${n}" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="7.2"/><path d="M10 6.4v4.4M10 13.7v.1"/></svg>`;
+const 엑스 = (n = 16) => `<svg width="${n}" height="${n}" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9"/></svg>`;
+const 더하기 = `<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg>`;
+const 카메라 = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5h3.2l1.6-2.5h6.4l1.6 2.5H20v10H4z"/><circle cx="12" cy="13.2" r="3.1"/></svg>`;
+const 체크 = (n = 16) => `<svg width="${n}" height="${n}" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg>`;
+const 영수증그림 = `<svg width="26" height="34" viewBox="0 0 34 46" aria-hidden="true"><path d="M3 3H31V41L27.5 38.6L24 41L20.5 38.6L17 41L13.5 38.6L10 41L6.5 38.6L3 41Z" fill="#fff" stroke="#9AAABA" stroke-width="1.5"/><path d="M8 12h18M8 18h18M8 24h11M8 31h18" stroke="#9AAABA" stroke-width="2" stroke-linecap="round"/></svg>`;
 const 문의알약 = () => `<a class="pill" data-kakao href="${esc(S.문의)}" target="_blank" rel="noopener" aria-label="카카오톡 오픈채팅으로 문의">${말풍선}문의</a>`;
 const 문의버튼 = (글) => `<a class="btn ghost" data-kakao href="${esc(S.문의)}" target="_blank" rel="noopener">${말풍선}${esc(글)}</a>`;
 const 메시지칸 = () => S.메시지 ? `<p class="msg ${S.메시지종류 === "오류" ? "err" : "info"}" role="${S.메시지종류 === "오류" ? "alert" : "status"}">${esc(S.메시지)}</p>` : "";
@@ -190,10 +307,10 @@ const 설정알림 = () => API주소 ? "" : `<p class="setup">관리자 안내: 
 // ---------- 화면 ----------
 function 그리기() {
   const app = document.getElementById("app");
-  app.innerHTML = { 확인: 확인화면, 여는중: 여는중화면, 고르기: 고르기화면, 샘터: 샘터화면 }[S.화면]();
+  app.innerHTML = { 확인: 확인화면, 여는중: 여는중화면, 고르기: 고르기화면, 샘터: 샘터화면, 보고: 보고화면 }[S.화면]();
   붙이기[S.화면] && 붙이기[S.화면]();
   const h = app.querySelector("h1");
-  if (h && S.옮김) { h.setAttribute("tabindex", "-1"); h.focus(); }
+  if (h && S.옮김) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
   S.옮김 = false;
 }
 function 가기(화면) { S.화면 = 화면; S.옮김 = true; 그리기(); window.scrollTo(0, 0); }
@@ -236,7 +353,7 @@ function 고르기화면() {
     const 준비 = t.상태 === "준비됨";
     const on = t.id === S.고른;
     const 상태글 = !준비 ? "준비 중 — 정산폼이 만들어지면 보고할 수 있어요"
-      : t.지난달 ? `${Number(t.운영월.slice(5))}월 샘터 · ${날글(t.마감)}까지 보고` : "이번 달 샘터";
+      : t.지난달 ? `${달숫자(t)}월 샘터 · ${날글(t.마감)}까지 보고` : "이번 달 샘터";
     const 색 = !준비 ? "var(--sub)" : t.지난달 ? "var(--amber)" : "var(--navy)";
     return `
     <label class="card${on ? " on" : ""}${준비 ? "" : " off"}">
@@ -261,7 +378,7 @@ function 고르기화면() {
   ${S.결과.안내 ? `<p class="msg info" style="margin-top:16px">${esc(S.결과.안내)}</p>` : ""}
   <fieldset class="cards"><legend class="sr">샘터 고르기</legend>${카드}</fieldset>
   <div class="grow" style="min-height:24px"></div>
-  <button class="btn" id="next" ${됨 ? "" : "disabled"}>${됨 ? esc(고른것.이름표) + (고른것.지난달 ? ` (${Number(고른것.운영월.slice(5))}월)` : "") + " 샘터로 계속" : "샘터를 골라 주세요"}</button>
+  <button class="btn" id="next" ${됨 ? "" : "disabled"}>${됨 ? esc(고른것.이름표) + (고른것.지난달 ? ` (${달숫자(고른것)}월)` : "") + " 샘터로 계속" : "샘터를 골라 주세요"}</button>
   <p class="foot" style="margin-top:14px">다음 화면 위쪽에서 언제든 바꿀 수 있어요</p>`;
 }
 
@@ -271,20 +388,22 @@ function 샘터화면() {
   const 탭 = 여럿 ? `<div class="tabs${샘터들().length > 2 ? " many" : ""}" role="group" aria-label="샘터 바꾸기">${샘터들().map(x => `
       <button type="button" data-tab="${esc(x.id)}" aria-pressed="${x.id === t.id}">${esc(x.이름표)}${x.팀구분 ? `<span class="mini">${esc(x.팀구분)}</span>` : ""}${x.지난달 ? `<span class="mini">지난달</span>` : ""}</button>`).join("")}</div>` : "";
   const 준비 = t.상태 === "준비됨";
+  const 초 = S.초안[t.id];
+  const 쓰던 = 초 && (초.참석.length || 초.사진.length);
   return `
   <div class="top"><span class="brand">${물방울(16, 20)}<span class="txt">청년샘터</span></span><span class="grow"></span>
     <span class="who">${esc(S.결과.이름)} 샘지기</span><button class="textbtn" id="swap">바꾸기</button>${문의알약()}</div>
   ${탭}
   <div class="head" style="gap:6px">
     <p class="eyebrow">${esc([월글(t.운영월), 언제(t)].filter(Boolean).join(" · "))}</p>
-    <h1>${t.지난달 ? `${Number(t.운영월.slice(5))}월 모임 보고` : "이번 달 모임 보고"}</h1>
+    <h1>${t.지난달 ? `${달숫자(t)}월 모임 보고` : "이번 달 모임 보고"}</h1>
     <p class="due">${달력}${t.지난달 ? "지난달 보고 마감" : "정산 마감"} ${esc(날글(t.마감))}</p>
   </div>
   <section class="panel" aria-label="모임 보고">
     <div><span class="eyebrow"><span class="trial">시범</span></span></div>
-    <span class="big">${준비 ? "보고 화면은 곧 열려요" : "샘터를 준비하고 있어요"}</span>
-    <button class="btn" disabled>모임 보고하기</button>
-    <p>${준비 ? "지금은 본인 확인과 샘터 정보가 맞게 나오는지만 봐 주세요. 사진·영수증 올리기는 다음 단계에서 붙여요." : "정산폼이 만들어지면 여기서 보고할 수 있어요."}</p>
+    <span class="big">${!준비 ? "샘터를 준비하고 있어요" : 쓰던 ? "쓰던 보고가 있어요" : "모임을 마쳤으면 보고해 주세요"}</span>
+    ${준비 ? `<button type="button" class="btn" data-act="보고열기">${쓰던 ? "모임 보고 이어서 쓰기" : "모임 보고하기"}</button>` : `<button class="btn" disabled>모임 보고하기</button>`}
+    <p>${준비 ? "참석자 · 인증샷 · 영수증을 한 화면에서 내요. 지금은 사진 올리기와 영수증 금액 읽기까지 해 볼 수 있어요." : "정산폼이 만들어지면 여기서 보고할 수 있어요."}</p>
   </section>
   <section class="panel" aria-labelledby="info">
     <h2 id="info">샘터 정보</h2>
@@ -302,7 +421,608 @@ function 샘터화면() {
   <div class="stack">${문의버튼("카카오톡으로 문의하기")}</div>`;
 }
 
-// ---------- 동작 ----------
+// ============================================================
+//  모임 보고 작성 — 날짜 · 참석자 · 인증샷 · 영수증 (제출은 3단계)
+//   사진은 고르는 즉시 원본 그대로 올리고(한 번에 두 장씩), 영수증은 폰에서 작은 사본을 만들어 금액부터 읽음
+//   화면 전체를 다시 그리지 않고 바뀐 칸만 고침 — 이름 · 금액을 적는 중에 글자판이 닫히지 않게
+//   파일 고르기 칸(input type=file)은 다시 그리는 칸 밖에 둠 — 사진 창이 열려 있는 동안 칸이 바뀌어도 고른 사진이 사라지지 않게
+// ============================================================
+function 날짜범위(t) {
+  const [y, m] = String(t.운영월).split("-").map(Number);
+  const 끝 = `${t.운영월}-${String(new Date(y, m, 0).getDate()).padStart(2, "0")}`;
+  const 오늘 = 오늘값();
+  return { min: `${t.운영월}-01`, max: 오늘 < 끝 ? 오늘 : 끝 };
+}
+function 오늘값() { const 기기 = ymd(new Date()), 서버 = (S.결과 && S.결과.오늘) || ""; return 서버 > 기기 ? 서버 : 기기; }
+function 날짜맞음(t, v) { const r = 날짜범위(t); return /^\d{4}-\d{2}-\d{2}$/.test(v || "") && v >= r.min && v <= r.max; }
+// 처음 날짜: 이번 달이면 오늘까지 중 가장 가까운 모임 요일, 지난달이면 그 달 마지막 모임 요일 (요일을 모르면 오늘 · 말일)
+function 기본날짜(t) {
+  const r = 날짜범위(t);
+  if (r.max < r.min) return "";
+  const 요일들 = t.요일들 || [], d = 날짜(r.max);
+  for (let i = 0; i < 7 && 요일들.length; i++) {
+    const v = ymd(d);
+    if (v < r.min) break;
+    if (요일들.indexOf(d.getDay()) >= 0) return v;
+    d.setDate(d.getDate() - 1);
+  }
+  return r.max;
+}
+// 주차 — v13과 같은 규칙: 1일이 든 주(월~일)가 1주차, 1일이 토 · 일이면 다음 주까지 1주차
+function 주차정보(v) {
+  const d = 날짜(v); if (!d) return null;
+  const y = d.getFullYear(), m = d.getMonth() + 1, first = new Date(y, m - 1, 1), last = new Date(y, m, 0);
+  const mon1 = new Date(first); mon1.setDate(1 - ((first.getDay() + 6) % 7));
+  if (first.getDay() === 0 || first.getDay() === 6) mon1.setDate(mon1.getDate() + 7);
+  let w = Math.floor(Math.round((d - mon1) / 86400000) / 7) + 1; if (w < 1) w = 1;
+  let s = new Date(mon1); s.setDate(mon1.getDate() + 7 * (w - 1));
+  let e = new Date(s); e.setDate(s.getDate() + 6);
+  if (w === 1 || s < first) s = new Date(first);
+  if (e > last) e = new Date(last);
+  return { 주: w, 글: `${m}월 ${w}주차(${m}.${s.getDate()}~${m}.${e.getDate()})` };
+}
+function 초안(t) { return S.초안[t.id] || (S.초안[t.id] = { 날짜: 기본날짜(t), 참석: [], 사진: [] }); }
+function 사진찾기(키) { for (const id in S.초안) { const p = S.초안[id].사진.find(x => x.키 === 키); if (p) return p; } return null; }
+function 보고중(샘터id) { const t = 지금샘터(); return S.화면 === "보고" && t && t.id === 샘터id; }
+function 칸(id, html) { const el = document.getElementById(id); if (el) el.innerHTML = html; }
+
+function 보고화면() {
+  const t = 지금샘터(), 초 = 초안(t), 범위 = 날짜범위(t);
+  return `
+  <div class="top"><button type="button" class="back" data-act="뒤로">${꺾쇠}${t.지난달 ? `${달숫자(t)}월 현황` : "이번 달 현황"}</button><span class="grow"></span>${문의알약()}</div>
+  <div id="srv-note">${서버알림()}</div>
+  <div class="head" style="padding-top:6px;gap:6px">
+    <p class="place">${핀}${esc(t.이름표)} 샘터${t.팀구분 ? ` <span class="tag">${esc(t.팀구분)}</span>` : ""}${t.지난달 ? ` <span class="tag">${달숫자(t)}월</span>` : ""}</p>
+    <h1>모임 보고</h1>
+    <p>${esc(S.결과.이름)} 샘지기 · 모임이 끝난 자리에서 한 번에 내면 돼요</p>
+  </div>
+
+  <section class="sec" aria-labelledby="l-day">
+    <label id="l-day" for="day" class="h2">모임 날짜</label>
+    <input id="day" class="inp" type="date" value="${esc(초.날짜)}" min="${범위.min}" max="${범위.max}" ${범위.max < 범위.min ? "disabled" : ""}>
+    <div id="day-info">${날짜알림(t, 초)}</div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-who">
+    <div class="sec-head"><h2 id="h-who">참석자</h2><span class="count" id="who-count">${초.참석.length}명</span></div>
+    <p class="note">사진 왼쪽 사람부터 차례로 적어 주세요. 초대한 분도 이름만 적으면 돼요.</p>
+    <div id="who-list">${참석목록(초)}</div>
+    <form class="addrow" id="add-form" novalidate><label for="add" class="sr">참석자 이름</label>
+      <input id="add" type="text" autocomplete="off" enterkeyhint="done" maxlength="60" placeholder="이름 입력">
+      <button type="submit">추가</button></form>
+    <div id="who-sugg">${제안목록(t, 초)}</div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-shot">
+    <div class="sec-head start"><h2 id="h-shot">인증샷</h2><span class="need">필수</span></div>
+    <input type="file" id="pick-shot" class="sr" data-pick="인증샷" accept="image/*" multiple>
+    <div id="shot-box">${인증샷목록(초)}</div>
+    <p class="note">얼굴이 보이게, ‘날마다 솟는 샘물’ 책이나 앱 화면이 함께 나오게 찍어 주세요.</p>
+  </section>
+
+  <section class="sec" aria-labelledby="h-rc">
+    <div class="sec-head"><h2 id="h-rc">영수증</h2><span class="hint">나중에 추가해도 돼요</span></div>
+    <p class="note">영수증 한 장에 사진 한 장씩 올려 주세요. 금액은 사진에서 읽어 채워 둘게요.</p>
+    <div id="rc-list" class="rc-list">${영수증목록(초)}</div>
+    <input type="file" id="pick-rc" class="sr" data-pick="영수증" accept="image/*,application/pdf" multiple>
+    <label for="pick-rc" class="more">${더하기}<span id="rc-more">${영수증더글(초)}</span></label>
+    <div id="rc-sum">${합계칸(초)}</div>
+  </section>
+
+  <div class="stack" id="s-foot">${제출칸(t, 초)}</div>`;
+}
+
+function 서버알림() {
+  return S.서버옛날 ? `<p class="setup">관리자 안내: 웹앱 서버가 아직 사진 올리기를 몰라요. Apps Script에서 2단계 코드를 붙이고 [배포 관리] → 새 버전으로 배포했는지 확인해 주세요.</p>` : "";
+}
+
+function 날짜알림(t, 초) {
+  const r = 날짜범위(t);
+  if (r.max < r.min) return `<p class="box amber">${느낌표()}<span>${달숫자(t)}월이 아직 시작되지 않아 날짜를 고를 수 없어요.</span></p>`;
+  if (!날짜맞음(t, 초.날짜)) {
+    const 글 = !초.날짜 ? "모임 날짜를 골라 주세요."
+      : 초.날짜 > r.max && 초.날짜.slice(0, 7) === t.운영월 ? "아직 오지 않은 날짜예요. 모임한 날짜를 골라 주세요."
+      : `${달숫자(t)}월 샘터라 ${달숫자(t)}월 날짜만 고를 수 있어요.`;
+    return `<p class="box red">${느낌표()}<span>${esc(글)}</span></p>`;
+  }
+  const 주 = 주차정보(초.날짜);
+  return `<p class="box blue">${폴더그림}<span><strong>${esc(주.글)}</strong> 폴더에 저장돼요</span></p>`;
+}
+
+function 참석목록(초) {
+  if (!초.참석.length) return `<p class="empty">아직 적은 사람이 없어요</p>`;
+  return `<ol class="names" aria-label="참석자 ${초.참석.length}명">${초.참석.map((n, i) => `
+    <li class="name"><span class="no">${i + 1}</span><span class="nm">${esc(n)}</span><button type="button" class="x" data-act="참석빼기" data-i="${i}" aria-label="${esc(n)} 빼기">${엑스(16)}</button></li>`).join("")}</ol>`;
+}
+function 제안목록(t, 초) {
+  const 남은 = (t.제안 || []).filter(n => !초.참석.some(x => 이름키(x) === 이름키(n)));
+  if (!남은.length) return "";
+  return `<div class="sugg-wrap"><span class="sugg-title">신청 명단에서 고르기</span><div class="chips">${남은.map(n => `
+    <button type="button" class="sugg" data-act="제안추가" data-name="${esc(n)}" aria-label="${esc(n)} 추가">${더하기}${esc(n)}</button>`).join("")}</div></div>`;
+}
+
+function 인증샷목록(초) {
+  const 사진 = 초.사진.filter(p => p.종류 === "인증샷");
+  const 실패 = 사진.filter(p => p.올림 === "실패");
+  return `
+    <div class="shots">${사진.map((p, i) => `
+      <div class="thumb" id="th-${p.키}">${썸네일속(p, "인증샷 " + (i + 1))}
+        <button type="button" class="del" data-act="사진빼기" data-key="${p.키}" aria-label="인증샷 ${i + 1} 빼기">${엑스(14)}</button></div>`).join("")}
+      ${사진.length < 최대장수.인증샷 ? `<label for="pick-shot" class="tile">${카메라}${사진.length ? "한 장 더" : "사진 추가"}</label>` : ""}
+    </div>
+    ${실패.map(p => `<p class="st bad">${느낌표(16)}<span>인증샷 ${사진.indexOf(p) + 1}: ${esc(p.올림오류)}${p.막힘 ? " 빼고 다시 골라 주세요." : ` <button type="button" class="linkbtn" data-act="다시올리기" data-key="${p.키}">다시 올리기</button>`}</span></p>`).join("")}`;
+}
+
+function 썸네일속(p, 이름) {
+  const 그림 = p.주소 && !p.미리보기실패 ? `<img src="${p.주소}" alt="${esc(이름)}" data-key="${p.키}">`
+    : `<span class="ph" role="img" aria-label="${esc(이름)}">${p.pdf ? "PDF" : p.종류 === "영수증" ? 영수증그림 : "사진"}</span>`;
+  let 상태 = "";
+  if (p.올림 === "올리는중" || p.올림 === "대기") 상태 = `<span class="ov" title="올리는 중"><span class="spin"></span></span>`;
+  else if (p.올림 === "실패") 상태 = p.막힘 ? `<span class="ov bad" aria-hidden="true">!</span>`
+    : `<button type="button" class="ov bad" data-act="다시올리기" data-key="${p.키}" aria-label="${esc(이름)} 다시 올리기">!<span>다시</span></button>`;
+  else if (p.올림 === "저장됨") 상태 = `<span class="done" title="올렸어요">${체크(12)}</span>`;
+  return 그림 + 상태;
+}
+
+function 영수증목록(초) {
+  return 초.사진.filter(p => p.종류 === "영수증").map((p, i) => 영수증카드(p, i + 1, 초)).join("");
+}
+function 영수증더글(초) { return 초.사진.some(p => p.종류 === "영수증") ? "영수증 한 장 더" : "영수증 사진 넣기"; }
+function 영수증카드(p, 번호, 초) {
+  return `
+  <div class="rc" id="rc-${p.키}">
+    <div class="rc-head"><span>영수증 ${번호}</span><button type="button" class="x" data-act="사진빼기" data-key="${p.키}" aria-label="영수증 ${번호} 빼기">${엑스(18)}</button></div>
+    <div class="rc-body">
+      <div class="thumb sm" id="th-${p.키}">${썸네일속(p, "영수증 " + 번호)}</div>
+      <div class="rc-right">
+        <div class="seg" role="group" aria-label="영수증 ${번호} 종류">
+          <button type="button" data-act="종류" data-key="${p.키}" data-kind="종이" aria-pressed="${p.구분 === "종이"}" aria-label="종이 영수증">종이<span class="w"> 영수증</span></button>
+          <button type="button" data-act="종류" data-key="${p.키}" data-kind="전자" aria-pressed="${p.구분 === "전자"}" aria-label="전자영수증">전자<span class="w">영수증</span></button>
+        </div>
+        <div class="amt"><label for="amt-${p.키}" class="sr">영수증 ${번호} 금액</label>
+          <input id="amt-${p.키}" data-amt="${p.키}" type="text" inputmode="numeric" autocomplete="off" placeholder="${읽는중(p) ? "읽는 중" : "0"}" value="${p.금액 ? 원(p.금액) : ""}"><span>원</span></div>
+      </div>
+    </div>
+    <div class="rc-msg" id="rm-${p.키}" aria-live="polite">${영수증알림(p, 초)}</div>
+  </div>`;
+}
+
+function 영수증알림(p, 초) {
+  const 줄 = [];
+  if (p.올림 === "실패") 줄.push(`<p class="st bad">${느낌표(16)}<span>${esc(p.올림오류)}${p.막힘 ? " 이 영수증을 빼고 다시 넣어 주세요." : ` <button type="button" class="linkbtn" data-act="다시올리기" data-key="${p.키}">다시 올리기</button>`}</span></p>`);
+  const 같은날 = p.영수증날짜 && 초.날짜 && p.영수증날짜 === 초.날짜;
+  if (읽는중(p)) 줄.push(`<p class="st"><span class="spin sm"></span><span>사진에서 금액 읽는 중… 그동안 다른 칸을 채워 주세요.</span></p>`);
+  else if (p.판독 === "대기") 줄.push(`<p class="st">사진을 다 올리면 금액을 읽어요.</p>`);
+  else if (p.판독 === "읽음") {
+    const 읽은 = 원(p.읽은금액) + "원";
+    if (p.금액 && Number(p.금액) === p.읽은금액) 줄.push(`<p class="st okc">${체크(16)}<span>사진에서 읽은 금액이에요${같은날 ? ` · 영수증 날짜 <span class="nw">${날짧게(p.영수증날짜)}</span>` : ""}</span></p>`);
+    else if (p.금액 && p.출처 === "후보") 줄.push(`<p class="st">사진에서 찾은 다른 금액으로 바꿨어요 · 처음 읽은 금액 ${읽은}</p>`);
+    else if (p.금액) 줄.push(`<p class="st">직접 고친 금액이에요 · 사진에서 읽은 금액 ${읽은}</p>`);
+    else 줄.push(`<p class="st">사진에서 읽은 금액은 ${읽은}이에요.</p>`);
+  } else if (p.판독 === "못읽음") 줄.push(`<p class="st">금액을 못 읽었어요. 직접 적어 주세요.</p>`);
+  if (p.영수증날짜 && 초.날짜 && !같은날) 줄.push(`<p class="st warn">${느낌표(16)}<span>영수증 날짜가 <span class="nw">${날짧게(p.영수증날짜)}</span>이에요. 모임 날짜와 달라요.</span></p>`);
+  const 다른 = p.판독 === "읽음" ? (p.후보 || []).filter(v => v !== Number(p.금액)).slice(0, 4) : [];
+  if (다른.length) 줄.push(`<div class="cands"><span class="cands-t">${p.금액 ? "사진에서 찾은 다른 금액" : "눌러서 넣기"}</span>${다른.map(v => `<button type="button" class="cand" data-act="후보" data-key="${p.키}" data-v="${v}">${원(v)}원</button>`).join("")}</div>`);
+  return 줄.join("");
+}
+
+function 합계칸(초) {
+  const 영수증 = 초.사진.filter(p => p.종류 === "영수증");
+  if (!영수증.length) return "";
+  const 합 = 영수증.reduce((a, p) => a + (Number(p.금액) || 0), 0), 인원 = 초.참석.length;
+  const 종이 = 영수증.filter(p => p.구분 === "종이").length, 전자 = 영수증.filter(p => p.구분 === "전자").length;
+  return `
+    <div class="sum">
+      <div class="r"><span>영수증 합계</span><span>${원(합)}원</span></div>
+      <div class="r"><span>참석</span><span>${인원}명</span></div>
+      <div class="hr"></div>
+      <div class="tot"><span>지원 예상</span><b>${합 > 0 && 인원 > 0 ? 원(Math.min(합, 5000 * 인원, 25000)) + "원" : "—"}</b></div>
+      <p class="note sm">영수증 합계, 인당 5,000원, 모임당 25,000원 중 가장 적은 금액이에요. 월말에 확인한 뒤 확정돼요.</p>
+    </div>
+    ${종이 ? `<p class="note ink">종이 영수증 ${종이}장은 교역자실 앞 파일함에 넣어 주세요. <a href="${영수증제출안내}" target="_blank" rel="noopener">제출 위치 보기</a></p>` : ""}
+    ${전자 ? `<p class="note ink">전자영수증은 올린 캡처가 증빙이에요. 편집하지 않은 원본 그대로 올려 주세요.</p>` : ""}`;
+}
+
+function 막힌까닭(t, 초) {
+  const 사진 = 초.사진, 영수증 = 사진.filter(p => p.종류 === "영수증");
+  if (!날짜맞음(t, 초.날짜)) return "모임 날짜를 골라 주세요";
+  if (!초.참석.length) return "참석자를 적어 주세요";
+  if (!사진.some(p => p.종류 === "인증샷")) return "인증샷을 넣어 주세요";
+  if (사진.some(p => p.막힘)) return "올릴 수 없는 사진을 빼 주세요";
+  if (사진.some(p => p.올림 === "실패")) return "올리지 못한 사진을 다시 올려 주세요";
+  if (사진.some(p => p.올림 === "대기" || p.올림 === "올리는중")) return "사진을 올리는 중이에요";
+  if (영수증.some(p => !p.구분)) return "종이·전자를 골라 주세요";
+  if (영수증.some(p => !p.금액 && 읽는중(p))) return "금액을 읽는 중이에요";
+  if (영수증.some(p => !p.금액)) return "영수증 금액을 적어 주세요";
+  return "";
+}
+function 제출칸(t, 초) {
+  const 막힘 = 막힌까닭(t, 초);
+  return `
+    <button type="button" class="btn block" disabled>${esc(막힘 || "제출은 다음 단계에서 열려요")}</button>
+    <p class="foot"><span class="trial">시범</span> 지금은 사진 올리기와 금액 읽기까지예요. 올린 사진은 아직 샘터 폴더로 옮겨지지 않아요.</p>`;
+}
+
+// 바뀐 칸만 다시 그리기
+function 참석그리기() {
+  const t = 지금샘터(), 초 = 초안(t);
+  칸("who-count", `${초.참석.length}명`); 칸("who-list", 참석목록(초)); 칸("who-sugg", 제안목록(t, 초));
+  아래그리기();
+}
+function 아래그리기() {   // 합계 · 제출 버튼
+  const t = 지금샘터(); if (!t || S.화면 !== "보고") return;
+  const 초 = 초안(t);
+  칸("rc-sum", 합계칸(초)); 칸("s-foot", 제출칸(t, 초));
+}
+function 사진그리기(p) {   // 사진 하나의 상태가 바뀌었을 때
+  if (!보고중(p.샘터)) return;
+  const 초 = S.초안[p.샘터];
+  if (p.종류 === "인증샷") 칸("shot-box", 인증샷목록(초));
+  else {
+    const 번호 = 초.사진.filter(x => x.종류 === "영수증").indexOf(p) + 1;
+    칸("th-" + p.키, 썸네일속(p, "영수증 " + 번호));
+    칸("rm-" + p.키, 영수증알림(p, 초));
+    const 칸금액 = document.getElementById("amt-" + p.키);
+    if (칸금액) 칸금액.placeholder = 읽는중(p) ? "읽는 중" : "0";
+    if (칸금액 && document.activeElement !== 칸금액) 칸금액.value = p.금액 ? 원(p.금액) : "";   // 적고 있는 칸은 건드리지 않음
+  }
+  아래그리기();
+}
+function 영수증다시그리기() {
+  const t = 지금샘터(), 초 = 초안(t);
+  칸("rc-list", 영수증목록(초)); 칸("rc-more", 영수증더글(초));
+  아래그리기();
+}
+
+// ---------- 사진 올리기 · 금액 읽기 ----------
+//  사진을 고르면 ① 폰에서 한 장씩 손질 (작은 미리 보기 + 영수증은 금액 읽기용 사본)
+//               ② 원본 올리기 (두 장씩)   ③ 금액 읽기 (두 장씩, 사본이 없으면 원본을 다 올린 뒤)
+//  큰 사진 여러 장을 한꺼번에 열면 폰 메모리가 모자라 창이 새로 고쳐질 수 있어서 손질은 한 장씩
+let 키수 = 0;
+const 올림줄 = { 도는: 0, 대기: [] }, 판독줄 = { 도는: 0, 대기: [] }, 손질줄 = { 도는: false, 대기: [] };
+
+function 새사진(f, 종류, t, 초) {
+  const 이름 = f.name || "";
+  const pdf = f.type === "application/pdf" || /\.pdf$/i.test(이름);
+  const 그림 = /^image\//.test(f.type) || /\.(jpe?g|png|heic|heif|webp|gif|avif)$/i.test(이름);
+  const p = { 키: "p" + (++키수), 종류, 샘터: t.id, 초안: 초, 토큰: S.토큰, file: f, pdf, 주소: "",
+              올림: "대기", 올림오류: "", 파일id: "", 판독: 종류 === "영수증" ? "준비" : "", 읽은금액: null, 후보: [], 영수증날짜: "",
+              금액: "", 출처: "", 구분: pdf ? "전자" : "" };
+  const 막기 = 글 => { p.올림 = "실패"; p.올림오류 = 글; p.막힘 = true; p.판독 = ""; };
+  if (!(그림 || (pdf && 종류 === "영수증"))) 막기(종류 === "인증샷" ? "사진 파일만 올릴 수 있어요." : "사진이나 PDF만 올릴 수 있어요.");
+  else if (f.size > 사진최대) 막기("사진이 너무 커요(20MB 넘음).");
+  else if (!f.size) 막기("빈 파일이에요.");
+  return p;
+}
+function 살아있음(p) { return !p.지움 && S.초안[p.샘터] === p.초안; }
+function 읽는중(p) { return p.판독 === "준비" || p.판독 === "읽는중"; }
+
+function 사진고름(input) {
+  const 종류 = input.getAttribute("data-pick"), 파일들 = Array.from(input.files || []);
+  input.value = "";
+  if (!파일들.length) return;
+  const t = 지금샘터(), 초 = 초안(t), 새것 = [];
+  for (const f of 파일들) {
+    if (초.사진.filter(p => p.종류 === 종류).length >= 최대장수[종류]) { 알림(`${종류}은 ${최대장수[종류]}장까지 넣을 수 있어요.`); break; }
+    const p = 새사진(f, 종류, t, 초);
+    초.사진.push(p); 새것.push(p);
+  }
+  if (종류 === "인증샷") { 칸("shot-box", 인증샷목록(초)); 아래그리기(); } else 영수증다시그리기();
+  새것.forEach(p => { if (!p.막힘) { 손질넣기(p); 올림넣기(p); } });
+}
+
+// ① 손질 — 한 장씩
+function 손질넣기(p) { 손질줄.대기.push(p); 손질돌리기(); }
+async function 손질돌리기() {
+  if (손질줄.도는) return;
+  손질줄.도는 = true;
+  try { while (손질줄.대기.length) {
+    const p = 손질줄.대기.shift();
+    if (!살아있음(p)) continue;
+    let r = { 미리: null, 사본: null };
+    try { r = await 사진손질(p.file, p.종류 === "영수증"); } catch (e) {}
+    if (!살아있음(p)) continue;
+    if (r.미리) p.주소 = URL.createObjectURL(r.미리);
+    else if (!p.pdf) p.미리보기실패 = true;   // 폰이 못 여는 사진(안드로이드의 HEIC 등)
+    if (p.종류 === "영수증") {
+      if (r.사본) 판독넣기(p, { 사본: r.사본 });
+      else if (p.파일id) 판독넣기(p, { 파일: p.파일id });
+      else p.판독 = "대기";   // 원본을 다 올리면 서버가 그 파일로 읽음
+    }
+    사진그리기(p);
+  } } finally { 손질줄.도는 = false; }
+}
+// 미리 보기(긴 변 360px) + 금액 읽기용 사본(긴 변 2000px, 긴 캡처는 4000px JPEG, 1.8MB 아래). PDF는 작으면 그대로
+async function 사진손질(file, 사본도) {
+  const pdf = file.type === "application/pdf" || /\.pdf$/i.test(file.name || "");
+  if (pdf) return { 미리: null, 사본: 사본도 && file.size <= 사본최대 ? await 파일을base64(file) : null };
+  const 그림 = await 그림열기(file);
+  if (!그림) return { 미리: null, 사본: null };
+  let 큰 = null;
+  try {
+    const w = 그림.naturalWidth || 그림.width, h = 그림.naturalHeight || 그림.height;
+    if (!w || !h) return { 미리: null, 사본: null };
+    let 사본 = null, 바탕 = 그림, bw = w, bh = h;
+    if (사본도) {
+      큰 = 캔버스(그림, w, h, Math.max(w, h) / Math.min(w, h) >= 2.2 ? 4000 : 2000);
+      for (const q of [0.85, 0.72, 0.6, 0.5]) {
+        const b = await 캔버스사진(큰, q);
+        if (b && b.size <= 사본최대) { 사본 = await 파일을base64(b); break; }
+      }
+      바탕 = 큰; bw = 큰.width; bh = 큰.height;   // 미리 보기는 사본에서 줄임 (더 매끈함)
+    }
+    const 작은 = 캔버스(바탕, bw, bh, 360);
+    const 미리 = await 캔버스사진(작은, 0.8);
+    비우기(작은);
+    return { 미리, 사본 };
+  } finally {
+    비우기(큰);
+    if (그림.close) 그림.close();
+    if (그림._주소) URL.revokeObjectURL(그림._주소);
+  }
+}
+function 캔버스(원, w, h, 긴목표) {
+  const 배 = Math.min(1, 긴목표 / Math.max(w, h));
+  const c = document.createElement("canvas");
+  c.width = Math.max(1, Math.round(w * 배)); c.height = Math.max(1, Math.round(h * 배));
+  const g = c.getContext("2d");
+  g.imageSmoothingQuality = "high";
+  g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height);   // 투명한 캡처는 흰 바탕으로
+  g.drawImage(원, 0, 0, c.width, c.height);
+  return c;
+}
+function 캔버스사진(c, q) { return new Promise(r => c.toBlob(r, "image/jpeg", q)); }
+function 비우기(c) { if (c) { c.width = 0; c.height = 0; } }   // 캔버스 메모리를 바로 돌려줌 (사파리)
+async function 그림열기(file) {
+  if (window.createImageBitmap) {
+    try { return await createImageBitmap(file, { imageOrientation: "from-image" }); } catch (e) {}
+  }
+  return new Promise(res => {
+    const 주소 = URL.createObjectURL(file), img = new Image();
+    img.onload = () => { img._주소 = 주소; res(img); };
+    img.onerror = () => { URL.revokeObjectURL(주소); res(null); };
+    img.src = 주소;
+  });
+}
+
+// ② 원본 올리기 — 두 장씩
+function 올림넣기(p) {
+  p.올림 = "대기"; p.올림오류 = "";
+  if (올림줄.대기.indexOf(p) < 0) 올림줄.대기.push(p);
+  사진그리기(p);
+  올림돌리기();
+}
+function 보낼수있음() { return !!S.토큰 || S.서버옛날; }   // 확인이 풀린 동안은 보내지 않고 기다림 (다시 확인하면 이어서)
+function 올림돌리기() {
+  if (!보낼수있음()) return;
+  while (올림줄.도는 < 2 && 올림줄.대기.length) {
+    const p = 올림줄.대기.shift();
+    if (!살아있음(p)) continue;
+    올림줄.도는++;
+    사진올리기(p).catch(() => {}).then(() => { 올림줄.도는--; 올림돌리기(); });
+  }
+}
+function 올리는중() { return Object.keys(S.초안).some(id => S.초안[id].사진.some(p => !p.지움 && (p.올림 === "대기" || p.올림 === "올리는중"))); }
+
+async function 사진올리기(p) {
+  p.올림 = "올리는중"; 사진그리기(p);
+  const t = 샘터들().find(x => x.id === p.샘터);
+  let d;
+  try {
+    const 내용 = await 파일을base64(p.file);
+    if (!살아있음(p)) return;
+    const 날 = t && 날짜맞음(t, p.초안.날짜) ? p.초안.날짜 : (t ? 기본날짜(t) : "");
+    d = await 요청({ action: "사진", 샘터: p.샘터, 날짜: 날, 종류: p.종류, 파일이름: p.file.name || "", 형식: p.file.type || "", 내용 }, 240);
+  } catch (e) { d = 연결오류(e, "올리는 데 너무 오래 걸렸어요. 와이파이에서 다시 올려 보세요."); }
+  if (!살아있음(p)) { if (d && d.ok && d.파일) 지우기요청(p, d.파일); return; }
+  if (d && d.ok && d.파일) { p.올림 = "저장됨"; p.파일id = d.파일; }
+  else if (d && d.코드 === "본인") {   // 확인이 풀림 — 다시 확인하면 저절로 이어서 올림
+    p.올림 = "대기"; 올림줄.대기.unshift(p);
+    본인풀림(d.안내); 사진그리기(p); return;
+  } else {
+    p.올림 = "실패"; p.올림오류 = 서버글(d, "사진을 올리지 못했어요.");
+    if (d && ["크기", "형식", "샘터"].indexOf(d.코드) >= 0) p.막힘 = true;   // 다시 올려도 안 되는 것
+  }
+  사진그리기(p);
+  if (p.올림 === "저장됨" && p.종류 === "영수증" && p.판독 === "대기") 판독넣기(p, { 파일: p.파일id });
+}
+
+// ③ 금액 읽기 — 두 장씩
+function 판독넣기(p, 내용) { p.판독 = "읽는중"; 판독줄.대기.push({ p, 내용 }); 판독돌리기(); }
+function 판독돌리기() {
+  if (!보낼수있음()) return;
+  while (판독줄.도는 < 2 && 판독줄.대기.length) {
+    const x = 판독줄.대기.shift();
+    if (!살아있음(x.p)) continue;
+    판독줄.도는++;
+    금액읽기(x.p, x.내용).catch(() => {}).then(() => { 판독줄.도는--; 판독돌리기(); });
+  }
+}
+async function 금액읽기(p, 내용) {
+  p.판독 = "읽는중"; 사진그리기(p);
+  let d = null;
+  try { d = await 요청(Object.assign({ action: "금액", 샘터: p.샘터 }, 내용), 90); } catch (e) { d = null; }
+  if (!살아있음(p)) return;
+  if (d && d.ok === false && d.코드 === "본인") {   // 확인이 풀림 — 다시 확인하면 이어서 읽음
+    p.판독 = "읽는중"; 판독줄.대기.unshift({ p, 내용 });
+    본인풀림(d.안내); 사진그리기(p); return;
+  }
+  if (d && d.ok === false) 서버글(d, "");
+  if (d && d.ok) {
+    p.후보 = Array.isArray(d.후보) ? d.후보.filter(v => typeof v === "number" && v > 0) : [];
+    p.영수증날짜 = typeof d.날짜 === "string" ? d.날짜 : "";
+    if (typeof d.금액 === "number" && d.금액 > 0) {
+      p.판독 = "읽음"; p.읽은금액 = d.금액;
+      const 칸금액 = document.getElementById("amt-" + p.키);
+      const 적는중 = 칸금액 && document.activeElement === 칸금액;   // 적고 있는 칸에는 넣지 않음 (버튼으로 넣게)
+      if (!p.금액 && !적는중) { p.금액 = String(d.금액); p.출처 = "읽음"; }
+    } else p.판독 = "못읽음";
+  } else p.판독 = "못읽음";
+  사진그리기(p);
+}
+
+function 지우기요청(p, id) { 요청({ action: "사진지우기", 샘터: p.샘터, 파일: id || p.파일id }, 60, p.토큰).catch(() => {}); }
+
+// 사진 · 금액 · 지우기 요청: 토큰을 붙여 보내고, 토큰이 풀렸으면('본인') 저장해 둔 이름 · 번호로 조용히 다시 확인한 뒤 한 번 더
+async function 요청(내용, 초, 토큰) {
+  const 보냄 = tk => 보내기(Object.assign({}, 내용, { 토큰: tk || "" }), 초);
+  let d = await 보냄(토큰 || S.토큰);
+  if (d && d.ok === false && d.코드 === "본인" && await 다시확인()) d = await 보냄(S.토큰);
+  return d;
+}
+let 다시확인중 = null;
+function 다시확인() {
+  if (!다시확인중) {
+    다시확인중 = (async () => {
+      if (!S.로그인 || S.다시확인실패) return false;   // 한 번 안 되면 되풀이하지 않음 (틀린 횟수가 쌓이지 않게)
+      try {
+        const d = await 보내기({ action: "본인", 이름: S.로그인.이름, 번호: S.로그인.번호 });
+        if (d && d.ok && d.상태 === "확인" && d.토큰) {
+          S.토큰 = d.토큰;
+          if (d.샘터.some(t => t.id === S.고른)) S.결과 = d;
+          return true;
+        }
+        if (d && d.ok && d.상태 === "전체번호") S.전체필요 = true;
+        S.다시확인안내 = (d && d.안내) || "";
+      } catch (e) {}
+      S.다시확인실패 = true;
+      return false;
+    })();
+    다시확인중.then(() => { 다시확인중 = null; });
+  }
+  return 다시확인중;
+}
+// 다시 확인도 안 되면 처음 화면으로 — 쓰던 보고는 그대로 두고, 같은 사람이 다시 확인하면 이어서 씀
+function 본인풀림(안내) {
+  if (S.화면 === "확인" || S.화면 === "여는중") return;
+  if (S.로그인 && S.로그인.번호.length > 4) { S.전체필요 = true; S.전체 = S.로그인.번호; }   // 전체 번호로 확인했던 분은 그 칸을 채워 둠
+  S.토큰 = ""; S.로그인 = null; S.결과 = null;
+  S.메시지종류 = "오류";
+  S.메시지 = (S.다시확인안내 || 안내 || "본인 확인이 풀렸어요.").replace(/\s*$/, "") + " 다시 확인하면 쓰던 보고를 이어서 쓸 수 있어요.";
+  가기("확인");
+}
+function 연결오류(e, 오래) {
+  return { ok: false, 안내: e && e.name === "AbortError" ? 오래
+    : e && e.message === "설정" ? "아직 연결 준비가 안 됐어요." : e && e.name === "NotReadableError" ? "사진을 읽지 못했어요. 다시 골라 주세요." : "연결이 끊겨 보내지 못했어요." };
+}
+function 서버글(d, 기본) {
+  if (d && d.안내 === "알 수 없는 요청이에요.") { if (!S.서버옛날) { S.서버옛날 = true; 칸("srv-note", 서버알림()); } return "서버가 아직 준비되지 않았어요. 양육국에 문의해 주세요."; }
+  return (d && d.안내) || 기본;
+}
+function 사진정리() { Object.keys(S.초안).forEach(id => S.초안[id].사진.forEach(p => { p.지움 = true; if (p.주소) URL.revokeObjectURL(p.주소); })); }
+
+function 파일을base64(blob) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(String(r.result).replace(/^data:[^,]*,/, ""));
+    r.onerror = () => rej(r.error || new Error("읽기 실패"));
+    r.readAsDataURL(blob);
+  });
+}
+
+function 알림(글) {
+  let el = document.getElementById("toast");
+  if (!el) { el = document.createElement("div"); el.id = "toast"; el.className = "toast"; el.setAttribute("role", "status"); document.body.appendChild(el); }
+  el.textContent = 글; el.classList.add("on");
+  clearTimeout(알림.t); 알림.t = setTimeout(() => el.classList.remove("on"), 3200);
+}
+
+// ---------- 보고 화면 동작 (눌림 · 입력은 #app 한 곳에서 받음) ----------
+const 동작 = {
+  보고열기() {
+    S.화면 = "보고"; S.옮김 = true; 그리기(); window.scrollTo(0, 0);
+    if (!S.기록) { try { history.pushState({ 보고: 1 }, ""); S.기록 = true; } catch (e) {} }
+  },
+  뒤로() { if (S.기록) history.back(); else 가기("샘터"); },
+  제안추가(el) { 참석넣기(el.getAttribute("data-name")); },
+  참석빼기(el) { const 초 = 초안(지금샘터()); 초.참석.splice(Number(el.getAttribute("data-i")), 1); 참석그리기(); },
+  사진빼기(el) {
+    const p = 사진찾기(el.getAttribute("data-key")); if (!p) return;
+    const 초 = p.초안; 초.사진.splice(초.사진.indexOf(p), 1); p.지움 = true;
+    if (p.주소) URL.revokeObjectURL(p.주소);
+    if (p.파일id) 지우기요청(p);
+    if (p.종류 === "인증샷") { 칸("shot-box", 인증샷목록(초)); 아래그리기(); } else 영수증다시그리기();
+  },
+  다시올리기(el) {
+    const p = 사진찾기(el.getAttribute("data-key")); if (!p || p.막힘) return;
+    if (p.종류 === "영수증" && p.판독 === "못읽음" && !p.금액 && !p.읽은금액) p.판독 = "대기";
+    올림넣기(p);
+  },
+  종류(el) {
+    const p = 사진찾기(el.getAttribute("data-key")); if (!p) return;
+    p.구분 = el.getAttribute("data-kind");
+    document.querySelectorAll(`[data-act="종류"][data-key="${p.키}"]`).forEach(b => b.setAttribute("aria-pressed", String(b.getAttribute("data-kind") === p.구분)));
+    아래그리기();
+  },
+  후보(el) {
+    const p = 사진찾기(el.getAttribute("data-key")); if (!p) return;
+    p.금액 = el.getAttribute("data-v"); p.출처 = Number(p.금액) === p.읽은금액 ? "읽음" : "후보";
+    const 칸금액 = document.getElementById("amt-" + p.키); if (칸금액) 칸금액.value = 원(p.금액);
+    사진그리기(p);
+  },
+};
+function 참석넣기(글) {
+  const t = 지금샘터(), 초 = 초안(t);
+  String(글 || "").split(/[,，、\/\n]+/).map(s => s.replace(/\s+/g, " ").trim().slice(0, 20)).filter(Boolean).forEach(n => {
+    if (!초.참석.some(x => 이름키(x) === 이름키(n))) 초.참석.push(n);
+  });
+  const el = document.getElementById("add"); if (el) el.value = "";
+  참석그리기();
+}
+function 금액입력(el) {
+  const p = 사진찾기(el.getAttribute("data-amt")); if (!p) return;
+  if (/[^\d,]/.test(el.value)) el.value = el.value.replace(/[^\d,]/g, "");   // 숫자 · 쉼표 말고는 지움
+  const 숫자 = 숫자만(el.value).replace(/^0+/, "").slice(0, 7);
+  p.금액 = 숫자; p.출처 = 숫자 && Number(숫자) === p.읽은금액 ? "읽음" : "직접";
+  칸("rm-" + p.키, 영수증알림(p, p.초안));
+  아래그리기();
+}
+function 날짜바꿈(v) {
+  const t = 지금샘터(), 초 = 초안(t);
+  초.날짜 = v;
+  칸("day-info", 날짜알림(t, 초));
+  초.사진.filter(p => p.종류 === "영수증").forEach(p => 칸("rm-" + p.키, 영수증알림(p, 초)));
+  아래그리기();
+}
+
+function 이벤트붙이기() {
+  const app = document.getElementById("app");
+  app.addEventListener("click", e => {
+    const el = e.target.closest("[data-act]");
+    if (!el || !app.contains(el) || el.disabled) return;
+    const f = 동작[el.getAttribute("data-act")];
+    if (f) { e.preventDefault(); f(el, e); }
+  });
+  app.addEventListener("input", e => { if (e.target.matches("input[data-amt]")) 금액입력(e.target); });
+  app.addEventListener("focusout", e => {
+    if (!e.target.matches("input[data-amt]")) return;
+    const p = 사진찾기(e.target.getAttribute("data-amt"));
+    if (p) e.target.value = p.금액 ? 원(p.금액) : "";
+  });
+  app.addEventListener("change", e => {
+    if (e.target.id === "day") 날짜바꿈(e.target.value);
+    else if (e.target.matches("input[type=file][data-pick]")) 사진고름(e.target);
+  });
+  // 참석자 추가: [추가] · 글자판 완료 · Enter 모두 form 제출로 받음 (한글 조합이 끝난 글자로)
+  app.addEventListener("submit", e => {
+    if (e.target.id !== "add-form") return;
+    e.preventDefault();
+    const el = document.getElementById("add");
+    참석넣기(el.value);
+    el.focus();
+  });
+  // 폰이 미리 보기를 못 그리는 사진(안드로이드의 HEIC 등)은 그림 대신 자리 표시
+  app.addEventListener("error", e => {
+    const img = e.target;
+    if (!img || img.tagName !== "IMG" || !img.getAttribute("data-key")) return;
+    const p = 사진찾기(img.getAttribute("data-key"));
+    if (p) { p.미리보기실패 = true; const 칸그림 = document.createElement("span"); 칸그림.className = "ph"; 칸그림.setAttribute("role", "img"); 칸그림.setAttribute("aria-label", img.alt); 칸그림.innerHTML = p.종류 === "영수증" ? 영수증그림 : "사진"; img.replaceWith(칸그림); }
+  }, true);
+  window.addEventListener("popstate", () => { S.기록 = false; if (S.화면 === "보고") 가기("샘터"); });
+  window.addEventListener("beforeunload", e => { if (올리는중()) { e.preventDefault(); e.returnValue = ""; } });
+}
+
+// ---------- 동작 (본인 확인 · 샘터 고르기) ----------
 const 붙이기 = {
   확인() {
     const who = document.getElementById("who"), tail = document.getElementById("tail"), full = document.getElementById("full");
@@ -325,9 +1045,19 @@ const 붙이기 = {
   },
   샘터() {
     document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => { S.고른 = b.getAttribute("data-tab"); 마지막샘터저장(); 그리기(); }));
-    document.getElementById("swap").addEventListener("click", () => {
+    document.getElementById("swap").addEventListener("click", e => {
+      const 쓰던 = Object.keys(S.초안).some(id => S.초안[id].참석.length || S.초안[id].사진.length);
+      if (쓰던 && !S.바꾸기확인) {   // 쓰던 보고가 있으면 한 번 더 눌러야 바뀜
+        S.바꾸기확인 = true;
+        e.currentTarget.textContent = "한 번 더";
+        알림("다른 사람으로 바꾸면 쓰던 보고가 지워져요. 바꾸려면 한 번 더 눌러 주세요.");
+        setTimeout(() => { S.바꾸기확인 = false; const b = document.getElementById("swap"); if (b) b.textContent = "바꾸기"; }, 3500);
+        return;
+      }
+      S.바꾸기확인 = false;
       쓰기(null);
-      Object.assign(S, { 이름: "", 번호: "", 전체: "", 전체필요: false, 결과: null, 고른: "", 메시지: "", 메시지종류: "" });
+      사진정리();
+      Object.assign(S, { 이름: "", 번호: "", 전체: "", 전체필요: false, 결과: null, 로그인: null, 토큰: "", 초안: {}, 초안주인: "", 고른: "", 메시지: "", 메시지종류: "" });
       가기("확인");
     });
   },
@@ -360,6 +1090,13 @@ async function 확인하기(자동) {
     case "확인": {
       S.결과 = d;
       S.전체필요 = false;
+      S.로그인 = { 이름: S.이름.trim(), 번호: 번호 };
+      S.토큰 = d.토큰 || ""; S.다시확인실패 = false; S.다시확인안내 = "";
+      if (!d.토큰) S.서버옛날 = true;   // 1단계 서버 — 보고 화면에 관리자 안내
+      const 주인 = 이름키(S.이름) + "|" + 번호.slice(-4);   // 다른 사람이 확인하면 앞사람 초안은 비움
+      if (S.초안주인 && S.초안주인 !== 주인) { 사진정리(); S.초안 = {}; }
+      S.초안주인 = 주인;
+      setTimeout(() => { 올림돌리기(); 판독돌리기(); }, 0);   // 확인이 풀려 멈췄던 사진 · 금액 읽기를 이어서
       if (S.기억) 쓰기({ 이름: S.이름.trim(), 번호: 번호, 샘터: (읽기() || {}).샘터 || "" });
       const 쓸수있는 = d.샘터.filter(t => t.상태 === "준비됨");
       const 지난번 = (읽기() || {}).샘터;
@@ -379,13 +1116,14 @@ async function 확인하기(자동) {
       쓰기(null); 가기("확인"); return;
     default:   // 불일치 · 잠김 · 입력오류
       S.메시지종류 = "오류"; S.메시지 = d.안내 || "다시 확인해 주세요.";
-      if (자동) 쓰기(null);
+      if (자동 && d.상태 !== "잠김") 쓰기(null);   // 잠김은 남이 틀려서일 수도 있으니 저장한 이름 · 번호는 둠
       가기("확인"); return;
   }
 }
 
 // ---------- 시작 ----------
 (function 시작() {
+  이벤트붙이기();
   if (/[?&]reset\b/.test(location.search)) 쓰기(null);
   const 저장 = 읽기();
   설정받기();
