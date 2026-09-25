@@ -601,6 +601,7 @@ function 영수증알림(p, 초) {
     else 줄.push(`<p class="st">사진에서 읽은 금액은 ${읽은}이에요.</p>`);
   } else if (p.판독 === "못읽음") 줄.push(`<p class="st">금액을 못 읽었어요. 직접 적어 주세요.</p>`);
   if (p.영수증날짜 && 초.날짜 && !같은날) 줄.push(`<p class="st warn">${느낌표(16)}<span>영수증 날짜가 <span class="nw">${날짧게(p.영수증날짜)}</span>이에요. 모임 날짜와 달라요.</span></p>`);
+  if (p.여러장) 줄.push(`<p class="st warn">${느낌표(16)}<span>사진에 영수증이 두 장 이상 찍힌 것 같아요. 한 장씩 따로 올리면 금액이 정확해요.</span></p>`);
   const 다른 = p.판독 === "읽음" ? (p.후보 || []).filter(v => v !== Number(p.금액)).slice(0, 4) : [];
   if (다른.length) 줄.push(`<div class="cands"><span class="cands-t">${p.금액 ? "사진에서 찾은 다른 금액" : "눌러서 넣기"}</span>${다른.map(v => `<button type="button" class="cand" data-act="후보" data-key="${p.키}" data-v="${v}">${원(v)}원</button>`).join("")}</div>`);
   return 줄.join("");
@@ -851,6 +852,7 @@ async function 금액읽기(p, 내용) {
   if (d && d.ok) {
     p.후보 = Array.isArray(d.후보) ? d.후보.filter(v => typeof v === "number" && v > 0) : [];
     p.영수증날짜 = typeof d.날짜 === "string" ? d.날짜 : "";
+    p.여러장 = !!d.여러장;
     if (typeof d.금액 === "number" && d.금액 > 0) {
       p.판독 = "읽음"; p.읽은금액 = d.금액;
       const 칸금액 = document.getElementById("amt-" + p.키);
