@@ -125,7 +125,9 @@
 //  청년샘터 모임 보고 — 샘지기 화면 (시범: 본인 확인 · 샘터 고르기)
 //  ★ 아래 API에 Apps Script 웹앱 배포 주소(…/exec)를 넣습니다.
 // ============================================================
-const API = "https://script.google.com/macros/s/AKfycbwZFOS7D9T4-haOAyQxBPy0SP0NJ4m4uO3KgTt6d81g8RA2BpXGCID2YpVaJlPI9zQj/exec";   // ★ 예: https://script.google.com/macros/s/AKfy…/exec
+const API = "https://script.google.com/macros/s/AKfycbwZFOS7D9T4-haOAyQxBPy0SP0NJ4m4uO3KgTt6d81g8RA2BpXGCID2YpVaJlPI9zQj/exec";   // ★ Apps Script 배포 주소 (/exec로 끝남). 바꿀 때는 따옴표 안만 바꿈
+const API주소 = /^https?:\/\/\S+\/exec(\?\S*)?$/.test(API.trim()) ? API.trim() : "";   // /exec 주소가 아니면 비어 있는 것으로 봄
+const API가dev = /\/dev(\?\S*)?$/.test(API.trim());
 const 문의기본 = "https://open.kakao.com/o/sWdAUBFi";
 const 저장키 = "saemteo.report.v1";
 
@@ -142,20 +144,20 @@ function 쓰기(v) { try { v ? localStorage.setItem(저장키, JSON.stringify(v)
 
 // ---------- 서버 ----------
 async function 보내기(내용) {
-  if (!API) throw new Error("설정");
+  if (!API주소) throw new Error("설정");
   const ctl = new AbortController();
   const t = setTimeout(() => ctl.abort(), 25000);
   try {
     // 머리글을 따로 붙이지 않음 → text/plain으로 가서 사전 요청(CORS) 없이 바로 전달
-    const r = await fetch(API, { method: "POST", body: JSON.stringify(내용), signal: ctl.signal, redirect: "follow" });
+    const r = await fetch(API주소, { method: "POST", body: JSON.stringify(내용), signal: ctl.signal, redirect: "follow" });
     if (!r.ok) throw new Error("HTTP " + r.status);
     return await r.json();
   } finally { clearTimeout(t); }
 }
 async function 설정받기() {
-  if (!API) return;
+  if (!API주소) return;
   try {
-    const r = await fetch(API, { redirect: "follow" });
+    const r = await fetch(API주소, { redirect: "follow" });
     const d = await r.json();
     if (d && d.ok && d.문의) { S.문의 = d.문의; 링크고치기(); }
   } catch (e) {}
@@ -181,7 +183,9 @@ const 달력 = `<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stro
 const 문의알약 = () => `<a class="pill" data-kakao href="${esc(S.문의)}" target="_blank" rel="noopener" aria-label="카카오톡 오픈채팅으로 문의">${말풍선}문의</a>`;
 const 문의버튼 = (글) => `<a class="btn ghost" data-kakao href="${esc(S.문의)}" target="_blank" rel="noopener">${말풍선}${esc(글)}</a>`;
 const 메시지칸 = () => S.메시지 ? `<p class="msg ${S.메시지종류 === "오류" ? "err" : "info"}" role="${S.메시지종류 === "오류" ? "alert" : "status"}">${esc(S.메시지)}</p>` : "";
-const 설정알림 = () => API ? "" : `<p class="setup">관리자 안내: 이 페이지 맨 아래 코드의 API에 웹앱 배포 주소가 비어 있어요.</p>`;
+const 설정알림 = () => API주소 ? "" : `<p class="setup">관리자 안내: ${API가dev
+  ? "API에 /dev로 끝나는 주소가 들어 있어요. 이 주소는 배포한 본인만 열 수 있어요. 배포할 때 받은 /exec 주소로 바꿔 주세요."
+  : "이 페이지 코드의 const API 따옴표 안에 웹앱 배포 주소(/exec로 끝남)를 넣어 주세요."}</p>`;
 
 // ---------- 화면 ----------
 function 그리기() {
