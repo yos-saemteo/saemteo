@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1B3A5C">
+<meta name="color-scheme" content="light">
+<title>모임 보고 — 청년샘터</title>
+<meta property="og:title" content="청년샘터 모임 보고">
+<meta property="og:description" content="모임을 마친 자리에서 참석자와 사진을 남겨 주세요">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yos-saemteo.github.io/saemteo/report/">
+<meta property="og:image" content="https://yos-saemteo.github.io/saemteo/og-cover.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --navy: #1B3A5C; --ink: #18283A; --sub: #56636F; --sub2: #3E4D5B; --ground: #EEF3F7;
+    --line: #C5D1DC; --line2: #D5DEE6; --link: #1F6FB5;
+    --amber-bg: #FBEFD9; --amber: #7D5208; --red-bg: #FBE9E9; --red: #A0302B;
+    --sans: 'IBM Plex Sans KR', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    --serif: 'Noto Serif KR', 'Noto Serif CJK KR', serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--ground); }
+  body { color: var(--ink); font-family: var(--sans); word-break: keep-all; -webkit-text-size-adjust: 100%; }
+  a { color: var(--link); }
+  button, input { font-family: inherit; }
+  :focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  .page { max-width: 480px; min-height: 100vh; min-height: 100dvh; margin: 0 auto; display: flex; flex-direction: column;
+          padding: max(12px, env(safe-area-inset-top)) 16px max(28px, env(safe-area-inset-bottom)); }
+  .grow { flex-grow: 1; }
+
+  .top { display: flex; align-items: center; gap: 8px; min-height: 52px; padding-left: 4px; }
+  .brand { display: flex; align-items: center; gap: 8px; font-family: var(--serif); font-weight: 700; font-size: 17px; color: var(--navy); }
+  .who { min-width: 0; overflow: hidden; text-overflow: ellipsis; font-size: 14px; font-weight: 600; white-space: nowrap; }
+  @media (max-width: 359px) { .brand .txt { display: none; } .top { gap: 4px; } .pill { padding: 0 10px; } }
+  .textbtn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 8px; border: 0; background: none; color: var(--link); font-size: 14px; cursor: pointer; }
+  .pill { display: inline-flex; align-items: center; gap: 5px; min-height: 44px; padding: 0 12px; border-radius: 22px; background: #fff;
+          box-shadow: inset 0 0 0 1px var(--line2); color: var(--navy); font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+  .trial { padding: 2px 8px; border-radius: 999px; background: var(--amber-bg); color: var(--amber); font-family: var(--sans); font-size: 11px; font-weight: 700; }
+
+  .hero { margin-top: 44px; display: flex; flex-direction: column; gap: 12px; padding: 0 8px; }
+  .hero .logo { display: flex; align-items: center; gap: 10px; }
+  .hero .logo b { display: block; font-family: var(--serif); font-size: 19px; line-height: 1; color: var(--navy); }
+  .hero .logo small { display: block; margin-top: 4px; font-size: 10px; letter-spacing: .32em; color: var(--sub); }
+  h1 { margin: 0; font-family: var(--serif); font-weight: 700; color: var(--navy); line-height: 1.3; font-size: 26px; }
+  h1:focus { outline: none; }
+  .hero h1 { margin-top: 36px; font-size: 32px; line-height: 1.25; }
+  .lead { margin: 0; font-size: 16px; line-height: 1.65; color: var(--sub); }
+
+  .form { margin-top: 32px; display: flex; flex-direction: column; gap: 18px; padding: 0 8px; }
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field label { font-size: 14px; font-weight: 600; }
+  .field input { height: 54px; padding: 0 16px; border: 1px solid var(--line); border-radius: 12px; background: #fff; font-size: 17px; color: var(--ink); }
+  .field input::placeholder { color: #66727E; }
+  .field input.digits { letter-spacing: .3em; }
+  .check { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; }
+  .check input { width: 20px; height: 20px; margin: 0; accent-color: var(--navy); }
+
+  .msg { margin: 0; padding: 12px 14px; border-radius: 12px; font-size: 14px; line-height: 1.6; }
+  .msg.info { background: var(--amber-bg); color: var(--amber); }
+  .msg.err { background: var(--red-bg); color: var(--red); }
+
+  .btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 56px; border: 0; border-radius: 14px;
+         background: var(--navy); color: #fff; font-size: 17px; font-weight: 600; text-decoration: none; cursor: pointer; }
+  .btn[disabled] { background: #A9B7C4; cursor: default; }
+  .btn.busy[disabled] { background: var(--navy); opacity: .85; }
+  .btn.ghost { height: 50px; background: #fff; box-shadow: inset 0 0 0 1.5px var(--line); color: var(--navy); font-size: 16px; }
+  .stack { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+  .foot { margin: 2px 0 0; text-align: center; font-size: 13px; line-height: 1.6; color: var(--sub); }
+  .spin { width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,.45); border-top-color: #fff; border-radius: 50%; animation: spin .8s linear infinite; }
+  .spin.dark { border-color: rgba(27,58,92,.2); border-top-color: var(--navy); width: 28px; height: 28px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spin { animation-duration: 2.4s; } }
+
+  .head { padding: 26px 4px 0; display: flex; flex-direction: column; gap: 8px; }
+  .head p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--sub); }
+  .cards { margin: 22px 0 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 12px; }
+  .card { display: flex; align-items: flex-start; gap: 12px; padding: 16px; border-radius: 16px; background: #fff; box-shadow: inset 0 0 0 1px var(--line2); cursor: pointer; }
+  .card.on { box-shadow: inset 0 0 0 2px var(--navy); }
+  .card.off { cursor: default; opacity: .7; }
+  .card input { width: 20px; height: 20px; margin: 2px 0 0; flex-shrink: 0; accent-color: var(--navy); }
+  .card .body { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+  .card .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .card .title { font-size: 17px; font-weight: 700; margin-right: auto; }
+  .tag { flex-shrink: 0; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--sub2); font-size: 12px; font-weight: 600; }
+  .tag.today { border: 0; background: var(--navy); color: #fff; padding: 3px 9px; }
+  .card .when { font-size: 14px; color: var(--sub2); }
+  .card .mem { font-size: 14px; line-height: 1.5; color: var(--sub); }
+  .card .state { font-size: 13px; font-weight: 600; }
+
+  .tabs { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 14px; background: #DDE6EE; }
+  .tabs button { flex: 1 1 40%; display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 46px; padding: 0 8px; border: 0; border-radius: 11px;
+                 background: transparent; color: var(--sub2); font-size: 15px; font-weight: 700; cursor: pointer; }
+  .tabs.many button { flex-basis: 100%; }
+  .tabs button[aria-pressed="true"] { background: #fff; color: var(--navy); box-shadow: 0 1px 2px rgba(27,58,92,.12); }
+  .tabs .mini { padding: 1px 6px; border-radius: 6px; background: var(--ground); color: var(--sub2); font-size: 11px; font-weight: 600; }
+  .eyebrow { margin: 0; font-size: 14px; color: var(--sub); }
+  .due { margin: 2px 0 0; display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--sub); }
+  .panel { margin-top: 20px; padding: 20px; display: flex; flex-direction: column; gap: 14px; background: #fff; border-radius: 18px; box-shadow: 0 1px 2px rgba(27,58,92,.08); }
+  .panel h2 { margin: 0; font-size: 15px; font-weight: 700; }
+  .panel .big { font-size: 20px; font-weight: 700; }
+  .panel p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--sub); }
+  .kv { margin: 0; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 10px 12px; font-size: 15px; line-height: 1.5; }
+  .kv dt { color: var(--sub); }
+  .kv dd { margin: 0; font-weight: 600; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { padding: 8px 14px; border-radius: 999px; background: var(--ground); box-shadow: inset 0 0 0 1px var(--line2); font-size: 15px; font-weight: 600; color: var(--ink); }
+  .center { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; color: var(--sub); font-size: 15px; }
+  .setup { margin: 12px 4px 0; padding: 10px 12px; border-radius: 10px; background: var(--red-bg); color: var(--red); font-size: 13px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div id="app" class="page"></div>
+<noscript><p style="padding:24px">이 페이지는 자바스크립트가 켜져 있어야 열려요.</p></noscript>
+
+<script>
+// ============================================================
+//  청년샘터 모임 보고 — 샘지기 화면 (시범: 본인 확인 · 샘터 고르기)
+//  ★ 아래 API에 Apps Script 웹앱 배포 주소(…/exec)를 넣습니다.
+// ============================================================
+const API = "";   // ★ 예: https://script.google.com/macros/s/AKfy…/exec
+const 문의기본 = "https://open.kakao.com/o/sWdAUBFi";
+const 저장키 = "saemteo.report.v1";
+
+const S = {
+  화면: "확인",        // 확인 · 여는중 · 고르기 · 샘터
+  이름: "", 번호: "", 전체: "", 전체필요: false, 기억: true,
+  보내는중: false, 메시지: "", 메시지종류: "",
+  결과: null, 고른: "", 문의: 문의기본,
+};
+
+// ---------- 저장 (이 폰에서는 다음부터 바로 열기) ----------
+function 읽기() { try { return JSON.parse(localStorage.getItem(저장키) || "null"); } catch (e) { return null; } }
+function 쓰기(v) { try { v ? localStorage.setItem(저장키, JSON.stringify(v)) : localStorage.removeItem(저장키); } catch (e) {} }
+
+// ---------- 서버 ----------
+async function 보내기(내용) {
+  if (!API) throw new Error("설정");
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), 25000);
+  try {
+    // 머리글을 따로 붙이지 않음 → text/plain으로 가서 사전 요청(CORS) 없이 바로 전달
+    const r = await fetch(API, { method: "POST", body: JSON.stringify(내용), signal: ctl.signal, redirect: "follow" });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return await r.json();
+  } finally { clearTimeout(t); }
+}
+async function 설정받기() {
+  if (!API) return;
+  try {
+    const r = await fetch(API, { redirect: "follow" });
+    const d = await r.json();
+    if (d && d.ok && d.문의) { S.문의 = d.문의; 링크고치기(); }
+  } catch (e) {}
+}
+function 링크고치기() { document.querySelectorAll("a[data-kakao]").forEach(a => { a.href = S.문의; }); }
+
+// ---------- 도구 ----------
+const 요일 = "일월화수목금토";
+function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function 숫자만(v) { return String(v || "").replace(/\D/g, ""); }
+function 날짜(ymd) { const p = String(ymd || "").split("-").map(Number); return p.length === 3 ? new Date(p[0], p[1] - 1, p[2]) : null; }
+function 날글(ymd) { const d = 날짜(ymd); return d ? `${d.getMonth() + 1}월 ${d.getDate()}일(${요일[d.getDay()]})` : ""; }
+function 월글(ym) { const p = String(ym || "").split("-"); return p.length === 2 ? `${Number(p[0])}년 ${Number(p[1])}월` : ""; }
+function 요일글(t) { return /^[월화수목금토일]$/.test(t) ? t + "요일" : t; }
+function 오늘요일() { const d = 날짜(S.결과 && S.결과.오늘); return d ? d.getDay() : new Date().getDay(); }
+function 샘터들() { return (S.결과 && S.결과.샘터) || []; }
+function 지금샘터() { const a = 샘터들(); return a.find(t => t.id === S.고른) || a[0]; }
+function 언제(t) { return [t.요일 ? "매주 " + 요일글(t.요일) : "", t.시간].filter(Boolean).join(" "); }
+
+const 물방울 = (w, h) => `<svg width="${w}" height="${h}" viewBox="0 0 22 28" aria-hidden="true"><path d="M11 1.5C11 1.5 2.5 11.2 2.5 17.3a8.5 8.5 0 0 0 17 0C19.5 11.2 11 1.5 11 1.5Z" fill="#1B3A5C"/><path d="M6.8 17.6a4.3 4.3 0 0 0 3.6 4.2" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+const 말풍선 = `<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5c-4.2 0-7.5 2.7-7.5 6 0 2 1.2 3.8 3.1 4.9l-.6 2.6 3-1.7c.6.1 1.3.2 2 .2 4.2 0 7.5-2.7 7.5-6s-3.3-6-7.5-6z"/></svg>`;
+const 달력 = `<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="4.8" width="13" height="11.5" rx="2"/><path d="M3.5 8.6h13M7 3v3.2M13 3v3.2"/></svg>`;
+const 문의알약 = () => `<a class="pill" data-kakao href="${esc(S.문의)}" target="_blank" rel="noopener" aria-label="카카오톡 오픈채팅으로 문의">${말풍선}문의</a>`;
+const 문의버튼 = (글) => `<a class="btn ghost" data-kakao href="${esc(S.문의)}" target="_blank" rel="noopener">${말풍선}${esc(글)}</a>`;
+const 메시지칸 = () => S.메시지 ? `<p class="msg ${S.메시지종류 === "오류" ? "err" : "info"}" role="${S.메시지종류 === "오류" ? "alert" : "status"}">${esc(S.메시지)}</p>` : "";
+const 설정알림 = () => API ? "" : `<p class="setup">관리자 안내: 이 페이지 맨 아래 코드의 API에 웹앱 배포 주소가 비어 있어요.</p>`;
+
+// ---------- 화면 ----------
+function 그리기() {
+  const app = document.getElementById("app");
+  app.innerHTML = { 확인: 확인화면, 여는중: 여는중화면, 고르기: 고르기화면, 샘터: 샘터화면 }[S.화면]();
+  붙이기[S.화면] && 붙이기[S.화면]();
+  const h = app.querySelector("h1");
+  if (h && S.옮김) { h.setAttribute("tabindex", "-1"); h.focus(); }
+  S.옮김 = false;
+}
+function 가기(화면) { S.화면 = 화면; S.옮김 = true; 그리기(); window.scrollTo(0, 0); }
+
+function 확인화면() {
+  const 됨 = S.이름.trim() && 숫자만(S.번호).length === 4 && (!S.전체필요 || 숫자만(S.전체).length >= 10);
+  return `
+  <div class="hero">
+    <div class="logo">${물방울(22, 28)}<div><b>청년샘터</b><small>YOUTH SAEMTEO</small></div><span class="trial" style="margin-left:auto">시범</span></div>
+    <h1>모임 보고</h1>
+    <p class="lead">모임을 마친 자리에서 참석자와 사진을 남겨 주세요. 로그인은 필요 없어요.</p>
+  </div>
+  ${설정알림()}
+  <form class="form" id="f" novalidate>
+    <div class="field"><label for="who">이름</label>
+      <input id="who" name="name" autocomplete="name" placeholder="신청서에 적은 이름" value="${esc(S.이름)}"></div>
+    <div class="field"><label for="tail">휴대폰 번호 뒤 4자리</label>
+      <input id="tail" class="digits" inputmode="numeric" placeholder="0000" autocomplete="off" value="${esc(S.번호)}"></div>
+    ${S.전체필요 ? `${메시지칸()}<div class="field"><label for="full">휴대폰 번호 전체</label>
+      <input id="full" inputmode="tel" placeholder="010-0000-0000" autocomplete="tel" value="${esc(S.전체)}"></div>` : ""}
+    <label class="check"><input type="checkbox" id="keep" ${S.기억 ? "checked" : ""}>이 폰에서는 다음부터 바로 열기</label>
+    ${S.전체필요 ? "" : 메시지칸()}
+  </form>
+  <div class="grow"></div>
+  <div class="stack">
+    <button class="btn${S.보내는중 ? " busy" : ""}" id="go" form="f" type="submit" ${됨 && !S.보내는중 ? "" : "disabled"}>${S.보내는중 ? `<span class="spin"></span>확인하는 중…` : "확인"}</button>
+    ${문의버튼("확인이 안 되면 카카오톡으로 문의")}
+  </div>`;
+}
+
+function 여는중화면() {
+  return `
+  <div class="top"><span class="brand">${물방울(16, 20)}<span class="txt">청년샘터</span></span><span class="grow"></span>${문의알약()}</div>
+  <div class="center"><span class="spin dark"></span><h1 style="font-size:20px">${esc(S.이름)} 샘지기님 샘터를 불러오는 중</h1></div>`;
+}
+
+function 고르기화면() {
+  const 오늘 = 오늘요일();
+  const 카드 = 샘터들().map(t => {
+    const 준비 = t.상태 === "준비됨";
+    const on = t.id === S.고른;
+    const 상태글 = !준비 ? "준비 중 — 정산폼이 만들어지면 보고할 수 있어요"
+      : t.지난달 ? `${Number(t.운영월.slice(5))}월 샘터 · ${날글(t.마감)}까지 보고` : "이번 달 샘터";
+    const 색 = !준비 ? "var(--sub)" : t.지난달 ? "var(--amber)" : "var(--navy)";
+    return `
+    <label class="card${on ? " on" : ""}${준비 ? "" : " off"}">
+      <input type="radio" name="st" value="${esc(t.id)}" ${on ? "checked" : ""} ${준비 ? "" : "disabled"}>
+      <span class="body">
+        <span class="row"><span class="title">${esc(t.이름표)}</span>
+          ${준비 && t.요일들 && t.요일들.indexOf(오늘) >= 0 && !t.지난달 ? `<span class="tag today">오늘 모임</span>` : ""}
+          ${t.팀구분 ? `<span class="tag">${esc(t.팀구분)}</span>` : ""}
+          ${t.지난달 ? `<span class="tag">지난달</span>` : ""}</span>
+        ${언제(t) ? `<span class="when">${esc(언제(t))}</span>` : ""}
+        <span class="mem">샘원 ${esc(t.샘원.join(", ") || "—")}</span>
+        <span class="state" style="color:${색}">${esc(상태글)}</span>
+      </span>
+    </label>`;
+  }).join("");
+  const 고른것 = 지금샘터();
+  const 됨 = 고른것 && 고른것.상태 === "준비됨";
+  return `
+  <div class="top"><span class="brand">${물방울(16, 20)}<span class="txt">청년샘터</span></span><span class="grow"></span>${문의알약()}</div>
+  <div class="head"><h1>어느 샘터 보고인가요?</h1>
+    <p>${esc(S.결과.이름)} 샘지기님은 보고할 샘터가 ${샘터들().length}곳이에요.</p></div>
+  ${S.결과.안내 ? `<p class="msg info" style="margin-top:16px">${esc(S.결과.안내)}</p>` : ""}
+  <fieldset class="cards"><legend class="sr">샘터 고르기</legend>${카드}</fieldset>
+  <div class="grow" style="min-height:24px"></div>
+  <button class="btn" id="next" ${됨 ? "" : "disabled"}>${됨 ? esc(고른것.이름표) + (고른것.지난달 ? ` (${Number(고른것.운영월.slice(5))}월)` : "") + " 샘터로 계속" : "샘터를 골라 주세요"}</button>
+  <p class="foot" style="margin-top:14px">다음 화면 위쪽에서 언제든 바꿀 수 있어요</p>`;
+}
+
+function 샘터화면() {
+  const t = 지금샘터();
+  const 여럿 = 샘터들().length > 1;
+  const 탭 = 여럿 ? `<div class="tabs${샘터들().length > 2 ? " many" : ""}" role="group" aria-label="샘터 바꾸기">${샘터들().map(x => `
+      <button type="button" data-tab="${esc(x.id)}" aria-pressed="${x.id === t.id}">${esc(x.이름표)}${x.팀구분 ? `<span class="mini">${esc(x.팀구분)}</span>` : ""}${x.지난달 ? `<span class="mini">지난달</span>` : ""}</button>`).join("")}</div>` : "";
+  const 준비 = t.상태 === "준비됨";
+  return `
+  <div class="top"><span class="brand">${물방울(16, 20)}<span class="txt">청년샘터</span></span><span class="grow"></span>
+    <span class="who">${esc(S.결과.이름)} 샘지기</span><button class="textbtn" id="swap">바꾸기</button>${문의알약()}</div>
+  ${탭}
+  <div class="head" style="gap:6px">
+    <p class="eyebrow">${esc([월글(t.운영월), 언제(t)].filter(Boolean).join(" · "))}</p>
+    <h1>${t.지난달 ? `${Number(t.운영월.slice(5))}월 모임 보고` : "이번 달 모임 보고"}</h1>
+    <p class="due">${달력}${t.지난달 ? "지난달 보고 마감" : "정산 마감"} ${esc(날글(t.마감))}</p>
+  </div>
+  <section class="panel" aria-label="모임 보고">
+    <div><span class="eyebrow"><span class="trial">시범</span></span></div>
+    <span class="big">${준비 ? "보고 화면은 곧 열려요" : "샘터를 준비하고 있어요"}</span>
+    <button class="btn" disabled>모임 보고하기</button>
+    <p>${준비 ? "지금은 본인 확인과 샘터 정보가 맞게 나오는지만 봐 주세요. 사진·영수증 올리기는 다음 단계에서 붙여요." : "정산폼이 만들어지면 여기서 보고할 수 있어요."}</p>
+  </section>
+  <section class="panel" aria-labelledby="info">
+    <h2 id="info">샘터 정보</h2>
+    <dl class="kv">
+      ${t.지역 ? `<dt>지역</dt><dd>${esc(t.지역)}</dd>` : ""}
+      ${언제(t) ? `<dt>모임</dt><dd>${esc(언제(t))}</dd>` : ""}
+      ${t.팀구분 ? `<dt>팀 구분</dt><dd>${esc(t.팀구분)}</dd>` : ""}
+      <dt>샘원</dt><dd>${esc(t.샘원.join(", ") || "신청서에 없음")}</dd>
+    </dl>
+    <h2>참석자로 누를 이름</h2>
+    <div class="chips">${t.제안.map(n => `<span class="chip">${esc(n)}</span>`).join("")}</div>
+    <p>모임 보고 화면에서 이 이름들을 눌러 참석자를 채워요. 초대한 분은 이름을 새로 적으면 돼요.</p>
+  </section>
+  ${S.결과.안내 ? `<p class="msg info" style="margin-top:16px">${esc(S.결과.안내)}</p>` : ""}
+  <div class="stack">${문의버튼("카카오톡으로 문의하기")}</div>`;
+}
+
+// ---------- 동작 ----------
+const 붙이기 = {
+  확인() {
+    const who = document.getElementById("who"), tail = document.getElementById("tail"), full = document.getElementById("full");
+    const keep = document.getElementById("keep"), go = document.getElementById("go");
+    const 다시 = () => {
+      const 됨 = S.이름.trim() && 숫자만(S.번호).length === 4 && (!S.전체필요 || 숫자만(S.전체).length >= 10);
+      go.disabled = !됨 || S.보내는중;
+    };
+    who.addEventListener("input", () => { S.이름 = who.value; 다시(); });
+    // 숫자만 4자리. 전화번호 전체를 붙여 넣으면 끝 4자리를 씀
+    tail.addEventListener("input", () => { const d = 숫자만(tail.value); tail.value = d.length >= 7 ? d.slice(-4) : d.slice(0, 4); S.번호 = tail.value; 다시(); });
+    if (full) full.addEventListener("input", () => { S.전체 = full.value; 다시(); });
+    keep.addEventListener("change", () => { S.기억 = keep.checked; });
+    document.getElementById("f").addEventListener("submit", e => { e.preventDefault(); if (!go.disabled) 확인하기(); });
+  },
+  고르기() {
+    document.querySelectorAll('input[name="st"]').forEach(r => r.addEventListener("change", () => { S.고른 = r.value; 그리기(); }));
+    const next = document.getElementById("next");
+    if (next) next.addEventListener("click", () => { 마지막샘터저장(); 가기("샘터"); });
+  },
+  샘터() {
+    document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => { S.고른 = b.getAttribute("data-tab"); 마지막샘터저장(); 그리기(); }));
+    document.getElementById("swap").addEventListener("click", () => {
+      쓰기(null);
+      Object.assign(S, { 이름: "", 번호: "", 전체: "", 전체필요: false, 결과: null, 고른: "", 메시지: "", 메시지종류: "" });
+      가기("확인");
+    });
+  },
+};
+
+function 마지막샘터저장() { const v = 읽기(); if (v) { v.샘터 = S.고른; 쓰기(v); } }
+
+async function 확인하기(자동) {
+  S.보내는중 = true; S.메시지 = "";
+  if (!자동) 그리기();
+  const 번호 = S.전체필요 ? 숫자만(S.전체) : 숫자만(S.번호);
+  let d;
+  try {
+    d = await 보내기({ action: "본인", 이름: S.이름.trim(), 번호: 번호 });
+  } catch (e) {
+    S.보내는중 = false;
+    S.메시지종류 = "오류";
+    S.메시지 = e.message === "설정" ? "아직 연결 준비가 안 됐어요. 양육국에 문의해 주세요."
+      : e.name === "AbortError" ? "연결이 너무 느려요. 잠시 뒤 다시 해 주세요." : "연결이 안 돼요. 인터넷을 확인하고 다시 해 주세요.";
+    가기("확인");
+    return;
+  }
+  S.보내는중 = false;
+  if (d && d.문의) { S.문의 = d.문의; }
+  if (!d || d.ok === false) {
+    S.메시지종류 = "오류"; S.메시지 = (d && d.안내) || "잠시 문제가 생겼어요. 조금 뒤 다시 해 주세요.";
+    가기("확인"); return;
+  }
+  switch (d.상태) {
+    case "확인": {
+      S.결과 = d;
+      S.전체필요 = false;
+      if (S.기억) 쓰기({ 이름: S.이름.trim(), 번호: 번호, 샘터: (읽기() || {}).샘터 || "" });
+      const 쓸수있는 = d.샘터.filter(t => t.상태 === "준비됨");
+      const 지난번 = (읽기() || {}).샘터;
+      const 오늘 = 오늘요일();
+      const 고를 = 쓸수있는.find(t => !t.지난달 && t.요일들 && t.요일들.indexOf(오늘) >= 0)
+        || 쓸수있는.find(t => t.id === 지난번) || 쓸수있는[0] || d.샘터[0];
+      S.고른 = 고를 ? 고를.id : "";
+      가기(d.샘터.length > 1 ? "고르기" : "샘터");
+      return;
+    }
+    case "전체번호":
+      S.전체필요 = true; S.메시지종류 = "안내"; S.메시지 = d.안내;
+      가기("확인"); return;
+    case "준비중":
+    case "이번달없음":
+      S.메시지종류 = "안내"; S.메시지 = d.안내;
+      쓰기(null); 가기("확인"); return;
+    default:   // 불일치 · 잠김 · 입력오류
+      S.메시지종류 = "오류"; S.메시지 = d.안내 || "다시 확인해 주세요.";
+      if (자동) 쓰기(null);
+      가기("확인"); return;
+  }
+}
+
+// ---------- 시작 ----------
+(function 시작() {
+  if (/[?&]reset\b/.test(location.search)) 쓰기(null);
+  const 저장 = 읽기();
+  설정받기();
+  if (저장 && 저장.이름 && 저장.번호) {
+    S.이름 = 저장.이름;
+    if (String(저장.번호).length > 4) { S.전체필요 = true; S.전체 = 저장.번호; S.번호 = String(저장.번호).slice(-4); }
+    else S.번호 = 저장.번호;
+    가기("여는중");
+    확인하기(true);
+  } else {
+    그리기();
+  }
+})();
+</script>
+</body>
+</html>
