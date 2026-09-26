@@ -235,6 +235,57 @@
   .notes { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
   .reported { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
   .reported li { padding: 5px 10px; border-radius: 8px; background: var(--ground); font-size: 13px; font-weight: 600; color: var(--sub2); }
+
+  /* ---------- 이번 달 현황 ---------- */
+  .cta { margin-top: 20px; padding: 20px; display: flex; flex-direction: column; gap: 16px; background: #fff; border-radius: 18px; box-shadow: 0 1px 2px rgba(27,58,92,.08); }
+  .cta .e { display: block; font-size: 14px; color: var(--sub); }
+  .cta .t { display: block; margin-top: 4px; font-size: 20px; font-weight: 700; color: var(--ink); }
+  .btn.sub { background: #fff; color: var(--navy); box-shadow: inset 0 0 0 1.5px var(--navy); }
+  .wk-head { margin: 28px 4px 10px; display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .wk-head h2 { margin: 0; font-size: 15px; font-weight: 700; }
+  .wk-head .hint { text-align: right; }
+  .weeks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; overflow: hidden; background: #E6ECF1; border-radius: 18px; box-shadow: 0 1px 2px rgba(27,58,92,.08); }
+  .wk { display: flex; align-items: flex-start; gap: 14px; min-height: 68px; padding: 14px 16px 14px 18px; background: #fff; }
+  .wk-ic { flex-shrink: 0; margin-top: 1px; }
+  .wk-main { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .wk-t { display: flex; align-items: baseline; gap: 8px; min-height: 28px; }
+  .wk-t b { font-size: 16px; font-weight: 700; }
+  .wk-t span { font-size: 13px; color: var(--sub); }
+  .wk.dim .wk-t b { color: var(--sub2); }
+  .wk-line { font-size: 14px; line-height: 1.5; color: var(--sub); }
+  .wk-m { display: flex; align-items: center; justify-content: space-between; gap: 6px; width: calc(100% + 16px); min-height: 44px; margin: -4px -8px 0; padding: 4px 8px;
+          border: 0; border-radius: 10px; background: none; text-align: left; font-size: 14px; line-height: 1.45; color: var(--sub2); cursor: pointer; }
+  .wk-m:hover, .wk-m:active { background: var(--ground); }
+  .wk-m svg { flex-shrink: 0; transform: scaleX(-1); color: #8E9BA7; }
+  .wk-warn { font-size: 13px; font-weight: 600; line-height: 1.5; color: var(--amber); }
+  .wk-note { font-size: 13px; line-height: 1.5; color: var(--sub); }
+  .wk-tag { display: inline-block; margin-left: 4px; padding: 1px 6px; border-radius: 6px; background: var(--ground); color: var(--sub2); font-size: 11px; font-weight: 600; vertical-align: 1px; }
+  .badge { flex-shrink: 0; margin-top: 2px; padding: 5px 10px; border-radius: 999px; background: #E4EFF8; color: var(--navy); font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .badge.today { background: var(--navy); color: #fff; }
+  @media (max-width: 359px) { .badge:not(.today) { display: none; } .wk { gap: 10px; padding-left: 14px; } }
+  .sup { margin-top: 20px; padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #fff; border-radius: 18px; box-shadow: 0 1px 2px rgba(27,58,92,.08); }
+  .sup .t { display: block; font-size: 15px; font-weight: 700; }
+  .sup .n { display: block; margin-top: 4px; font-size: 13px; line-height: 1.5; color: var(--sub); }
+  .sup b { font-size: 22px; font-weight: 700; color: var(--navy); white-space: nowrap; }
+  .alerts { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .help { margin-top: 16px; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 18px; }
+  .help a { display: flex; align-items: center; min-height: 44px; font-size: 14px; text-decoration: none; }
+  .skel { height: 14px; width: 60%; border-radius: 7px; background: #EDF1F5; }
+
+  /* ---------- 보고 보기 ---------- */
+  .mini-shots { display: flex; flex-wrap: wrap; gap: 8px; }
+  .mini-shots .thumb { width: 72px; height: 72px; border-radius: 10px; }
+  .rc-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .rc-row { display: flex; align-items: center; gap: 12px; }
+  .rc-row .thumb { width: 48px; height: 64px; border-radius: 8px; }
+  .rc-row .thumb .ph svg { width: 20px; height: 26px; }
+  .rc-row .tx { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .rc-row .tx b { font-size: 15px; font-weight: 700; }
+  .rc-row .tx span { font-size: 13px; line-height: 1.45; color: var(--sub); }
+  .rc-row .tx .w { color: var(--amber); font-weight: 600; }
+  .btn.danger { height: 50px; background: #fff; box-shadow: inset 0 0 0 1.5px #D9A9A6; color: var(--red); font-size: 16px; }
+  .btn.danger.sure { background: var(--red); box-shadow: none; color: #fff; }
+  .btn.danger[disabled] { background: #fff; color: #C98E8A; }
 </style>
 </head>
 <body>
@@ -243,7 +294,8 @@
 
 <script>
 // ============================================================
-//  청년샘터 모임 보고 — 샘지기 화면 (시범: 본인 확인 · 샘터 고르기 · 모임 보고 쓰기 · 보고 제출 · 완료)
+//  청년샘터 모임 보고 — 샘지기 화면 (시범: 본인 확인 · 샘터 고르기 · 이번 달 현황 · 모임 보고 쓰기 · 보고 제출 · 완료 ·
+//                                     보고 보기 · 고치기 · 보고 취소)
 //  ★ 아래 API에 Apps Script 웹앱 배포 주소(…/exec)를 넣습니다.
 // ============================================================
 const API = "https://script.google.com/macros/s/AKfycbwZFOS7D9T4-haOAyQxBPy0SP0NJ4m4uO3KgTt6d81g8RA2BpXGCID2YpVaJlPI9zQj/exec";   // ★ Apps Script 배포 주소 (/exec로 끝남). 바꿀 때는 따옴표 안만 바꿈
@@ -251,6 +303,7 @@ const API주소 = /^https?:\/\/\S+\/exec(\?\S*)?$/.test(API.trim()) ? API.trim()
 const API가dev = /\/dev(\?\S*)?$/.test(API.trim());
 const 문의기본 = "https://open.kakao.com/o/sWdAUBFi";
 const 영수증제출안내 = "https://yos-saemteo.github.io/saemteo/receipt/";
+const 샘지기매뉴얼 = "https://yos-saemteo.github.io/saemteo/manual/";
 const 저장키 = "saemteo.report.v1";
 const 초안키 = "saemteo.report.draft.v1";   // 쓰던 보고 (이 폰에서 바로 열기를 켜면 폰에, 끄면 이 창에만)
 const 사진최대 = 20 * 1048576;      // 원본 한 장 한도 — 서버 MB.사진최대MB와 같게
@@ -270,11 +323,20 @@ const S = {
   다시확인실패: false, 다시확인안내: "",
   초안: {},            // 샘터 id → 쓰고 있는 보고 { 날짜, 참석[], 사진[], 제출 } — 올린 사진까지 폰에 저장해 두고 이어 씀
   초안주인: "",        // 초안을 쓴 사람 (다른 사람이 확인하면 초안을 비움)
-  기록: false,         // 보고 화면을 열 때 브라우저 뒤로 가기용 기록을 남겼는지
   서버옛날: false,     // 서버가 이 화면의 요청을 모름 (웹앱을 새 버전으로 배포하기 전)
+  서버4전: false,      // 서버가 현황 · 고치기 · 취소를 모름 (3단계 서버) — 사진 · 제출은 그대로 됨
   붙일곳: "",          // [사진 붙이기]를 누른 영수증
-  제출중: false,       // 보고를 보내는 중
+  보내는: new Map(),   // 보내는 중인 초안 (새 보고 · 고치기가 서로 잠그지 않게 · 다른 사람으로 바꾼 뒤 새 초안과 섞이지 않게)
   완료: null,          // 방금 낸 보고 (완료 화면)
+  현황: {},            // 샘터 id → { 상태: 읽는중 · 됨 · 실패, 값(서버 현황), 때 } — 정산폼과 맞춰 본 이번 달 현황
+  열린: {},            // 보고 id → { 상태, 값(보고열기 — 사진 작은 그림 · 영수증 칸) }
+  보는: "",            // 보고 보기 화면의 보고 id
+  편집: null,          // 고치는 중인 보고 { 샘터, 보고, 판, 날짜 } — 보고 화면이 고치기로 열림
+  쌓임: [],            // 뒤로 가기로 돌아갈 화면 (깊이마다 그때 보던 화면)
+  안내글: null,        // 현황 위에 한 번 보여 줄 안내 { 샘터, 글 }
+  취소확인: "",        // [보고 취소]를 한 번 누른 보고 id (한 번 더 눌러야 취소)
+  취소중: {}, 보기오류: "",    // 취소 중인 보고 id → true
+  고치기대기: "",              // [고치기]가 현황을 기다리는 보고 id
 };
 
 // ---------- 저장 (이 폰에서는 다음부터 바로 열기) ----------
@@ -345,13 +407,55 @@ const 설정알림 = () => API주소 ? "" : `<p class="setup">관리자 안내: 
 // ---------- 화면 ----------
 function 그리기() {
   const app = document.getElementById("app");
-  app.innerHTML = { 확인: 확인화면, 여는중: 여는중화면, 고르기: 고르기화면, 샘터: 샘터화면, 보고: 보고화면, 완료: 완료화면 }[S.화면]();
+  app.innerHTML = { 확인: 확인화면, 여는중: 여는중화면, 고르기: 고르기화면, 샘터: 샘터화면, 보고: 보고화면, 보기: 보기화면, 완료: 완료화면 }[S.화면]();
   붙이기[S.화면] && 붙이기[S.화면]();
   const h = app.querySelector("h1");
   if (h && S.옮김) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
   S.옮김 = false;
 }
-function 가기(화면) { S.화면 = 화면; S.옮김 = true; 그리기(); window.scrollTo(0, 0); }
+function 가기(화면) {
+  S.방문 = (S.방문 || 0) + 1;               // 기다리던 동작(고치기 등)이 돌아왔을 때 그사이 화면을 옮겼는지 알아봄
+  if (화면 !== "보고") S.편집 = null;       // 고치기는 보고 화면에서만
+  if (화면 !== "샘터") S.안내글 = null;     // 현황 위 안내는 한 번만
+  if (화면 !== "보기") { S.취소확인 = ""; S.보기오류 = ""; }
+  S.화면 = 화면; S.옮김 = true; 그리기(); window.scrollTo(0, 0);
+}
+// 한 단계 들어가기 (현황 → 보고 보기 → 고치기) — 브라우저 뒤로 가기로 돌아옴
+//  깊이마다 그때 화면 · 고치던 보고 · 보던 보고를 기억 (보고 화면 안내에서 다른 보고를 열었다 돌아와도 고치던 것 그대로)
+//  이 창에서 남긴 기록만 따름 — 새로 고침 전 기록으로 돌아오면 현황으로
+const 세션표 = 새제출id();
+function 들어가기(화면, 바꿀) {   // 바꿀 = 지금 화면을 기억한 뒤에 바꿀 것 (보는 보고 · 고치는 보고)
+  S.쌓임.push({ 화면: S.화면, 편집: S.편집, 보는: S.보는 });
+  try { history.pushState({ 깊이: S.쌓임.length, 세션: 세션표 }, ""); } catch (e) {}
+  if (바꿀) 바꿀();
+  가기(화면);
+}
+function 뿌리표시() { S.쌓임 = []; try { history.replaceState({ 깊이: 0, 세션: 세션표 }, ""); } catch (e) {} }
+function 뒤로가기() { if (S.쌓임.length) history.back(); else 가기("샘터"); }
+function 현황으로() {   // 쌓인 화면을 모두 닫고 현황으로
+  const n = S.쌓임.length;
+  if (n) { try { history.go(-n); return; } catch (e) {} }
+  S.쌓임 = []; 가기("샘터");
+}
+function 뒤로왔을때(e) {
+  const st = e && e.state;
+  if (!S.결과 || ["확인", "여는중", "고르기"].indexOf(S.화면) >= 0) return;
+  if (!st || st.세션 !== 세션표) { S.쌓임 = []; 가기("샘터"); return; }
+  const 깊이 = Math.max(0, Number(st.깊이) || 0);
+  if (깊이 > S.쌓임.length) { 뿌리표시(); 가기("샘터"); return; }   // 앞으로 가기 — 기억한 화면이 없으니 현황에서 새로
+  if (S.화면 === "완료") {   // 완료에서 뒤로 → 현황 (고치기 · 보고 보기로 돌아가지 않게 쌓인 기록도 닫음)
+    S.쌓임 = [];
+    if (깊이 > 0) { try { history.go(-깊이); } catch (x) {} }
+    가기("샘터");
+    return;
+  }
+  const 그때 = S.쌓임[깊이];
+  S.쌓임 = S.쌓임.slice(0, 깊이);
+  if (!그때 || ["완료", "고르기", "확인", "여는중"].indexOf(그때.화면) >= 0) { 가기("샘터"); return; }
+  if (그때.보는) S.보는 = 그때.보는;
+  S.편집 = 그때.화면 === "보고" ? 그때.편집 || null : null;
+  가기(그때.화면);
+}
 
 function 확인화면() {
   const 됨 = S.이름.trim() && 숫자만(S.번호).length === 4 && (!S.전체필요 || 숫자만(S.전체).length >= 10);
@@ -425,42 +529,351 @@ function 샘터화면() {
   const 여럿 = 샘터들().length > 1;
   const 탭 = 여럿 ? `<div class="tabs${샘터들().length > 2 ? " many" : ""}" role="group" aria-label="샘터 바꾸기">${샘터들().map(x => `
       <button type="button" data-tab="${esc(x.id)}" aria-pressed="${x.id === t.id}">${esc(x.이름표)}${x.팀구분 ? `<span class="mini">${esc(x.팀구분)}</span>` : ""}${x.지난달 ? `<span class="mini">지난달</span>` : ""}</button>`).join("")}</div>` : "";
-  const 준비 = t.상태 === "준비됨";
-  const 초 = S.초안[t.id];
-  const 쓰던 = 초 && (초.참석.length || 초.사진.length);
-  const 보내던 = 초 && 초.제출 && 초.제출.상태 === "모름";
-  const 낸 = t.보고 || [];
+  const 안내 = S.안내글 && S.안내글.샘터 === t.id ? `<p class="box blue" role="status" style="margin-top:16px">${체크(16)}<span>${esc(S.안내글.글)}</span></p>` : "";
   return `
   <div class="top"><span class="brand">${물방울(16, 20)}<span class="txt">청년샘터</span></span><span class="grow"></span>
     <span class="who">${esc(S.결과.이름)} 샘지기</span><button class="textbtn" id="swap">바꾸기</button>${문의알약()}</div>
   ${탭}
   <div class="head" style="gap:6px">
-    <p class="eyebrow">${esc([월글(t.운영월), 언제(t)].filter(Boolean).join(" · "))}</p>
+    <p class="eyebrow">${esc([월글(t.운영월), 언제(t)].filter(Boolean).join(" · "))} <span class="trial">시범</span></p>
     <h1>${t.지난달 ? `${달숫자(t)}월 모임 보고` : "이번 달 모임 보고"}</h1>
     <p class="due">${달력}${t.지난달 ? "지난달 보고 마감" : "정산 마감"} ${esc(날글(t.마감))}</p>
   </div>
-  <section class="panel" aria-label="모임 보고">
-    <div><span class="eyebrow"><span class="trial">시범</span></span></div>
-    <span class="big">${!준비 ? "샘터를 준비하고 있어요" : 보내던 ? "보내던 보고가 있어요" : 쓰던 ? "쓰던 보고가 있어요" : "모임을 마쳤으면 보고해 주세요"}</span>
-    ${준비 ? `<button type="button" class="btn" data-act="보고열기">${보내던 ? "보내던 보고 확인하기" : 쓰던 ? "모임 보고 이어서 쓰기" : "모임 보고하기"}</button>` : `<button class="btn" disabled>모임 보고하기</button>`}
-    <p>${준비 ? "참석자 · 인증샷 · 영수증을 한 화면에서 내요." : "정산폼이 만들어지면 여기서 보고할 수 있어요."}</p>
-    ${낸.length ? `<div><h2 style="margin-bottom:8px">${t.지난달 ? `${달숫자(t)}월에` : "이번 달"} 낸 보고</h2>
-      <ul class="reported">${낸.map(x => `<li>${(주차정보(x.날짜) || {}).주 || x.주차}주차 · ${esc(날짧게(x.날짜))}${x.영수증 ? "" : " · 영수증 대기"}</li>`).join("")}</ul></div>` : ""}
-  </section>
-  <section class="panel" aria-labelledby="info">
-    <h2 id="info">샘터 정보</h2>
-    <dl class="kv">
-      ${t.지역 ? `<dt>지역</dt><dd>${esc(t.지역)}</dd>` : ""}
-      ${언제(t) ? `<dt>모임</dt><dd>${esc(언제(t))}</dd>` : ""}
-      ${t.팀구분 ? `<dt>팀 구분</dt><dd>${esc(t.팀구분)}</dd>` : ""}
-      <dt>샘원</dt><dd>${esc(t.샘원.join(", ") || "신청서에 없음")}</dd>
-    </dl>
-    <h2>참석자로 누를 이름</h2>
-    <div class="chips">${t.제안.map(n => `<span class="chip">${esc(n)}</span>`).join("")}</div>
-    <p>모임 보고 화면에서 이 이름들을 눌러 참석자를 채워요. 초대한 분은 이름을 새로 적으면 돼요.</p>
-  </section>
+  ${S.서버옛날 || S.서버4전 ? `<div style="margin-top:12px">${서버알림()}</div>` : ""}
+  ${안내}
+  ${할일칸(t)}
+  <div class="wk-head"><h2>주차별 보고</h2><span class="hint" id="hy-state">${현황상태글(t)}</span></div>
+  <ul class="weeks" aria-label="주차별 보고">${주차목록(t)}</ul>
+  ${지원칸(t)}
+  ${알림칸(t)}
   ${S.결과.안내 ? `<p class="msg info" style="margin-top:16px">${esc(S.결과.안내)}</p>` : ""}
-  <div class="stack">${문의버튼("카카오톡으로 문의하기")}</div>`;
+  <nav class="help" aria-label="도움말"><a href="${영수증제출안내}" target="_blank" rel="noopener">영수증 제출 안내</a><a href="${샘지기매뉴얼}" target="_blank" rel="noopener">샘지기 매뉴얼</a><a data-kakao href="${esc(S.문의)}" target="_blank" rel="noopener">카카오톡 문의</a></nav>`;
+}
+
+// ---------- 이번 달 현황 ----------
+//  서버가 정산폼을 읽어 기록과 맞춘 현황(보고마다 정산폼 상태 · 날짜별 모임 · 지원 예상)을 받아 그림.
+//  받기 전(또는 못 받으면)은 본인 확인 때 받은 낸 보고 목록으로 먼저 보여 줌
+function 현황값(t) { const h = S.현황[t.id]; return h && h.값 ? h.값 : null; }
+function 현황받기(t, 억지로) {
+  if (!t || t.상태 !== "준비됨" || !S.토큰) return Promise.resolve();
+  const h = S.현황[t.id];
+  if (h && h.상태 === "읽는중") return h.약속 || Promise.resolve();
+  if (!억지로 && h && (h.상태 === "됨" ? Date.now() - h.때 < 60000 : h.상태 === "실패" && Date.now() - h.때 < 15000)) return Promise.resolve();
+  const 약속 = 현황받는중(t, h);
+  if (S.현황[t.id] && S.현황[t.id].상태 === "읽는중") S.현황[t.id].약속 = 약속;
+  return 약속;
+}
+async function 현황받는중(t, h) {
+  const 표 = {};
+  S.현황[t.id] = Object.assign({}, h || {}, { 상태: "읽는중", 표 });
+  delete S.현황[t.id].약속;
+  칸("hy-state", 현황상태글(t));
+  let d = null;
+  try { d = await 요청({ action: "현황", 샘터: t.id }, 45); } catch (e) { d = null; }
+  if (!(d && d.ok === false && d.코드 === "본인") && (!S.현황[t.id] || S.현황[t.id].표 !== 표)) return;   // 그사이 지우고 새로 받음 — 늦게 온 옛 현황은 버림
+  if (d && d.ok && d.현황) {
+    if (S.서버4전) { S.서버4전 = false; 칸("srv-note", 서버알림()); }   // 그사이 새 버전으로 배포함
+    S.현황[t.id] = { 상태: "됨", 값: d.현황, 때: Date.now() };
+    t.보고 = d.현황.보고.map(b => ({ 날짜: b.날짜, 주차: b.주차, 영수증: b.영수증.length, 합계: b.합계, 인원: b.인원, 제출: b.판, 보고: b.보고 }));
+  } else {
+    if (d && d.ok === false && d.코드 === "본인") { S.현황[t.id] = { 상태: "실패", 때: Date.now() }; 본인풀림(d.안내); return; }
+    서버글(d, "", true);
+    S.현황[t.id] = Object.assign({}, h || {}, { 상태: "실패", 때: Date.now() });
+  }
+  const 지금 = 지금샘터();
+  if (!지금 || 지금.id !== t.id) return;
+  if (S.화면 === "샘터") 그리기();
+  else if (S.화면 === "보기") 그리기();
+  else if (S.화면 === "보고") 날짜알림그리기(t, 초안(t));
+}
+function 현황상태글(t) {
+  const h = S.현황[t.id];
+  if (t.상태 !== "준비됨") return "";
+  if (!h || h.상태 === "읽는중") return `<span class="nw">정산폼과 맞춰 보는 중…</span>`;
+  if (h.상태 === "실패" && !h.값) return `정산폼을 읽지 못해 보고 기록만 보여요 <button type="button" class="linkbtn" data-act="현황새로">다시</button>`;
+  return "";
+}
+// 날짜별 모임 — [{ 날짜, 주, 인원, 합계, 손합계, 지원(null = 모름), 뺌, 앞모임, 보고: [보고…] }]
+function 이달모임(t) {
+  const h = 현황값(t);
+  if (h) return h.모임.map(m => ({ 날짜: m.날짜, 주: m.주차 || (주차정보(m.날짜) || {}).주, 인원: m.인원, 합계: m.합계, 손합계: m.손합계, 지원: m.지원, 뺌: m.뺌, 앞모임: m.앞모임,
+    보고: m.보고.map(id => h.보고.find(b => b.보고 === id)).filter(Boolean) }));
+  const 날짜별 = {};
+  (t.보고 || []).forEach(x => {
+    const m = 날짜별[x.날짜] || (날짜별[x.날짜] = { 날짜: x.날짜, 주: (주차정보(x.날짜) || {}).주 || x.주차, 인원: 0, 합계: 0, 손합계: 0, 지원: null, 뺌: "", 앞모임: "", 보고: [] });
+    m.합계 += Number(x.합계) || 0; m.인원 = Math.max(m.인원, Number(x.인원) || 0);
+    m.보고.push({ 보고: x.보고 || x.제출, 판: x.제출, 날짜: x.날짜, 인원: Number(x.인원) || 0, 합계: Number(x.합계) || 0, 영수증: Array.from({ length: Number(x.영수증) || 0 }, () => ({})), 상태: "", 참석: [] });
+  });
+  return Object.keys(날짜별).sort().map(k => 날짜별[k]);
+}
+function 문제상태(상태) { return ["지워짐", "일부지워짐", "안씀", "금액다름"].indexOf(상태) >= 0; }
+function 문제글(b) {
+  const 지움 = (b.영수증 || []).filter(r => r.맞음 === "지워짐").length;
+  return { 지워짐: "정산폼에서 지워졌어요", 일부지워짐: `영수증 ${지움}장이 정산폼에서 지워졌어요`, 안씀: "정산폼에 아직 안 적혔어요", 금액다름: "정산폼 금액이 달라요" }[b.상태] || "";
+}
+// 그 달 주차 — v13과 같은 규칙 (1일이 든 주가 1주차, 1일이 토 · 일이면 다음 주까지 1주차)
+function 주차들(t) {
+  const [y, m] = String(t.운영월).split("-").map(Number);
+  const first = new Date(y, m - 1, 1), last = new Date(y, m, 0);
+  const mon1 = new Date(first); mon1.setDate(1 - ((first.getDay() + 6) % 7));
+  if (first.getDay() === 0 || first.getDay() === 6) mon1.setDate(mon1.getDate() + 7);
+  const n = Math.floor(Math.round((last - mon1) / 86400000) / 7) + 1, out = [];
+  for (let i = 1; i <= n; i++) {
+    let a = new Date(mon1); a.setDate(mon1.getDate() + 7 * (i - 1));
+    let b = new Date(a); b.setDate(a.getDate() + 6);
+    if (i === 1 || a < first) a = new Date(first);
+    if (b > last) b = new Date(last);
+    out.push({ 주: i, 시작: ymd(a), 끝: ymd(b), 범위: `${m}.${a.getDate()}–${m}.${b.getDate()}` });
+  }
+  return out;
+}
+const 주표 = {
+  done: `<svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="14" fill="#1B3A5C"/><path d="M8.5 14.5l3.6 3.6 7.4-7.6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  attn: `<svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#FBEFD9" stroke="#B97A12" stroke-width="2"/><path d="M14 8.3v7" stroke="#8A5A0B" stroke-width="2.4" stroke-linecap="round"/><circle cx="14" cy="19.7" r="1.4" fill="#8A5A0B"/></svg>`,
+  today: `<svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#fff" stroke="#1B3A5C" stroke-width="2"/><circle cx="14" cy="14" r="4.5" fill="#1B3A5C"/></svg>`,
+  missed: `<svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#F1F4F7" stroke="#8E9BA7" stroke-width="1.6"/><path d="M9.5 14h9" stroke="#5E6A76" stroke-width="2" stroke-linecap="round"/></svg>`,
+  future: `<svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12.5" fill="none" stroke="#AEBCCA" stroke-width="1.6" stroke-dasharray="3 3"/></svg>`,
+};
+function 주차목록(t) {
+  const 오늘 = 오늘값(), 모임 = 이달모임(t), 모임날 = 오늘모임날(t);
+  return 주차들(t).map(w => {
+    const 이주 = 모임.filter(m => m.주 === w.주);
+    const 지금주 = 오늘 >= w.시작 && 오늘 <= w.끝, 지난 = 오늘 > w.끝;
+    const 문제 = 이주.some(m => m.보고.some(b => 문제상태(b.상태)));
+    const 종류 = 이주.length ? (문제 ? "attn" : "done") : 지금주 ? "today" : 지난 ? "missed" : "future";
+    const 줄 = 이주.length ? 이주.map(모임줄).join("")
+      : 종류 === "today" ? `<span class="wk-line">아직 보고 전이에요</span>` : 종류 === "missed" ? `<span class="wk-line">보고 없음</span>` : "";
+    const 표 = 종류 === "done" ? `<span class="badge">완료</span>` : 종류 === "today" && !t.지난달 ? `<span class="badge today">${모임날 ? "오늘" : "이번 주"}</span>` : "";
+    return `
+    <li class="wk${종류 === "future" || 종류 === "missed" ? " dim" : ""}">
+      <span class="wk-ic">${주표[종류]}</span>
+      <div class="wk-main"><div class="wk-t"><b>${w.주}주차</b><span>${w.범위}</span></div>${줄}</div>
+      ${표}
+    </li>`;
+  }).join("");
+}
+function 모임줄(m) {
+  const 줄 = [];
+  m.보고.forEach(b => {
+    const 영 = (b.영수증 || []).length;
+    const 글 = `${날글(b.날짜)} · ${b.인원 || m.인원}명 · ${영 ? `영수증 ${원(b.합계)}원` : "영수증 없음"}${b.고친 ? `<span class="wk-tag">고침</span>` : ""}`;
+    줄.push(`<button type="button" class="wk-m" data-act="보기" data-bogo="${esc(b.보고)}"><span>${글}</span>${꺾쇠}</button>`);
+    if (문제상태(b.상태)) 줄.push(`<span class="wk-warn">${esc(문제글(b))}</span>`);
+  });
+  if (!m.보고.length && m.손합계 > 0) 줄.push(`<span class="wk-line">${esc(날글(m.날짜))} · ${m.인원}명 · 영수증 ${원(m.손합계)}원<span class="wk-tag">정산폼에 적음</span></span>`);
+  else if (m.손합계 > 0) 줄.push(`<span class="wk-note">같은 날 정산폼에 따로 적은 ${원(m.손합계)}원도 있어요</span>`);
+  if (m.뺌 === "주1회" && m.앞모임) 줄.push(`<span class="wk-note">이 주 지원은 ${esc(날짧게(m.앞모임))} 모임으로 돼요</span>`);
+  else if (m.뺌 === "명단없음") 줄.push(`<span class="wk-warn">정산폼에 참석자 명단이 없어 지원에서 빠져요</span>`);
+  return 줄.join("");
+}
+function 지원칸(t) {
+  const 틀 = (설명, 금액) => `<section class="sup" aria-label="이 샘터 지원 예상"><div><span class="t">이 샘터 지원 예상</span><span class="n">${설명}</span></div><b>${금액}</b></section>`;
+  if (t.상태 !== "준비됨") return 틀("정산폼이 만들어지면 보여요", "—");
+  const h = 현황값(t), 상태 = S.현황[t.id] && S.현황[t.id].상태;
+  if (!h && 상태 === "실패") return 틀("정산폼을 읽지 못해 아직 셀 수 없어요", "—");
+  const 모임수 = h ? h.모임수 : 이달모임(t).length;
+  const 뺌 = h ? h.모임.filter(m => m.뺌 === "주1회").length : 0;
+  const 금액 = h ? `${원(h.지원합계)}원` : `<span class="skel" style="display:inline-block;width:72px;vertical-align:middle"></span>`;
+  const 설명 = !h ? "정산폼과 맞춰 본 뒤 보여요" : `보고 ${모임수}회${뺌 ? ` · 같은 주 모임 ${뺌}회 빠짐` : ""} · 월말 확인 뒤 확정돼요`;
+  return 틀(설명, 금액);
+}
+function 알림칸(t) {
+  const h = 현황값(t);
+  if (!h || !h.알림 || !h.알림.length) return "";
+  return `<div class="alerts">${h.알림.map(a => `<p class="box amber">${느낌표()}<span>${esc(a)}</span></p>`).join("")}</div>`;
+}
+function 오늘모임날(t) { const d = 날짜(오늘값()); return !!d && (t.요일들 || []).indexOf(d.getDay()) >= 0; }
+function 긴날(v) { const d = 날짜(v); return d ? `${d.getMonth() + 1}월 ${d.getDate()}일 ${요일[d.getDay()]}요일` : ""; }
+function 다음모임날(t, 오늘) {   // 내일부터 이 달 안에서 첫 모임 요일
+  const d = 날짜(오늘), 요일들 = t.요일들 || [];
+  if (!d || !요일들.length) return "";
+  for (let i = 1; i <= 7; i++) {
+    const x = new Date(d); x.setDate(d.getDate() + i);
+    if (ymd(x).slice(0, 7) !== t.운영월) return "";
+    if (요일들.indexOf(x.getDay()) >= 0) return ymd(x);
+  }
+  return "";
+}
+// 현황 맨 위 — 오늘 할 일 (쓰던 보고 · 오늘 모임 · 이번 주 보고함 · 지난달 샘터)
+function 할일칸(t) {
+  const 준비 = t.상태 === "준비됨";
+  const 초 = S.초안[t.id], 쓰던 = 초 && (초.참석.length || 초.사진.length), 보내던 = 초 && 초.제출 && 초.제출.상태 === "모름";
+  let 위, 제목, 글 = "모임 보고하기", 보조 = false;
+  if (!준비) { 위 = "샘터를 준비하고 있어요"; 제목 = "정산폼이 만들어지면 보고할 수 있어요"; }
+  else if (보내던) { 위 = "보내던 보고가 있어요"; 제목 = "들어갔는지 확인이 필요해요"; 글 = "보내던 보고 확인하기"; }
+  else if (쓰던) { 위 = "쓰던 보고가 있어요"; 제목 = 날짜맞음(t, 초.날짜) ? `${날글(초.날짜)} 모임` : "모임 보고"; 글 = "모임 보고 이어서 쓰기"; }
+  else if (t.지난달) { 위 = `${달숫자(t)}월 보고 · ${날글(t.마감)}까지`; 제목 = "빠진 모임이 있으면 지금 보고해 주세요"; 글 = `${달숫자(t)}월 모임 보고하기`; }
+  else {
+    const 오늘 = 오늘값(), w = 주차정보(오늘) || { 주: 0 };
+    const 이주 = 이달모임(t).filter(m => m.주 === w.주 && m.날짜.slice(0, 7) === 오늘.slice(0, 7));
+    if (이주.length) {
+      const 다음 = 다음모임날(t, 오늘);
+      위 = `${w.주}주차는 ${날짧게(이주[0].날짜)}에 보고했어요`; 제목 = 다음 ? `다음 모임 ${긴날(다음)}` : "이번 달 남은 모임 날이 없어요"; 글 = "다른 날 모임 보고하기"; 보조 = true;
+    } else if (오늘모임날(t)) { 위 = `오늘 · ${w.주}주차 · 모임 날`; 제목 = 긴날(오늘); 글 = "오늘 모임 보고하기"; }
+    else {
+      const 기본 = 기본날짜(t);
+      위 = `${w.주}주차 · 아직 보고 전이에요`;
+      제목 = 기본 && (주차정보(기본) || {}).주 === w.주 ? `${긴날(기본)} 모임` : "모임을 마쳤으면 보고해 주세요";
+    }
+  }
+  return `
+  <section class="cta" aria-label="모임 보고">
+    <div><span class="e">${esc(위)}</span><span class="t">${esc(제목)}</span></div>
+    ${준비 ? `<button type="button" class="btn${보조 ? " sub" : ""}" data-act="보고열기">${더하기}${esc(글)}</button>` : `<button class="btn" disabled>모임 보고하기</button>`}
+  </section>`;
+}
+
+// ============================================================
+//  보고 보기 — 현황에서 보고를 누르면: 정산폼 상태 · 참석 · 사진 · 영수증, [고치기] · [보고 취소]
+//   정산폼 상태는 현황에서, 사진(작은 그림)과 영수증 칸은 보고열기로 받음
+// ============================================================
+function 보는보고(t) {
+  const h = 현황값(t);
+  if (h) { const b = h.보고.find(x => x.보고 === S.보는); if (b) return b; }
+  const x = (t.보고 || []).find(y => (y.보고 || y.제출) === S.보는);
+  return x ? { 보고: x.보고 || x.제출, 판: x.제출, 날짜: x.날짜, 주차: x.주차, 인원: x.인원, 합계: x.합계, 영수증: Array.from({ length: Number(x.영수증) || 0 }, () => ({})), 참석: [], 상태: "", 접수: "", 기록만: true } : null;
+}
+function 보기화면() {
+  const t = 지금샘터(), b = 보는보고(t), o = S.열린[S.보는], c = o && o.상태 === "됨" ? o.값 : null;
+  const 위 = `<div class="top"><button type="button" class="back" data-act="뒤로">${꺾쇠}${t.지난달 ? `${달숫자(t)}월 현황` : "이번 달 현황"}</button><span class="grow"></span>${문의알약()}</div>`;
+  if (!b && !c) return `${위}<div class="head"><h1>보고를 찾지 못했어요</h1><p>취소했거나 다른 폰에서 고친 보고일 수 있어요.</p></div>
+    <div class="stack"><button type="button" class="btn" data-act="현황새로">현황 새로 불러오기</button></div>`;
+  const 날 = (c && c.날짜) || b.날짜, 주 = (주차정보(날) || {}).주 || (b && b.주차);
+  const 참석 = c ? c.참석 : (b.참석 || []);
+  const 영수증 = c ? c.영수증.map((r, i) => Object.assign({}, (b && b.영수증[i]) || {}, r)) : (b.영수증 || []);
+  const 합계 = 영수증.reduce((a, r) => a + (Number(r.금액) || 0), 0) || (b && b.합계) || 0;
+  const 모임 = 이달모임(t).find(m => m.날짜 === 날);
+  const 사진칸 = (x, 이름, 작은) => x ? `<div class="thumb">${x.그림 ? `<img src="${x.그림}" alt="${esc(이름)}">` : `<span class="ph" role="img" aria-label="${esc(이름)}">${x.pdf ? "PDF" : 작은 ? 영수증그림 : "사진"}</span>`}${x.없음 ? `<span class="ov bad" aria-hidden="true">!</span>` : ""}</div>`
+    : `<div class="thumb"><span class="ov" title="불러오는 중"><span class="spin"></span></span></div>`;
+  const 인증 = c ? c.인증샷 : null;
+  const 인증칸 = 인증 ? (인증.length ? `<div class="mini-shots">${인증.map((x, i) => 사진칸(x, "인증샷 " + (i + 1))).join("")}</div>` : `<p class="note">인증샷을 찾지 못했어요.</p>`)
+    : o && o.상태 === "실패" ? `<p class="note">사진을 불러오지 못했어요.</p>` : `<div class="mini-shots">${사진칸(null)}</div>`;
+  const 모름 = !c && (!b || b.기록만 || !b.상태);   // 보고 내용도 현황도 아직 — 영수증 칸은 불러오는 중
+  const 영수증칸 = 모름 && (!o || o.상태 === "읽는중") ? `<p class="note">불러오는 중…</p>`
+    : 모름 && o && o.상태 === "실패" ? (b && b.기록만 && !b.영수증.length ? `<p class="note">영수증 없이 낸 보고예요.</p>` : `<p class="note">${b && b.영수증.length ? `영수증 ${b.영수증.length}장 · ` : ""}내용을 불러오지 못했어요.</p>`)
+    : 영수증.length ? `<ul class="rc-rows">${영수증.map((r, i) => {
+    const 폼 = r.맞음 === "지워짐" ? `<span class="w">정산폼에서 지워짐</span>` : r.맞음 === "안씀" ? `<span class="w">정산폼에 안 적힘</span>`
+      : r.맞음 === "금액다름" ? `<span class="w">정산폼 ${r.줄}행 · ${원(r.폼금액)}원으로 바뀜</span>` : r.줄 ? `정산폼 ${r.줄}행${r.맞음 === "겹침" ? " (이미 있던 줄)" : ""}` : "";
+    const 붙 = r.붙임 && r.붙임.length ? ` · 사진 ${r.붙임.length + 1}장` : "";
+    return `<li class="rc-row">${c ? 사진칸(r, "영수증 " + (i + 1), true) : ""}<span class="tx"><b>영수증 ${i + 1} · ${원(r.금액 || 0)}원</b><span>${esc(r.구분 ? (r.구분 === "종이" ? "종이 영수증" : "전자영수증") : "")}${붙}${폼 ? (r.구분 || 붙 ? " · " : "") + 폼 : ""}</span></span></li>`;
+  }).join("")}</ul>` : `<p class="note">영수증 없이 낸 보고예요.</p>`;
+  const 지원 = 모임 && typeof 모임.지원 === "number" ? (모임.뺌 === "주1회" ? `이 주 지원은 ${날짧게(모임.앞모임)} 모임으로 돼요` : 모임.뺌 === "명단없음" ? "명단이 없어 빠져요" : `${원(모임.지원)}원`) : "";
+  return `
+  ${위}
+  <div class="head" style="padding-top:6px;gap:6px">
+    <p class="place">${핀}${esc(t.이름표)} 샘터${t.팀구분 ? ` <span class="tag">${esc(t.팀구분)}</span>` : ""}</p>
+    <h1>${esc(날글(날))} 모임</h1>
+    <p>${esc([주 ? `${주}주차` : "", b && b.접수 ? `${b.접수}에 냄` : "", b && b.고친 ? "고친 보고" : ""].filter(Boolean).join(" · "))}</p>
+  </div>
+  <div class="notes">${보기상태(b, 모임)}</div>
+  <section class="panel" aria-label="보고 내용">
+    <dl class="kv wide">
+      <dt>참석 ${참석.length || (b && b.인원) || 0}명</dt><dd>${esc(참석.join(", ")) || "—"}</dd>
+      <dt>인증샷</dt><dd>${인증칸}</dd>
+    </dl>
+    <h2>영수증</h2>
+    ${영수증칸}
+    ${영수증.length ? `<div class="sum"><div class="r"><span>영수증 합계</span><span>${원(합계)}원</span></div>${지원 ? `<div class="hr"></div><div class="tot"><span>지원 예상</span><b>${esc(지원)}</b></div>` : ""}</div>` : ""}
+  </section>
+  ${o && o.상태 === "실패" && o.안내 ? `<p class="box amber" style="margin-top:16px">${느낌표()}<span>${esc(o.코드 === "바뀜" ? "이 보고는 취소됐거나 다른 폰에서 고쳐졌어요. 현황을 새로 불러 주세요." : o.안내)}</span></p>` : ""}
+  <div class="grow" style="min-height:24px"></div>
+  <div class="stack" id="bv-foot">${보기발(t, b)}</div>`;
+}
+function 보기상태(b, m) {
+  if (!b) return "";
+  const 상자 = (색, 글) => `<p class="box ${색}">${색 === "blue" ? 체크(16) : 느낌표()}<span>${글}</span></p>`;
+  const 줄 = [];
+  if (!b.상태) return "";
+  const 쓴 = (b.영수증 || []).filter(r => r.줄 && r.맞음 !== "겹침" && r.맞음 !== "손으로").map(r => r.줄), 겹 = (b.영수증 || []).filter(r => r.맞음 === "겹침").map(r => r.줄);
+  if (b.상태 === "정상") {
+    if (쓴.length) 줄.push(상자("blue", `정산폼 ${쓴.join(" · ")}행에 적혀 있어요.`));
+    if (겹.length) 줄.push(상자("blue", `정산폼에 이미 있던 ${겹.join(" · ")}행과 같은 영수증이라 새로 적지 않았어요.`));
+  } else if (b.상태 === "영수증없음") 줄.push(상자("blue", "영수증 없이 낸 보고라 지원 예상은 없어요. 영수증을 빠뜨렸으면 [고치기]에서 넣어 주세요."));
+  else if (b.상태 === "지워짐") 줄.push(상자("amber", "이 보고 줄이 정산폼에서 지워졌어요. 다시 적으려면 [고치기]를 눌러 그대로 내 주세요. 잘못 낸 보고면 [보고 취소]를 눌러 주세요."));
+  else if (b.상태 === "일부지워짐") { const n = b.영수증.filter(r => r.맞음 === "지워짐").length; 줄.push(상자("amber", `영수증 ${b.영수증.length}장 중 ${n}장이 정산폼에서 지워졌어요. [고치기]로 다시 내면 다시 적혀요.`)); }
+  else if (b.상태 === "안씀") 줄.push(상자("amber", "정산폼에 아직 안 적혔어요. 빈 줄이 모자라거나 정산폼 양식이 달라서예요. 양육국이 확인해요."));
+  else if (b.상태 === "금액다름") {
+    const r = b.영수증.find(x => x.맞음 === "금액다름");
+    줄.push(상자("amber", `정산폼 ${r.줄}행 금액이 ${원(r.폼금액)}원으로 바뀌어 있어요 (보고한 금액 ${원(r.금액)}원). 정산은 정산폼 금액으로 돼요.`));
+  }
+  if (m && m.뺌 === "주1회" && m.앞모임) 줄.push(상자("amber", `이 주 지원은 ${esc(날글(m.앞모임))} 모임으로 돼요. 지원은 한 주에 한 번만 돼요.`));
+  return 줄.join("");
+}
+function 보기발(t, b) {
+  const 오류 = S.보기오류 ? `<p class="box red" role="alert">${느낌표()}<span>${esc(S.보기오류)}</span></p>` : "";
+  if (!b) return 오류;
+  const o = S.열린[b.보고], 여는중 = (o && o.상태 === "읽는중") || S.고치기대기 === b.보고;
+  const 쓴 = (b.영수증 || []).filter(r => r.줄 && ["같음", "옮김", "금액다름"].indexOf(r.맞음) >= 0).map(r => r.줄);
+  const 확인 = S.취소확인 === b.보고, 취소중 = !!S.취소중[b.보고];
+  if (o && o.상태 === "실패" && o.코드 === "바뀜") return `${오류}<button type="button" class="btn" data-act="현황새로">현황 새로 불러오기</button>`;
+  return `${오류}
+    <button type="button" class="btn${여는중 ? " busy" : ""}" data-act="고치기" ${취소중 ? "disabled" : ""}>${여는중 ? `<span class="spin"></span>보고를 여는 중…` : "고치기"}</button>
+    <button type="button" class="btn danger${확인 ? " sure" : ""}" data-act="취소" ${취소중 ? "disabled" : ""}>${취소중 ? "취소하는 중…" : 확인 ? "한 번 더 누르면 취소돼요" : "보고 취소"}</button>
+    <p class="foot">${확인 ? (쓴.length ? `정산폼 ${쓴.join(" · ")}행을 지우고, 사진은 휴지통으로 옮겨요.` : "사진은 휴지통으로 옮기고 기록에 취소로 남겨요.") : "잘못 낸 보고는 취소하고, 고칠 게 있으면 고치기로 다시 내 주세요."}</p>`;
+}
+async function 보고열어두기(t, id) {
+  const o = S.열린[id];
+  if (o && o.상태 === "읽는중") return o.약속;
+  const 표 = {};
+  S.열린[id] = { 상태: "읽는중", 표 };
+  const 약속 = (async () => {
+    let d = null;
+    try { d = await 요청({ action: "보고열기", 샘터: t.id, 보고: id }, 60); } catch (e) { d = null; }
+    if (!S.열린[id] || S.열린[id].표 !== 표) return;   // 그사이 지우거나 새로 받음
+    if (d && d.ok && d.보고) S.열린[id] = { 상태: "됨", 값: d.보고, 때: Date.now() };
+    else {
+      if (d && d.ok === false && d.코드 === "본인") { delete S.열린[id]; 본인풀림(d.안내); return; }
+      S.열린[id] = { 상태: "실패", 안내: d ? 서버글(d, "보고를 열지 못했어요.", true) : "연결이 끊겨 보고를 열지 못했어요.", 코드: (d && d.코드) || "", 때: Date.now() };
+      if (d && d.코드 === "바뀜") delete S.현황[t.id];
+    }
+    if (S.화면 === "보기" && S.보는 === id) 그리기();
+  })();
+  if (S.열린[id] && S.열린[id].표 === 표) S.열린[id].약속 = 약속;
+  return 약속;
+}
+// 보고열기 결과 → 고치기 초안 (그 보고의 사진 · 참석 · 영수증 칸을 그대로 채움 — 사진은 다시 올리지 않음)
+function 고침초안(t, c) {
+  const k = "고침:" + c.보고;
+  const 초 = { 날짜: c.날짜, 참석: (c.참석 || []).slice(0, 30), 사진: [], _키: k, 고침: { 보고: c.보고, 판: c.판, 날짜: c.날짜 } };
+  const 사진 = (x, 종류, 부모) => {
+    const p = { 키: "p" + (++키수), 종류, 샘터: t.id, 초안: 초, 토큰: S.토큰, file: null, pdf: !!x.pdf, 주소: x.그림 || "", 미리작은: "", 부모: 부모 || "",
+      올림: x.없음 ? "실패" : "저장됨", 올림오류: x.없음 ? "이 사진을 찾지 못했어요." : "", 막힘: !!x.없음, 파일id: x.파일 || "", 올린때: Date.now(), 기존: true,
+      판독: "", 읽은금액: null, 후보: [], 영수증날짜: "", 금액: "", 출처: "", 구분: "", 따로: false, 여러장: false };
+    if (!p.주소 && !p.pdf) p.미리보기실패 = true;
+    초.사진.push(p);
+    return p;
+  };
+  (c.인증샷 || []).forEach(x => 사진(x, "인증샷"));
+  (c.영수증 || []).forEach(r => {
+    const p = 사진(r, "영수증");
+    Object.assign(p, { 구분: r.구분 === "종이" || r.구분 === "전자" ? r.구분 : "", 금액: r.금액 ? String(r.금액) : "", 출처: r.출처 || "직접",
+      판독: typeof r.읽은 === "number" ? "읽음" : r.판독 === "읽기전" ? "읽기전" : "못읽음", 읽은금액: typeof r.읽은 === "number" ? r.읽은 : null,
+      영수증날짜: r.날 || "", 따로: !!r.따로, 여러장: !!r.여러장 });
+    (r.붙임 || []).forEach(q => 사진(q, "영수증", p.키));
+  });
+  // 정산폼에서 금액을 고쳐 둔 영수증(금액다름)은 정산폼 금액으로 채움 — 그대로 내도 양육국이 고친 금액을 덮지 않게
+  const h = 현황값(t), hb = h && h.보고.find(x => x.보고 === c.보고 && x.판 === c.판);
+  if (hb) {
+    const 카드 = 초.사진.filter(p => p.종류 === "영수증" && !p.부모), 낸 = c.영수증 || [], 현 = hb.영수증 || [];
+    const 번호로 = 현.length && 현.every(r => r.번호) && new Set(현.map(r => r.번호)).size === 현.length && 낸.every(r => r.번호);
+    현.forEach((r, i) => {
+      const p = 카드[번호로 ? 낸.findIndex(x => x.번호 === r.번호) : i];
+      if (!p || r.맞음 !== "금액다름" || !(r.폼금액 > 0) || Number(p.금액) !== Number(r.금액)) return;
+      p.폼에서 = { 폼금액: r.폼금액, 보고금액: r.금액, 줄: r.줄 };
+      p.금액 = String(r.폼금액); p.출처 = r.폼금액 === p.읽은금액 ? "읽음" : "직접";
+    });
+  }
+  S.초안[k] = 초;
+  return 초;
+}
+function 취소글(c, b) {
+  const 날 = (c && c.날짜) || (b && b.날짜);
+  let 글 = `${날짧게(날)} 모임 보고를 취소했어요.`;
+  if (c && c.지운줄 && c.지운줄.length) 글 += ` 정산폼 ${c.지운줄.join(" · ")}행도 지웠어요.`;
+  if (c && c.남긴줄 && c.남긴줄.length) 글 += ` 정산폼 ${c.남긴줄.join(" · ")}행은 손으로 적은 줄이라 그대로 뒀어요. 필요 없으면 정산폼에서 지워 주세요.`;
+  if (c && c.폼 === "양식 다름") 글 += " 정산폼 양식이 달라 줄은 지우지 못했어요. 양육국이 확인해요.";
+  else if (c && c.폼 === "못 엶") 글 += " 정산폼을 열지 못해 줄은 지우지 못했어요. 양육국이 확인해요.";
+  return 글;
 }
 
 // ============================================================
@@ -506,20 +919,31 @@ function 주차정보(v) {
   if (e > last) e = new Date(last);
   return { 주: w, 글: `${m}월 ${w}주차(${m}.${s.getDate()}~${m}.${e.getDate()})` };
 }
-function 초안(t) { return S.초안[t.id] || (S.초안[t.id] = { 날짜: 기본날짜(t), 참석: [], 사진: [] }); }
+// 쓰던 보고 — 새 보고는 샘터 id, 고치는 보고는 '고침:보고id' 칸에 (고치던 내용은 폰에 저장하지 않음)
+function 초안자리(t) { return S.편집 && S.편집.샘터 === t.id ? "고침:" + S.편집.보고 : t.id; }
+function 초안(t) {
+  const k = 초안자리(t);
+  if (S.초안[k]) return S.초안[k];
+  if (k.indexOf("고침:") === 0) {   // 고치던 초안이 없어짐 (취소 · 이미 고쳐 냄) — 빈 새 보고로 나가지 않게 멈춘 초안 (현황 새로 불러오기만)
+    const e = S.편집 || {};
+    return (S.초안[k] = { 날짜: e.날짜 || 기본날짜(t), 참석: [], 사진: [], _키: k, 고침: { 보고: e.보고, 판: e.판, 날짜: e.날짜 }, 바뀜: true,
+                          제출오류: "이 보고는 취소됐거나 이미 고쳐 냈어요. 현황에서 다시 열어 주세요." });
+  }
+  return (S.초안[k] = { 날짜: 기본날짜(t), 참석: [], 사진: [], _키: k });
+}
 function 사진찾기(키) { for (const id in S.초안) { const p = S.초안[id].사진.find(x => x.키 === 키); if (p) return p; } return null; }
-function 보고중(샘터id) { const t = 지금샘터(); return S.화면 === "보고" && t && t.id === 샘터id; }
+function 보고중(초) { const t = 지금샘터(); return S.화면 === "보고" && !!t && !!초 && S.초안[초안자리(t)] === 초; }
 function 칸(id, html) { const el = document.getElementById(id); if (el) el.innerHTML = html; }
 
 function 보고화면() {
-  const t = 지금샘터(), 초 = 초안(t), 범위 = 날짜범위(t);
+  const t = 지금샘터(), 초 = 초안(t), 범위 = 날짜범위(t), 고침 = 초.고침;
   return `
-  <div class="top"><button type="button" class="back" data-act="뒤로">${꺾쇠}${t.지난달 ? `${달숫자(t)}월 현황` : "이번 달 현황"}</button><span class="grow"></span>${문의알약()}</div>
+  <div class="top"><button type="button" class="back" data-act="뒤로">${꺾쇠}${고침 ? "보고 보기" : t.지난달 ? `${달숫자(t)}월 현황` : "이번 달 현황"}</button><span class="grow"></span>${문의알약()}</div>
   <div id="srv-note">${서버알림()}</div>
   <div class="head" style="padding-top:6px;gap:6px">
     <p class="place">${핀}${esc(t.이름표)} 샘터${t.팀구분 ? ` <span class="tag">${esc(t.팀구분)}</span>` : ""}${t.지난달 ? ` <span class="tag">${달숫자(t)}월</span>` : ""}</p>
-    <h1>모임 보고</h1>
-    <p>${esc(S.결과.이름)} 샘지기 · 모임이 끝난 자리에서 한 번에 내면 돼요</p>
+    <h1>${고침 ? "보고 고치기" : "모임 보고"}</h1>
+    <p>${고침 ? `${esc(날글(고침.날짜))}에 낸 보고예요. 고친 뒤 [고친 보고 내기]를 누르면 바뀌어요` : `${esc(S.결과.이름)} 샘지기 · 모임이 끝난 자리에서 영수증까지 한 번에 내 주세요`}</p>
   </div>
 
   <div id="rp-body"${보고잠김(초) ? ` class="locked" inert` : ""}>
@@ -547,7 +971,7 @@ function 보고화면() {
   </section>
 
   <section class="sec" aria-labelledby="h-rc">
-    <div class="sec-head"><h2 id="h-rc">영수증</h2><span class="hint">나중에 추가해도 돼요</span></div>
+    <div class="sec-head"><h2 id="h-rc">영수증</h2><span class="hint">쓴 돈이 없으면 비워 두세요</span></div>
     <p class="note">결제 한 번에 영수증 하나씩 넣어 주세요. 한 결제에 사진이 여러 장(주문 캡처 · 품목 영수증 등)이면 그 영수증에 ‘사진 붙이기’로 더해요. 금액은 첫 사진에서 읽어 채워 둘게요.</p>
     <div id="rc-list" class="rc-list">${영수증목록(초)}</div>
     <input type="file" id="pick-rc" class="sr" data-pick="영수증" accept="image/*,application/pdf" multiple>
@@ -559,17 +983,18 @@ function 보고화면() {
 
   <div class="stack" id="s-foot">${제출칸(t, 초)}</div>`;
 }
-function 보고잠김(초) { return S.제출중 || !!(초 && 초.제출 && 초.제출.상태 === "모름"); }   // 보내는 중 · 들어갔는지 모름 → 고치지 못하게
+function 내는중(초) { return !!초 && S.보내는.has(초); }
+function 보고잠김(초) { return 내는중(초) || !!(초 && 초.제출 && 초.제출.상태 === "모름"); }   // 보내는 중 · 들어갔는지 모름 → 고치지 못하게
 function 잠금그리기() {
   const el = document.getElementById("rp-body"), t = 지금샘터();
   if (!el || !t) return;
-  const 잠 = 보고잠김(S.초안[t.id]);
+  const 잠 = 보고잠김(S.초안[초안자리(t)]);
   el.classList.toggle("locked", 잠);
   el.inert = 잠;
 }
 
 function 서버알림() {
-  return S.서버옛날 ? `<p class="setup">관리자 안내: 웹앱 서버가 아직 이 화면의 기능(사진 올리기 · 보고 제출)을 몰라요. Apps Script에 3단계 코드를 붙이고 [배포 관리] → 새 버전으로 배포했는지 확인해 주세요.</p>` : "";
+  return S.서버옛날 || S.서버4전 ? `<p class="setup">관리자 안내: 웹앱 서버가 아직 이 화면의 기능(${S.서버옛날 ? "사진 올리기 · 보고 제출" : "현황 · 고치기 · 취소"})을 몰라요. Apps Script에 4단계 코드를 붙이고 [배포 관리] → 새 버전으로 배포했는지 확인해 주세요.</p>` : "";
 }
 
 function 날짜알림(t, 초) {
@@ -582,17 +1007,31 @@ function 날짜알림(t, 초) {
     return `<p class="box red">${느낌표()}<span>${esc(글)}</span></p>`;
   }
   const 주 = 주차정보(초.날짜);
-  return `<p class="box blue">${폴더그림}<span><strong>${esc(주.글)}</strong> 폴더에 저장돼요</span></p>` + 주한번알림(t, 초.날짜);
+  return `<p class="box blue">${폴더그림}<span><strong>${esc(주.글)}</strong> 폴더에 저장돼요</span></p>` + 주한번알림(t, 초.날짜, 영수증카드들(초).length > 0);
 }
-// 이미 보고한 주를 고르면 — 지원은 한 주에 한 번, 먼저 한 모임만 (v13이 정산 때 같은 주 두 번째 모임을 뺌). 막지는 않음
-function 주한번알림(t, 날) {
-  const 낸 = t.보고 || [], 주 = 주차정보(날);
+function 날짜알림그리기(t, 초) {   // 같은 내용이면 그대로 (영수증 금액을 적을 때마다 다시 그리지 않게)
+  const el = document.getElementById("day-info");
+  if (!el) return;
+  const h = 날짜알림(t, 초);
+  if (el._글 !== h) { el._글 = h; el.innerHTML = h; }
+}
+// 이미 보고한 주를 고르면 — 지원은 한 주에 한 번 (v13이 정산 때 같은 주 두 번째 모임을 뺌). 막지는 않음
+//  현황(정산폼에 손으로 적은 줄까지)을 받았으면 그것으로, 아니면 낸 보고 목록으로. 고치는 보고는 빼고 봄
+//  영수증 없이 내는 보고는 정산폼에 안 적히니 같은 날 보고 안내만 (주 한 번 · 정산폼 같은 날 줄 안내는 영수증이 있을 때)
+function 주한번알림(t, 날, 영수증있음) {
+  const 주 = 주차정보(날);
   if (!주) return "";
-  if (낸.some(x => x.날짜 === 날)) return `<p class="box amber">${느낌표()}<span>이 날짜 모임은 이미 보고했어요. 같은 모임을 다시 낼 필요는 없어요.</span></p>`;
-  const 같은주 = 낸.map(x => x.날짜).filter(d => d !== 날 && d.slice(0, 7) === 날.slice(0, 7) && (주차정보(d) || {}).주 === 주.주).sort();
+  const 고치는 = S.편집 && S.편집.샘터 === t.id ? S.편집.보고 : "";
+  const 모임 = 이달모임(t).map(m => Object.assign({}, m, { 보고: m.보고.filter(b => b.보고 !== 고치는) })).filter(m => m.보고.length || m.손합계 > 0);
+  const 같은날 = 모임.find(m => m.날짜 === 날);
+  if (같은날 && 같은날.보고.length) return `<p class="box amber">${느낌표()}<span>이 날짜 모임은 이미 보고했어요. 고칠 게 있으면 <button type="button" class="linkbtn" data-act="보기" data-bogo="${esc(같은날.보고[0].보고)}">그 보고</button>를 열어 [고치기]를 눌러 주세요.</span></p>`;
+  if (!영수증있음) return "";
+  if (같은날) return `<p class="box amber">${느낌표()}<span>정산폼에 이 날짜로 적힌 줄이 있어요 (${원(같은날.손합계)}원). 같은 영수증이 두 번 적히지 않게 확인해 주세요.</span></p>`;
+  const 받을 = m => m.손합계 > 0 || m.보고.some(b => (Number(b.합계) || 0) > 0);
+  const 같은주 = 모임.filter(m => 받을(m) && m.날짜 !== 날 && m.날짜.slice(0, 7) === 날.slice(0, 7) && (주차정보(m.날짜) || {}).주 === 주.주).map(m => m.날짜).sort();
   if (!같은주.length) return "";
-  if (같은주[0] < 날) return `<p class="box amber">${느낌표()}<span>이 주에는 ${esc(날글(같은주[0]))} 모임을 이미 보고했어요. 지원은 한 주에 한 번, 먼저 한 모임만 돼요.</span></p>`;
-  return `<p class="box amber">${느낌표()}<span>이 주에 ${esc(날글(같은주[0]))} 모임도 보고했어요. 지원은 한 주에 한 번, 먼저 한 모임만 돼요 — 이 모임이 먼저라 ${esc(날짧게(같은주[0]))} 모임은 지원에서 빠져요.</span></p>`;
+  if (같은주[0] < 날) return `<p class="box amber">${느낌표()}<span>이 주에는 ${esc(날글(같은주[0]))} 모임을 이미 보고했어요. 지원은 한 주에 한 번만 돼요.</span></p>`;
+  return `<p class="box amber">${느낌표()}<span>이 주에 ${esc(날글(같은주[0]))} 모임도 보고했어요. 지원은 한 주에 한 번만 돼요 — 이 모임을 내면 ${esc(날짧게(같은주[0]))} 모임은 지원에서 빠져요.</span></p>`;
 }
 
 function 참석목록(초) {
@@ -678,7 +1117,9 @@ function 영수증알림(p, 초) {
       <span class="btns"><button type="button" class="yes" data-act="합치기" data-key="${p.키}" data-to="${짝.앞.키}">영수증 ${짝.번호}에 붙이기</button><button type="button" class="no" data-act="따로" data-key="${p.키}">따로 결제했어요</button></span></div>`);
   if (p.올림 === "실패") 줄.push(`<p class="st bad">${느낌표(16)}<span>${esc(p.올림오류)}${p.막힘 || !p.file ? " 이 영수증을 빼고 다시 넣어 주세요." : ` <button type="button" class="linkbtn" data-act="다시올리기" data-key="${p.키}">다시 올리기</button>`}</span></p>`);
   const 같은날 = p.영수증날짜 && 초.날짜 && p.영수증날짜 === 초.날짜;
-  if (읽는중(p)) 줄.push(`<p class="st"><span class="spin sm"></span><span>사진에서 금액 읽는 중… 그동안 다른 칸을 채워 주세요.</span></p>`);
+  if (p.폼에서 && Number(p.금액) === p.폼에서.폼금액) 줄.push(`<p class="st">정산폼 ${p.폼에서.줄}행에서 고친 금액으로 채웠어요 · 처음 보고한 금액 ${원(p.폼에서.보고금액)}원</p>`);
+  else if (p.기존 && p.판독 !== "읽음") { /* 고치는 보고 — 낸 금액 그대로 (다시 읽지 않음) */ }
+  else if (읽는중(p)) 줄.push(`<p class="st"><span class="spin sm"></span><span>사진에서 금액 읽는 중… 그동안 다른 칸을 채워 주세요.</span></p>`);
   else if (p.판독 === "대기") 줄.push(`<p class="st">사진을 다 올리면 금액을 읽어요.</p>`);
   else if (p.판독 === "읽음") {
     const 읽은 = 원(p.읽은금액) + "원";
@@ -699,8 +1140,9 @@ function 합계칸(초) {
   const 영수증 = 영수증카드들(초);
   if (!영수증.length) return "";
   const 합 = 영수증.reduce((a, p) => a + (Number(p.금액) || 0), 0), 인원 = 초.참석.length;
-  const 종이 = 영수증.filter(p => p.구분 === "종이").length, 전자 = 영수증.filter(p => p.구분 === "전자").length;
-  const 종이붙임 = 영수증.some(p => p.구분 === "종이" && 붙임들(p, 초).length);
+  const 고침 = !!초.고침;   // 고칠 때는 새로 넣은 종이 영수증만 파일함 안내 (앞서 낸 것은 이미 넣었을 테니)
+  const 종이 = 영수증.filter(p => p.구분 === "종이" && !(고침 && p.기존)).length, 전자 = 영수증.filter(p => p.구분 === "전자").length;
+  const 종이붙임 = 영수증.some(p => p.구분 === "종이" && !(고침 && p.기존) && 붙임들(p, 초).length);
   return `
     <div class="sum">
       <div class="r"><span>영수증 합계</span><span>${원(합)}원</span></div>
@@ -709,7 +1151,7 @@ function 합계칸(초) {
       <div class="tot"><span>지원 예상</span><b>${합 > 0 && 인원 > 0 ? 원(Math.min(합, 5000 * 인원, 25000)) + "원" : "—"}</b></div>
       <p class="note sm">영수증 합계, 인당 5,000원, 모임당 25,000원 중 가장 적은 금액이에요. 월말에 확인한 뒤 확정돼요.</p>
     </div>
-    ${종이 ? `<p class="note ink">종이 영수증 ${종이}장은 교역자실 앞 파일함에 넣어 주세요.${종이붙임 ? " 품목 영수증을 따로 받았으면 함께 넣어 주세요." : ""} <a href="${영수증제출안내}" target="_blank" rel="noopener">제출 위치 보기</a></p>` : ""}
+    ${종이 ? `<p class="note ink">${고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 교역자실 앞 파일함에 넣어 주세요.${종이붙임 ? " 품목 영수증을 따로 받았으면 함께 넣어 주세요." : ""} <a href="${영수증제출안내}" target="_blank" rel="noopener">제출 위치 보기</a></p>` : ""}
     ${전자 ? `<p class="note ink">전자영수증은 올린 캡처가 증빙이에요. 편집하지 않은 원본 그대로 올려 주세요.</p>` : ""}`;
 }
 
@@ -730,18 +1172,20 @@ function 막힌까닭(t, 초) {
   return "";
 }
 function 제출칸(t, 초) {
-  const 제출 = 초.제출, 안내 = `<p class="foot">여기서 낸 내용은 정산폼에 자동으로 적혀요. 정산폼에 따로 적지 않아도 돼요.</p>`;
-  if (S.제출중) return `
-    <button type="button" class="btn busy" disabled><span class="spin"></span>보고를 내는 중…</button>
-    <p class="foot">사진을 샘터 폴더로 옮기고 정산폼에 적고 있어요. 창을 닫지 말아 주세요.</p>`;
+  const 제출 = 초.제출, 고침 = 초.고침, 영수증수 = 영수증카드들(초).length;
+  const 안내 = `<p class="foot">${!영수증수 ? "영수증이 없으면 지원 없이 모임만 보고돼요." : 고침 ? "고친 내용으로 정산폼 줄과 기록을 바꿔요." : "여기서 낸 내용은 정산폼에 자동으로 적혀요. 정산폼에 따로 적지 않아도 돼요."}</p>`;
+  if (내는중(초)) return `
+    <button type="button" class="btn busy" disabled><span class="spin"></span>${고침 ? "고친 보고를 내는 중…" : "보고를 내는 중…"}</button>
+    <p class="foot">${고침 ? "사진 이름을 맞추고 정산폼을 고치고 있어요." : "사진을 샘터 폴더로 옮기고 정산폼에 적고 있어요."} 창을 닫지 말아 주세요.</p>`;
   if (제출 && 제출.상태 === "모름") return `
     <p class="box amber" role="alert">${느낌표()}<span>${esc(제출.안내 || "연결이 끊겨 보고가 들어갔는지 확인하지 못했어요.")} 다시 내도 두 번 적히지 않아요.</span></p>
     <button type="button" class="btn" data-act="제출">다시 내기</button>
     ${(제출.실패 || 0) >= 3 ? `<p class="foot">계속 안 되면 카카오톡으로 알려 주세요. 보고를 고쳐야 하면 <button type="button" class="linkbtn" data-act="제출멈춤">보내기를 멈추고 고치기</button></p>` : ""}`;
   const 오류 = 초.제출오류 ? `<p class="box red" role="alert">${느낌표()}<span>${esc(초.제출오류)}</span></p>` : "";
+  if (초.바뀜) return `${오류}<button type="button" class="btn" data-act="현황새로">현황 새로 불러오기</button>`;
   const 막힘 = 막힌까닭(t, 초);
   if (막힘) return `${오류}<button type="button" class="btn block" disabled>${esc(막힘)}</button>${안내}`;
-  return `${오류}<button type="button" class="btn" data-act="제출">보고 제출</button>${안내}`;
+  return `${오류}<button type="button" class="btn" data-act="제출">${고침 ? "고친 보고 내기" : 영수증수 ? "보고 제출" : "영수증 없이 보고 제출"}</button>${안내}`;
 }
 
 // 바뀐 칸만 다시 그리기
@@ -753,13 +1197,13 @@ function 참석그리기() {
 function 아래그리기() {   // 합계 · 제출 버튼
   const t = 지금샘터(); if (!t || S.화면 !== "보고") return;
   const 초 = 초안(t);
-  칸("rc-sum", 합계칸(초)); 칸("s-foot", 제출칸(t, 초)); 잠금그리기();
+  칸("rc-sum", 합계칸(초)); 칸("s-foot", 제출칸(t, 초)); 날짜알림그리기(t, 초); 잠금그리기();
 }
 function 영수증알림모두(초) { 영수증카드들(초).forEach(p => 칸("rm-" + p.키, 영수증알림(p, 초))); }   // 금액이 바뀌면 같은 금액 안내가 다른 영수증에도 걸림
 function 사진그리기(p) {   // 사진 하나의 상태가 바뀌었을 때
   초안저장();
-  if (!보고중(p.샘터)) return;
-  const 초 = S.초안[p.샘터];
+  if (!보고중(p.초안)) return;
+  const 초 = p.초안;
   if (p.종류 === "인증샷") 칸("shot-box", 인증샷목록(초));
   else if (p.부모) {   // 붙인 사진 — 그 영수증의 붙임 줄만
     const a = 초.사진.find(x => x.키 === p.부모);
@@ -801,7 +1245,7 @@ function 새사진(f, 종류, t, 초, 부모) {
   else if (!f.size) 막기("빈 파일이에요.");
   return p;
 }
-function 살아있음(p) { return !p.지움 && S.초안[p.샘터] === p.초안; }
+function 살아있음(p) { return !p.지움 && S.초안[p.초안._키] === p.초안; }
 function 읽는중(p) { return p.판독 === "준비" || p.판독 === "읽는중"; }
 
 function 사진고름(input) {
@@ -830,7 +1274,7 @@ function 붙임고름(파일들) {
     const q = 새사진(f, "영수증", t, 초, a.키);
     초.사진.push(q); 새것.push(q);
   }
-  if (보고중(a.샘터)) { 칸("att-" + a.키, 붙임칸(a, 영수증카드들(초).indexOf(a) + 1, 초)); 칸("rm-" + a.키, 영수증알림(a, 초)); 아래그리기(); }
+  if (보고중(초)) { 칸("att-" + a.키, 붙임칸(a, 영수증카드들(초).indexOf(a) + 1, 초)); 칸("rm-" + a.키, 영수증알림(a, 초)); 아래그리기(); }
   새것.forEach(q => { if (!q.막힘) { 손질넣기(q); 올림넣기(q); } });
   초안저장();
 }
@@ -1035,8 +1479,13 @@ function 연결오류(e, 오래) {
   return { ok: false, 안내: e && e.name === "AbortError" ? 오래
     : e && e.message === "설정" ? "아직 연결 준비가 안 됐어요." : e && e.name === "NotReadableError" ? "사진을 읽지 못했어요. 다시 골라 주세요." : "연결이 끊겨 보내지 못했어요." };
 }
-function 서버글(d, 기본) {
-  if (d && d.안내 === "알 수 없는 요청이에요.") { if (!S.서버옛날) { S.서버옛날 = true; 칸("srv-note", 서버알림()); } return "서버가 아직 준비되지 않았어요. 양육국에 문의해 주세요."; }
+// 새기능 = 4단계 요청(현황 · 보고열기 · 고침 · 취소) — 서버가 모르면 3단계 서버 (사진 · 제출은 그대로 됨)
+function 서버글(d, 기본, 새기능) {
+  if (d && d.안내 === "알 수 없는 요청이에요.") {
+    if (새기능) { if (!S.서버4전) { S.서버4전 = true; 칸("srv-note", 서버알림()); } return "서버가 아직 이 기능을 몰라요. 양육국에 문의해 주세요."; }
+    if (!S.서버옛날) { S.서버옛날 = true; 칸("srv-note", 서버알림()); }
+    return "서버가 아직 준비되지 않았어요. 양육국에 문의해 주세요.";
+  }
   return (d && d.안내) || 기본;
 }
 function 사진정리() { Object.keys(S.초안).forEach(id => S.초안[id].사진.forEach(p => { p.지움 = true; if (p.주소) URL.revokeObjectURL(p.주소); })); }
@@ -1059,11 +1508,86 @@ function 알림(글) {
 
 // ---------- 보고 화면 동작 (눌림 · 입력은 #app 한 곳에서 받음) ----------
 const 동작 = {
-  보고열기() {
-    S.화면 = "보고"; S.옮김 = true; 그리기(); window.scrollTo(0, 0);
-    if (!S.기록) { try { history.pushState({ 보고: 1 }, ""); S.기록 = true; } catch (e) {} }
+  보고열기() { S.편집 = null; 들어가기("보고"); },   // 새 보고 (쓰던 보고가 있으면 이어서)
+  뒤로() { 뒤로가기(); },
+  보기(el) {   // 현황 · 날짜 안내에서 보고를 누름
+    const t = 지금샘터(), id = el.getAttribute("data-bogo");
+    if (!t || !id) return;
+    const o = S.열린[id];
+    if (o && (o.상태 === "실패" || (o.상태 === "됨" && Date.now() - o.때 > 120000))) delete S.열린[id];   // 받는 중이면 그대로 (한 번만)
+    들어가기("보기", () => { S.보는 = id; S.취소확인 = ""; S.보기오류 = ""; });   // 보고 열기 · 현황은 보기 화면이 받음
   },
-  뒤로() { if (S.기록) history.back(); else 가기("샘터"); },
+  async 고치기() {
+    const t = 지금샘터(), id = S.보는;
+    if (!t || !id || S.취소중[id]) return;
+    const 방문 = S.방문;   // 기다리는 사이 나갔다 오거나 취소를 누르면 고치기로 가지 않음
+    const 그대로 = () => S.방문 === 방문 && S.화면 === "보기" && S.보는 === id && !S.취소중[id];
+    const 발다시 = () => { if (S.화면 === "보기" && S.보는 === id) 칸("bv-foot", 보기발(t, 보는보고(t))); };
+    let o = S.열린[id];
+    if (!o || o.상태 !== "됨") {
+      if (!o || o.상태 === "실패") 보고열어두기(t, id);
+      칸("bv-foot", 보기발(t, 보는보고(t)));
+      await (S.열린[id] && S.열린[id].약속);
+      if (!그대로()) { 발다시(); return; }
+      o = S.열린[id];
+      if (!o || o.상태 !== "됨") { 그리기(); return; }
+    }
+    const k = "고침:" + id;
+    let 초 = S.초안[k];
+    if (!초 || !초.고침 || 초.바뀜 || 초.고침.판 !== o.값.판) {   // 앞서 고치다 둔 초안은 같은 판일 때만 이어서 ('바뀜'으로 멈춘 초안은 버림)
+      const h = S.현황[t.id];   // 정산폼 금액(금액다름)으로 채우려면 현황이 있어야 — 받는 중이면 기다림
+      if (h && h.상태 === "읽는중" && h.약속) {
+        S.고치기대기 = id; 칸("bv-foot", 보기발(t, 보는보고(t)));
+        try { await h.약속; } finally { if (S.고치기대기 === id) S.고치기대기 = ""; }
+        if (!그대로()) { 발다시(); return; }
+        if (S.열린[id] !== o) { 그리기(); return; }
+      }
+      초 = S.초안[k];
+      if (초) 초.사진.forEach(p => { p.지움 = true; });
+      초 = 고침초안(t, o.값);
+    }
+    들어가기("보고", () => { S.편집 = { 샘터: t.id, 보고: id, 판: o.값.판, 날짜: o.값.날짜 }; });
+  },
+  async 취소() {
+    const t = 지금샘터(), b = t && 보는보고(t);
+    if (!t || !b || S.취소중[b.보고]) return;
+    if (S.취소확인 !== b.보고) {   // 한 번 더 눌러야
+      S.취소확인 = b.보고; S.보기오류 = "";
+      칸("bv-foot", 보기발(t, b));
+      clearTimeout(취소타이머);
+      취소타이머 = setTimeout(() => { if (S.취소확인 === b.보고) { S.취소확인 = ""; if (S.화면 === "보기") 칸("bv-foot", 보기발(t, 보는보고(t))); } }, 6000);
+      return;
+    }
+    clearTimeout(취소타이머);
+    S.취소확인 = ""; S.취소중[b.보고] = true;
+    칸("bv-foot", 보기발(t, b));
+    const o = S.열린[b.보고], 판 = (o && o.값 && o.값.판) || b.판;
+    let d = null;
+    try { d = await 요청({ action: "취소", 샘터: t.id, 보고: b.보고, 판 }, 90); } catch (e) { d = null; }
+    delete S.취소중[b.보고];
+    const 여기 = S.화면 === "보기" && S.보는 === b.보고;
+    if (d && d.ok) {
+      if (Array.isArray(d.보고목록)) t.보고 = d.보고목록;
+      delete S.현황[t.id]; delete S.열린[b.보고];
+      const 초 = S.초안["고침:" + b.보고];
+      if (초) { 초.사진.forEach(p => { p.지움 = true; }); delete S.초안["고침:" + b.보고]; }
+      S.안내글 = { 샘터: t.id, 글: 취소글(d.취소, b) };
+      if (여기 || (S.화면 === "보고" && S.편집 && S.편집.보고 === b.보고)) 현황으로();
+      else if (S.화면 === "샘터") 그리기();   // 기다리는 사이 현황으로 돌아가 있음 — 안내 · 새 현황
+      return;
+    }
+    if (d && d.ok === false && d.코드 === "본인") { 본인풀림(d.안내); return; }
+    const 글 = !d ? "연결이 끊겨 취소됐는지 확인하지 못했어요. 현황을 새로 불러 확인해 주세요." : 서버글(d, "취소하지 못했어요.", true);
+    if (!d || d.코드 === "바뀜") { delete S.현황[t.id]; delete S.열린[b.보고]; }
+    if (여기) { S.보기오류 = 글; 그리기(); } else 알림(글);
+  },
+  현황새로() {   // 바뀐 보고 · 못 읽은 현황 — 현황을 다시 받고 현황으로
+    const t = 지금샘터();
+    if (!t) return;
+    delete S.현황[t.id];
+    Object.keys(S.열린).forEach(k => { if (S.열린[k].상태 !== "읽는중") delete S.열린[k]; });
+    if (S.화면 === "샘터") { 현황받기(t, true); 그리기(); } else 현황으로();
+  },
   제안추가(el) { 참석넣기(el.getAttribute("data-name")); },
   참석빼기(el) { const 초 = 초안(지금샘터()); 초.참석.splice(Number(el.getAttribute("data-i")), 1); 참석그리기(); },
   사진빼기(el) {   // 영수증을 빼면 붙인 사진까지 같이
@@ -1073,7 +1597,7 @@ const 동작 = {
     뺄.forEach(x => {
       초.사진.splice(초.사진.indexOf(x), 1); x.지움 = true;
       if (x.주소 && x.주소.indexOf("blob:") === 0) URL.revokeObjectURL(x.주소);
-      if (x.파일id) 지우기요청(x);
+      if (x.파일id && !x.기존) 지우기요청(x);   // 고치는 보고에 있던 사진은 고친 보고를 낼 때 서버가 휴지통으로
     });
     if (p.종류 === "인증샷") { 칸("shot-box", 인증샷목록(초)); 아래그리기(); }
     else if (부모) { 칸("att-" + 부모.키, 붙임칸(부모, 영수증카드들(초).indexOf(부모) + 1, 초)); 칸("rm-" + 부모.키, 영수증알림(부모, 초)); 아래그리기(); }
@@ -1122,8 +1646,8 @@ const 동작 = {
   },
   제출() { 보고내기(); },
   제출멈춤(el) {   // 계속 들어갔는지 모를 때 — 두 번 눌러야. 앞서 보낸 보고가 들어갔으면 사진이 '이미 낸 사진'으로 걸려 두 번 적히지 않음
-    const t = 지금샘터(), 초 = t && S.초안[t.id];
-    if (!초 || !초.제출 || S.제출중) return;
+    const t = 지금샘터(), 초 = t && S.초안[초안자리(t)];
+    if (!초 || !초.제출 || 내는중(초)) return;
     if (!S.멈춤확인) {
       S.멈춤확인 = true; el.textContent = "한 번 더 누르면 멈춰요";
       setTimeout(() => { S.멈춤확인 = false; }, 4000);
@@ -1134,8 +1658,9 @@ const 동작 = {
     초.제출오류 = "보내기를 멈췄어요. 앞서 보낸 보고가 들어갔을 수 있으니, 고쳐서 다시 내기 전에 카카오톡으로 확인해 주세요.";
     초안저장지금(); 아래그리기();
   },
-  현황() { if (!S.결과) { 가기("확인"); return; } if (S.기록) history.back(); else 가기("샘터"); },
+  현황() { if (!S.결과) { 가기("확인"); return; } 현황으로(); },
 };
+let 취소타이머 = 0;
 function 참석넣기(글) {
   const t = 지금샘터(), 초 = 초안(t);
   String(글 || "").split(/[,，、\/\n]+/).map(s => s.replace(/\s+/g, " ").trim().slice(0, 20)).filter(Boolean).forEach(n => {
@@ -1156,7 +1681,7 @@ function 금액입력(el) {
 function 날짜바꿈(v) {
   const t = 지금샘터(), 초 = 초안(t);
   초.날짜 = v;
-  칸("day-info", 날짜알림(t, 초));
+  날짜알림그리기(t, 초);
   영수증알림모두(초);
   아래그리기(); 초안저장();
 }
@@ -1194,8 +1719,8 @@ function 이벤트붙이기() {
     const p = 사진찾기(img.getAttribute("data-key"));
     if (p) { p.미리보기실패 = true; const 칸그림 = document.createElement("span"); 칸그림.className = "ph"; 칸그림.setAttribute("role", "img"); 칸그림.setAttribute("aria-label", img.alt); 칸그림.innerHTML = p.종류 === "영수증" ? 영수증그림 : "사진"; img.replaceWith(칸그림); }
   }, true);
-  window.addEventListener("popstate", () => { S.기록 = false; if (S.화면 === "보고" || S.화면 === "완료") 가기("샘터"); });
-  window.addEventListener("beforeunload", e => { 초안저장지금(); if (올리는중() || S.제출중) { e.preventDefault(); e.returnValue = ""; } });
+  window.addEventListener("popstate", 뒤로왔을때);
+  window.addEventListener("beforeunload", e => { 초안저장지금(); if (올리는중() || S.보내는.size) { e.preventDefault(); e.returnValue = ""; } });
   // 폰이 창을 뒤로 보내면(다른 앱 · 사진 고르기) 쓰던 보고를 바로 저장 — 창이 닫혀도 이어 쓰게
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") 초안저장지금(); });
   window.addEventListener("pagehide", () => 초안저장지금());
@@ -1207,19 +1732,20 @@ function 이벤트붙이기() {
 let 다시내기타이머 = 0;
 async function 보고내기(자동) {
   const t = 지금샘터();
-  if (!t || S.제출중) return;
+  if (!t) return;
   const 초 = 초안(t);
+  if (내는중(초)) return;
   const 모름 = 초.제출 && 초.제출.상태 === "모름";
   if (!모름 && 막힌까닭(t, 초)) return;
   clearTimeout(다시내기타이머);
   if (!초.제출) 초.제출 = { id: 새제출id(), 상태: "" };
   초.제출.상태 = "보내는중"; 초.제출오류 = "";
-  S.제출중 = true;
+  S.보내는.set(초, true);
   초안저장지금();
   아래그리기();
   const 카드 = 영수증카드들(초);
   const 몸 = {
-    action: "제출", 샘터: t.id, 제출id: 초.제출.id, 날짜: 초.날짜, 참석: 초.참석.slice(),
+    action: 초.고침 ? "고침" : "제출", 샘터: t.id, 제출id: 초.제출.id, 날짜: 초.날짜, 참석: 초.참석.slice(),
     인증샷: 초.사진.filter(p => p.종류 === "인증샷").map(p => p.파일id),
     영수증: 카드.map(p => ({
       파일: p.파일id, 붙임: 붙임들(p, 초).map(q => q.파일id), 구분: p.구분, 금액: Number(p.금액),
@@ -1227,22 +1753,27 @@ async function 보고내기(자동) {
       영수증날짜: p.영수증날짜 || "", 출처: p.출처 || "직접", 따로: !!p.따로, 여러장: !!p.여러장,
     })),
   };
+  if (초.고침) { 몸.보고 = 초.고침.보고; 몸.판 = 초.고침.판; }
   const 전상태 = 모름 ? "모름" : "";
   let d = null, 끊김 = null;
   try { d = await 요청(몸, 120); } catch (e) { 끊김 = e; }
-  S.제출중 = false;
-  if (S.초안[t.id] !== 초) return;   // 그사이 다른 사람으로 바꿈
+  S.보내는.delete(초);
+  if (S.초안[초._키] !== 초) { if (S.화면 === "보고") 아래그리기(); return; }   // 그사이 다른 사람으로 바꿈
   if (d && d.ok && d.보고) { 제출됨(t, 초, d); return; }
   const 모름으로 = 안내 => { 초.제출.상태 = "모름"; 초.제출.안내 = 안내; 초.제출.실패 = (초.제출.실패 || 0) + 1; };
   if (!d) 모름으로(끊김 && 끊김.name === "AbortError" ? "응답이 너무 늦어 보고가 들어갔는지 확인하지 못했어요." : "연결이 끊겨 보고가 들어갔는지 확인하지 못했어요.");
   else if (d.코드 === "바쁨") 모름으로(d.안내 || "지금 보고가 몰려 있어요.");
   else if (!d.코드) {   // 서버 오류 — 도중까지 됐을 수 있어 같은 번호로 다시
-    서버글(d, "");
-    if (S.서버옛날) { 초.제출 = null; 초.제출오류 = "서버가 아직 보고 제출을 몰라요. 양육국에 문의해 주세요."; }
+    서버글(d, "", !!초.고침);
+    if (S.서버옛날 || (초.고침 && S.서버4전)) { 초.제출 = null; 초.제출오류 = `서버가 아직 ${초.고침 ? "고치기" : "보고 제출"}를 몰라요. 양육국에 문의해 주세요.`; }
     else 모름으로("보고를 내다가 문제가 생겼어요.");
   } else if (d.코드 === "본인") {   // 확인이 풀림 — 제출 번호는 그대로 (앞서 보낸 보고가 들어갔을 수 있음), 다시 확인하면 이어서
     초.제출.상태 = 전상태;
     초안저장지금(); 본인풀림(d.안내); return;
+  } else if (d.코드 === "바뀜") {   // 고치는 사이 다른 폰에서 고치거나 취소함 — 현황을 새로 받아 다시 열어야
+    초.제출 = null; 초.바뀜 = true;
+    초.제출오류 = d.안내 || "그사이 이 보고가 바뀌었어요. 현황에서 다시 열어 주세요.";
+    delete S.현황[t.id]; if (초.고침) delete S.열린[초.고침.보고];
   } else {   // 서버가 아무것도 바꾸기 전에 거절 — 고쳐서 새로 냄
     초.제출 = null;
     if (d.코드 === "파일" && Array.isArray(d.파일들)) {
@@ -1250,40 +1781,64 @@ async function 보고내기(자동) {
         const p = 초.사진.find(x => x.파일id === id);
         if (p) { p.올림 = "실패"; p.막힘 = true; p.올림오류 = d.이미낸 ? "이미 낸 보고에 들어간 사진이에요." : "올린 사진을 찾지 못했어요."; }
       });
-      if (보고중(t.id)) { 칸("shot-box", 인증샷목록(초)); 칸("rc-list", 영수증목록(초)); }
+      if (보고중(초)) { 칸("shot-box", 인증샷목록(초)); 칸("rc-list", 영수증목록(초)); }
     }
     초.제출오류 = d.안내 || "보고를 내지 못했어요.";
   }
   초안저장지금();
-  if (보고중(t.id)) 아래그리기();
+  if (보고중(초)) 아래그리기();
   if (초.제출 && 초.제출.상태 === "모름" && !자동) {   // 한 번은 저절로 다시 (같은 번호라 두 번 적히지 않음)
-    다시내기타이머 = setTimeout(() => { if (보고중(t.id) && !S.제출중) 보고내기(true); }, 5000);
+    다시내기타이머 = setTimeout(() => { if (보고중(초) && !내는중(초)) 보고내기(true); }, 5000);
   }
 }
 function 제출됨(t, 초, d) {
   const 카드 = 영수증카드들(초), 샘터 = 샘터들().find(x => x.id === t.id) || t;
+  const 딴보고중 = S.화면 === "보고" && !보고중(초);   // 보내는 사이 다른 보고를 쓰고 있음 — 쓰던 것을 가리지 않게 알림만
   S.완료 = {
-    샘터: t.id, 보고: d.보고, 이미: !!d.이미,
+    샘터: t.id, 보고: d.보고, 이미: !!d.이미, 고침: !!초.고침 || !!(d.보고 && d.보고.고침),
     // 서버가 앞서 받은 보고를 기록에서 다시 찾아 내용 일부만 보낸 경우를 위해 화면이 낸 내용도 둠
     낸: { 날짜: 초.날짜, 참석: 초.참석.slice(), 인증샷: 초.사진.filter(p => p.종류 === "인증샷").length, 영수증: 카드.length,
           종이: 카드.filter(p => p.구분 === "종이").length, 전자: 카드.filter(p => p.구분 === "전자").length,
-          합계: 카드.reduce((a, p) => a + (Number(p.금액) || 0), 0), 종이붙임: 카드.filter(p => p.구분 === "종이" && 붙임들(p, 초).length).length },
+          합계: 카드.reduce((a, p) => a + (Number(p.금액) || 0), 0), 종이붙임: 카드.filter(p => p.구분 === "종이" && 붙임들(p, 초).length).length,
+          새종이: 카드.filter(p => p.구분 === "종이" && !p.기존).length },   // 고치며 새로 넣은 종이 영수증 (파일함 안내)
   };
-  if (Array.isArray(d.보고목록)) 샘터.보고 = d.보고목록.map(x => ({ 날짜: x.날짜, 주차: x.주차, 영수증: x.영수증, 합계: x.합계 }));
+  if (Array.isArray(d.보고목록)) 샘터.보고 = d.보고목록.map(x => ({ 날짜: x.날짜, 주차: x.주차, 영수증: x.영수증, 합계: x.합계, 인원: x.인원, 제출: x.제출, 보고: x.보고 }));
   else if (!(샘터.보고 || []).some(x => x.날짜 === 초.날짜)) {
-    샘터.보고 = (샘터.보고 || []).concat([{ 날짜: 초.날짜, 주차: (주차정보(초.날짜) || {}).주, 영수증: 카드.length, 합계: S.완료.낸.합계 }])
+    샘터.보고 = (샘터.보고 || []).concat([{ 날짜: 초.날짜, 주차: (주차정보(초.날짜) || {}).주, 영수증: 카드.length, 합계: S.완료.낸.합계, 인원: 초.참석.length }])
       .sort((a, b) => (a.날짜 < b.날짜 ? -1 : 1));
   }
+  delete S.현황[t.id];   // 현황으로 돌아가면 정산폼과 다시 맞춰 봄
+  if (초.고침) delete S.열린[초.고침.보고];
   초.사진.forEach(p => { p.지움 = true; if (p.주소 && p.주소.indexOf("blob:") === 0) URL.revokeObjectURL(p.주소); });
-  delete S.초안[t.id];
+  delete S.초안[초._키];
   초안저장지금();
   if (!S.결과) {   // 보내는 사이 확인이 풀려 처음 화면에 있음 — 보고는 들어갔다고만 알림
     S.메시지종류 = "안내"; S.메시지 = "보고는 들어갔어요. 다시 확인하면 이번 달 현황을 볼 수 있어요.";
     if (S.화면 === "확인") 그리기();
     return;
   }
+  if (딴보고중) {
+    const 글 = 완료짧은글(S.완료, 샘터);
+    S.안내글 = { 샘터: t.id, 글 };   // 현황으로 돌아가면 한 번 보임
+    알림(글);
+    아래그리기();   // 쓰던 보고의 날짜 안내에 방금 낸 보고를 반영
+    return;
+  }
   S.고른 = t.id;
+  if (!S.쌓임.length) {   // 현황에서 결과를 받음 — 완료에서 뒤로 가면 현황으로 (사이트를 떠나지 않게)
+    S.쌓임.push({ 화면: "샘터", 편집: null, 보는: "" });
+    try { history.pushState({ 깊이: 1, 세션: 세션표 }, ""); } catch (e) {}
+  }
   가기("완료");
+}
+function 완료짧은글(c, t) {   // 다른 보고를 쓰는 동안 끝난 보고 — 알림 · 현황 위 안내 한 줄
+  const b = Object.assign({}, c.낸 || {}, c.보고 || {});
+  let 글 = `${날짧게(b.날짜)} 모임 보고를 ${c.고침 ? "고쳤어요" : "받았어요"}.`;
+  const 폼 = b.정산폼 || "";
+  if (폼 === "줄 부족" || 폼 === "양식 다름" || 폼 === "못 엶" || /^안 씀/.test(b.정산폼글 || "")) 글 += " 정산폼에는 아직 적지 못했어요. 양육국이 확인해요.";
+  const 종이 = c.고침 ? Number((c.낸 || {}).새종이) || 0 : Number(b.종이) || 0;
+  if (종이) 글 += ` ${c.고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 ${날글(b.마감 || (t && t.마감))}까지 교역자실 앞 파일함에 넣어 주세요.`;
+  return 글;
 }
 
 function 완료화면() {
@@ -1297,7 +1852,7 @@ function 완료화면() {
   <div class="top"><span class="brand">${물방울(16, 20)}<span class="txt">청년샘터</span></span><span class="grow"></span>${문의알약()}</div>
   <div class="done-head">
     <span class="done-ic">${체크(28)}</span>
-    <h1>${t && t.지난달 ? `${달숫자(t)}월 ` : ""}${주 || ""}주차 보고를 받았어요</h1>
+    <h1>${t && t.지난달 ? `${달숫자(t)}월 ` : ""}${주 || ""}주차 보고를 ${c.고침 ? "고쳤어요" : "받았어요"}</h1>
     <p>${esc([t ? `${t.이름표} 샘터` : "", 날짧게(b.날짜) ? `${날짧게(b.날짜)} 모임` : ""].filter(Boolean).join(" · "))}</p>
   </div>
   <section class="panel" aria-label="낸 보고">
@@ -1313,25 +1868,26 @@ function 완료화면() {
   <div class="grow" style="min-height:24px"></div>
   <div class="stack">
     <button type="button" class="btn" data-act="현황">${t && t.지난달 ? `${달숫자(t)}월 현황 보기` : "이번 달 현황 보기"}</button>
-    <p class="foot">잘못 낸 내용은 정산폼에서 고치거나 카카오톡으로 문의해 주세요</p>
+    <p class="foot">고칠 게 생기면 이번 달 현황에서 이 보고를 눌러 고치거나 취소할 수 있어요</p>
     ${문의버튼("카카오톡으로 문의하기")}
   </div>`;
 }
 function 완료알림(b, t, c) {
   const 줄 = [], 상자 = (색, 글) => `<p class="box ${색}">${느낌표()}<span>${글}</span></p>`;
-  const 영수증 = Number(b.영수증) || 0, 종이 = Number(b.종이) || 0;
-  if (c.이미) 줄.push(`<p class="box blue">${체크(16)}<span>이 보고는 앞서 이미 받았어요. 두 번 적히지 않았어요.</span></p>`);
-  if (종이) 줄.push(`<p class="box blue">${영수증그림.replace('width="26" height="34"', 'width="16" height="21"')}<span>종이 영수증 ${종이}장은 ${esc(날글(b.마감 || (t && t.마감)))}까지 교역자실 앞 파일함에 넣어 주세요.${b.종이붙임 ? " 품목 영수증을 따로 받았으면 함께 넣어 주세요." : ""} <a href="${영수증제출안내}" target="_blank" rel="noopener">제출 위치 보기</a></span></p>`);
-  if (!영수증) 줄.push(상자("blue", "영수증 없이 낸 보고라 정산폼에는 아직 적지 않았어요. 영수증 추가는 곧 열려요 — 그 전에 영수증이 생기면 카카오톡으로 알려 주세요."));
+  const 영수증 = Number(b.영수증) || 0, 종이 = c.고침 ? Number((c.낸 || {}).새종이) || 0 : Number(b.종이) || 0;
+  if (c.이미) 줄.push(`<p class="box blue">${체크(16)}<span>이 보고는 앞서 이미 ${c.고침 ? "고쳤어요" : "받았어요"}. 두 번 적히지 않았어요.</span></p>`);
+  if (종이) 줄.push(`<p class="box blue">${영수증그림.replace('width="26" height="34"', 'width="16" height="21"')}<span>${c.고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 ${esc(날글(b.마감 || (t && t.마감)))}까지 교역자실 앞 파일함에 넣어 주세요.${b.종이붙임 ? " 품목 영수증을 따로 받았으면 함께 넣어 주세요." : ""} <a href="${영수증제출안내}" target="_blank" rel="noopener">제출 위치 보기</a></span></p>`);
+  if (!영수증) 줄.push(상자("blue", "영수증 없이 낸 보고라 지원 예상은 없어요. 영수증을 빠뜨렸으면 이번 달 현황에서 이 보고를 눌러 [고치기]로 넣어 주세요."));
   const 폼 = b.정산폼 || "", 겹친 = Array.isArray(b.겹친) ? b.겹친 : [];
-  if (폼 === "반영" && Array.isArray(b.정산폼줄) && b.정산폼줄.length) 줄.push(`<p class="note sm">정산폼 ${b.정산폼줄.join(" · ")}행에 적었어요.</p>`);
+  if (폼 === "반영" && Array.isArray(b.정산폼줄) && b.정산폼줄.length) 줄.push(`<p class="note sm">정산폼 ${b.정산폼줄.join(" · ")}행에 ${c.고침 ? "고쳐 " : ""}적었어요.</p>`);
+  if (Array.isArray(b.비운줄) && b.비운줄.length) 줄.push(`<p class="note sm">고치며 줄어든 영수증 줄(정산폼 ${b.비운줄.join(" · ")}행)은 비웠어요.</p>`);
   else if (폼 === "일부 겹침" && 겹친.length) { const n = 겹친[겹친.length - 1]; 줄.push(상자("amber", `정산폼에 같은 날짜 · 금액 줄이 이미 있어서 영수증 ${겹친.join(", ")}${조사(n, "은", "는")} 다시 적지 않았어요. 나머지는 ${esc((b.정산폼줄 || []).join(" · "))}행에 적었어요.`)); }
   else if (폼 === "모두 겹침") 줄.push(상자("amber", "정산폼에 같은 날짜 · 금액 줄이 이미 있어서 다시 적지 않았어요."));
   else if (폼 === "줄 부족") 줄.push(상자("amber", "정산폼 빈 줄이 모자라 아직 적지 못했어요. 양육국이 확인하고 연락드릴게요."));
   else if (폼 === "양식 다름" || 폼 === "못 엶" || /^안 씀/.test(b.정산폼글 || "")) 줄.push(상자("amber", "정산폼에는 아직 적지 못했어요. 양육국이 확인하고 적을게요."));
   const 앞 = Array.isArray(b.같은주앞) ? b.같은주앞 : [], 뒤 = Array.isArray(b.같은주뒤) ? b.같은주뒤 : [];
-  if (앞.length) 줄.push(상자("amber", `이 주에는 ${esc(날글(앞[0]))} 모임이 먼저 있어서, 이번 모임은 지원에서 빠질 수 있어요. 지원은 한 주에 한 번, 먼저 한 모임만 돼요.`));
-  else if (뒤.length) 줄.push(상자("amber", `이 주에 ${esc(날글(뒤[0]))} 모임도 보고돼 있어요. 지원은 먼저 한 이번 모임만 되고 ${esc(날짧게(뒤[0]))} 모임은 빠져요.`));
+  if (앞.length) 줄.push(상자("amber", `이 주에는 ${esc(날글(앞[0]))} 모임을 이미 보고해서, 이번 모임은 지원에서 빠질 수 있어요. 지원은 한 주에 한 번만 돼요.`));
+  else if (뒤.length) 줄.push(상자("amber", `이 주에 ${esc(날글(뒤[0]))} 모임도 보고돼 있어요. 지원은 한 주에 한 번이라 이번 모임만 되고 ${esc(날짧게(뒤[0]))} 모임은 빠져요.`));
   return 줄.join("");
 }
 
@@ -1348,6 +1904,7 @@ function 초안저장지금() {
   const 샘터 = {};
   Object.keys(S.초안).forEach(id => {
     const 초 = S.초안[id];
+    if (초.고침 || id.indexOf("고침:") === 0) return;   // 고치던 보고는 이 창에만 (다시 열면 서버의 지금 판으로)
     const 올린 = 초.사진.filter(p => !p.지움 && p.파일id && p.올림 === "저장됨");
     const 있는키 = new Set(올린.map(p => p.키));
     const 사진 = 올린.filter(p => !p.부모 || 있는키.has(p.부모)).map(p => ({
@@ -1379,7 +1936,7 @@ function 초안불러오기() {
     const t = 샘터들().find(x => x.id === id && x.상태 === "준비됨");
     if (!t || S.초안[id]) return;   // 달이 지나 목록에 없는 샘터 · 이 창에서 이미 쓰는 초안은 그대로
     const d = v.샘터[id] || {};
-    const 초 = { 날짜: 날짜맞음(t, d.날짜) ? d.날짜 : 기본날짜(t), 참석: (Array.isArray(d.참석) ? d.참석 : []).map(String).slice(0, 30), 사진: [],
+    const 초 = { 날짜: 날짜맞음(t, d.날짜) ? d.날짜 : 기본날짜(t), 참석: (Array.isArray(d.참석) ? d.참석 : []).map(String).slice(0, 30), 사진: [], _키: id,
                 제출: d.제출 && d.제출.id && d.제출.상태 === "모름" ? { id: String(d.제출.id), 상태: "모름", 안내: String(d.제출.안내 || "") } : null };
     const 새키 = {};
     (Array.isArray(d.사진) ? d.사진 : []).forEach(s => {
@@ -1409,6 +1966,12 @@ function 초안불러오기() {
 
 // ---------- 동작 (본인 확인 · 샘터 고르기) ----------
 const 붙이기 = {
+  보기() {   // 보고 보기 — 열어 둔 내용이 없으면 받고(고치기가 '바뀜'으로 돌아온 경우 등), 현황도 1분이 지났으면 새로
+    const t = 지금샘터(), id = S.보는;
+    if (!t || !id) return;
+    if (!S.열린[id]) setTimeout(() => { if (S.화면 === "보기" && S.보는 === id && !S.열린[id]) 보고열어두기(t, id); }, 0);
+    setTimeout(() => { if (S.화면 === "보기") 현황받기(t); }, 0);
+  },
   확인() {
     const who = document.getElementById("who"), tail = document.getElementById("tail"), full = document.getElementById("full");
     const keep = document.getElementById("keep"), go = document.getElementById("go");
@@ -1429,7 +1992,8 @@ const 붙이기 = {
     if (next) next.addEventListener("click", () => { 마지막샘터저장(); 가기("샘터"); });
   },
   샘터() {
-    document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => { S.고른 = b.getAttribute("data-tab"); 마지막샘터저장(); 그리기(); }));
+    document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => { S.고른 = b.getAttribute("data-tab"); S.안내글 = null; 마지막샘터저장(); 그리기(); }));
+    setTimeout(() => 현황받기(지금샘터()), 0);   // 정산폼과 맞춘 현황 (1분 안에 받은 게 있으면 그대로)
     document.getElementById("swap").addEventListener("click", e => {
       const 쓰던 = Object.keys(S.초안).some(id => S.초안[id].참석.length || S.초안[id].사진.length);
       if (쓰던 && !S.바꾸기확인) {   // 쓰던 보고가 있으면 한 번 더 눌러야 바뀜
@@ -1443,7 +2007,9 @@ const 붙이기 = {
       쓰기(null);
       사진정리();
       초안저장소비우기();
-      Object.assign(S, { 이름: "", 번호: "", 전체: "", 전체필요: false, 결과: null, 로그인: null, 토큰: "", 초안: {}, 초안주인: "", 고른: "", 메시지: "", 메시지종류: "", 완료: null });
+      Object.assign(S, { 이름: "", 번호: "", 전체: "", 전체필요: false, 결과: null, 로그인: null, 토큰: "", 초안: {}, 초안주인: "", 고른: "", 메시지: "", 메시지종류: "", 완료: null,
+                         현황: {}, 열린: {}, 보는: "", 편집: null, 안내글: null });
+      뿌리표시();
       가기("확인");
     });
   },
@@ -1476,6 +2042,7 @@ async function 확인하기(자동) {
     case "확인": {
       S.결과 = d;
       S.전체필요 = false;
+      S.현황 = {}; S.열린 = {}; 뿌리표시();
       S.로그인 = { 이름: S.이름.trim(), 번호: 번호 };
       S.토큰 = d.토큰 || ""; S.다시확인실패 = false; S.다시확인안내 = "";
       if (!d.토큰) S.서버옛날 = true;   // 1단계 서버 — 보고 화면에 관리자 안내
@@ -1511,6 +2078,7 @@ async function 확인하기(자동) {
 // ---------- 시작 ----------
 (function 시작() {
   이벤트붙이기();
+  뿌리표시();
   if (/[?&]reset\b/.test(location.search)) 쓰기(null);
   const 저장 = 읽기();
   설정받기();
