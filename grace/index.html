@@ -100,6 +100,9 @@
   /* 펼쳐진 본문 */
   .answers { padding: 2px 2px 26px; }
   .qa + .qa { margin-top: 18px; }
+  /* 작성자가 쓴 한 줄 나눔 — 질문 라벨 없이 맨 위에 */
+  .lead { margin: 0 0 18px; }
+  .lead .body { font-size: 1.1rem; }
   .q { margin: 0 0 4px; font-size: .82rem; font-weight: 700; color: var(--stream); }
   .body {
     font-family: "Noto Serif KR", serif;
@@ -164,7 +167,11 @@
             <div class="t">${esc(p.title)}</div>
             <div class="meta">${esc(p.author)} · ${esc(p.date)}</div>
           </div>`;
-      const 답변 = (p.answers || []).map(x => `
+      // 작성자가 쓴 한 줄 나눔 — 질문 라벨 없이 본문 맨 위에 그대로
+      const 첫머리 = p.lead
+        ? `<div class="lead"><p class="body">${esc(p.lead)}</p></div>`
+        : '';
+      const 답변 = 첫머리 + (p.answers || []).map(x => `
             <div class="qa">
               <p class="q">${esc(x.q)}</p>
               <p class="body">${esc(x.a)}</p>
