@@ -380,16 +380,13 @@ strong{color:var(--blue);font-weight:700}
 /* 키가 작은 휴대폰(아이폰 SE · 카톡 안에서 열어 화면이 줄어든 경우): 글자와 여백을 줄여 로고를 가리지 않게 */
 @media (max-aspect-ratio:1/1) and (max-height:740px){
   .hero-now:not([hidden]) + .hero-cta{margin-top:12px}
-  .hn-item{padding:6px 12px}
-  .hn-label,.hn-sub{font-size:11.5px}
+  .hn-item{padding:4px 12px}
+  .hn-label,.hn-sub{font-size:11.5px;line-height:1.35}
   .hn-num{font-size:18px;line-height:1.2}
   .hn-num[data-unit]::after{font-size:12px}
   .hn-num.text{font-size:14px;line-height:1.5}
 }
-/* 아주 작은 화면(아이폰 SE 등)은 인원·마감 줄을 빼서 로고를 가리지 않게 */
-@media (max-aspect-ratio:1/1) and (max-height:680px){
-  .hn-sub{display:none}
-}
+/* 인원 · 마감 줄은 화면이 작아도 항상 보임 (브라우저 주소창 때문에 보통 폰도 화면 높이가 650px 안팎) */
 /* 가로로 넓은 화면(PC 등)에서는 사진 속 로고가 크게 보여 버튼 위가 로고와 겹침
    → 버튼 아래 빈 줄에 한 줄로 (흐름 밖에 두어 숫자가 떠도 버튼은 움직이지 않음)
    한 줄이 들어갈 만큼 넓을 때만 (좁은 가로 화면은 휴대폰처럼 버튼 위 두 칸) */
