@@ -8,6 +8,20 @@
      비워두면 은혜 나눔 요소가 숨겨진 채로 페이지는 정상 동작합니다.
 ══════════════════════════════════════════════════════════ -->
 <script>window.GRACE_API = 'https://script.google.com/macros/s/AKfycbwfNWhb0vSKiM4hj0OErNKjJam-PM3pXo4NEbD6Oq4AHhMjmTE2efklWUTBvfEJliab/exec';</script>
+<!-- ══════════════════════════════════════════════════════════
+     신청 버튼의 "○월"은 날짜를 보고 자동으로 바뀝니다. 매달 고칠 필요 없습니다.
+     매월 1일~말일 신청 = 다음 달 운영이므로, 한국 시간 기준 '오늘의 다음 달'을 넣습니다.
+     예) 9월 한 달 동안 → 10월 청년샘터 신청하기 / 10월 1일 0시부터 → 11월 청년샘터 신청하기
+     버튼 문구(청년샘터 신청하기)는 아래 본문에서 그대로 고치면 됩니다.
+══════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  var next = (new Date(Date.now() + 9 * 3600000).getUTCMonth() + 1) % 12 + 1;   // 한국 시간(UTC+9) 기준 다음 달
+  var st = document.createElement('style');
+  st.textContent = '.apply-month::before{content:"' + next + '월 "}';
+  document.head.appendChild(st);
+})();
+</script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>청년샘터 — 날마다 솟는 샘물 | 사랑의교회 청년부</title>
@@ -416,7 +430,7 @@ footer b{color:rgba(255,255,255,.75);font-weight:500}
   <div class="hero-veil"></div>
   <div class="hero-inner">
     <h1 class="sr-title">청년샘터 — 날마다 솟는 샘물</h1>
-    <a class="hero-cta" href="https://forms.gle/7uQZ7tqPUk4V9ria6" target="_blank" rel="noopener">10월 청년샘터 신청하기</a>
+    <a class="hero-cta" href="https://forms.gle/7uQZ7tqPUk4V9ria6" target="_blank" rel="noopener"><span class="apply-month"></span>청년샘터 신청하기</a>
     <a class="hero-grace grace-only" href="/saemteo/grace/" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3.5 4.4 6 7.4 6 10.4a6 6 0 1 1-12 0C6 10.4 8.5 7.4 12 3z"/></svg>샘터에서 나눈 은혜 보기</a>
   </div>
   <div class="scroll-hint">SCROLL</div>
@@ -562,7 +576,7 @@ footer b{color:rgba(255,255,255,.75);font-weight:500}
   <div class="wrap reveal">
     <h2 class="serif">당신이 보냄받은 바로 그곳에,<br><em>도시를 살리는 샘터</em>를 여세요.</h2>
     <div class="cta-row">
-      <a class="btn primary" href="https://forms.gle/7uQZ7tqPUk4V9ria6" target="_blank" rel="noopener">10월 청년샘터 신청하기</a>
+      <a class="btn primary" href="https://forms.gle/7uQZ7tqPUk4V9ria6" target="_blank" rel="noopener"><span class="apply-month"></span>청년샘터 신청하기</a>
       <a class="btn ghost" href="https://open.kakao.com/o/sWdAUBFi" target="_blank" rel="noopener">문의하기</a>
     </div>
     <p class="meta">
