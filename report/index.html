@@ -105,7 +105,9 @@
   .tabs button[aria-pressed="true"] { background: #fff; color: var(--navy); box-shadow: 0 1px 2px rgba(27,58,92,.12); }
   .tabs .mini { padding: 1px 6px; border-radius: 6px; background: var(--ground); color: var(--sub2); font-size: 11px; font-weight: 600; }
   .eyebrow { margin: 0; font-size: 14px; color: var(--sub); }
-  .due { margin: 2px 0 0; display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--sub); }
+  .due { margin: 2px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; font-size: 14px; color: var(--sub); }
+  .fbno { position: relative; margin-left: 2px; padding: 4px 10px; border: 0; border-radius: 999px; background: #fff; box-shadow: inset 0 0 0 1px var(--line2); color: var(--navy); font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; }
+  .fbno::after { content: ""; position: absolute; inset: -10px -4px; }
   .panel { margin-top: 20px; padding: 20px; display: flex; flex-direction: column; gap: 14px; background: #fff; border-radius: 18px; box-shadow: 0 1px 2px rgba(27,58,92,.08); }
   .panel h2 { margin: 0; font-size: 15px; font-weight: 700; }
   .panel .big { font-size: 20px; font-weight: 700; }
@@ -267,6 +269,19 @@
   .sup .t { display: block; font-size: 15px; font-weight: 700; }
   .sup .n { display: block; margin-top: 4px; font-size: 13px; line-height: 1.5; color: var(--sub); }
   .sup b { font-size: 22px; font-weight: 700; color: var(--navy); white-space: nowrap; }
+  .fb { margin-top: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; background: #fff; border-radius: 18px; box-shadow: 0 1px 2px rgba(27,58,92,.08); }
+  .fb:focus { outline: none; }
+  .fb:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+  .fb-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; }
+  .fb-top .t { display: block; font-size: 15px; font-weight: 700; }
+  .fb-top .n { display: block; margin-top: 4px; font-size: 13px; line-height: 1.5; color: var(--sub); }
+  .fb-top b { font-size: 22px; font-weight: 700; color: var(--navy); white-space: nowrap; }
+  .fb .btn { height: 50px; font-size: 16px; }
+  .btn.sub[disabled] { background: #fff; color: var(--sub2); box-shadow: inset 0 0 0 1.5px var(--line); }
+  .linkbtn[disabled] { color: var(--sub); text-decoration: none; cursor: default; }
+  .fb .box span { min-width: 0; overflow-wrap: anywhere; }
+  .fb .linkbtn { position: relative; }
+  .fb .linkbtn::after { content: ""; position: absolute; inset: -13px -8px; }
   .alerts { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
   .help { margin-top: 16px; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 18px; }
   .help a { display: flex; align-items: center; min-height: 44px; font-size: 14px; text-decoration: none; }
@@ -295,7 +310,7 @@
 <script>
 // ============================================================
 //  청년샘터 모임 보고 — 샘지기 화면 (시범: 본인 확인 · 샘터 고르기 · 이번 달 현황 · 모임 보고 쓰기 · 보고 제출 · 완료 ·
-//                                     보고 보기 · 고치기 · 보고 취소)
+//                                     보고 보기 · 고치기 · 보고 취소 · 종이 영수증 파일함)
 //  ★ 아래 API에 Apps Script 웹앱 배포 주소(…/exec)를 넣습니다.
 // ============================================================
 const API = "https://script.google.com/macros/s/AKfycbwZFOS7D9T4-haOAyQxBPy0SP0NJ4m4uO3KgTt6d81g8RA2BpXGCID2YpVaJlPI9zQj/exec";   // ★ Apps Script 배포 주소 (/exec로 끝남). 바꿀 때는 따옴표 안만 바꿈
@@ -312,6 +327,7 @@ const 최대장수 = { 인증샷: 4, 영수증: 20 };
 const 붙임최대 = 3;                 // 영수증 하나에 더 붙일 수 있는 사진 — 서버 MB.붙임최대와 같게
 const 초안기한 = 7 * 86400000;      // 이만큼 손대지 않은 쓰던 보고는 버림 (올리는 중 폴더 사진은 14일 뒤 정리)
 const 사진기한 = 12 * 86400000;     // 쓰던 보고를 불러올 때 이보다 오래 전에 올린 사진은 뺌
+const 기억기한 = 60 * 86400000;     // 이 폰에서 바로 열기 — 이만큼 열지 않으면 저장한 이름 · 번호를 지움
 
 const S = {
   화면: "확인",        // 확인 · 여는중 · 고르기 · 샘터 · 보고 · 완료
@@ -337,6 +353,7 @@ const S = {
   취소확인: "",        // [보고 취소]를 한 번 누른 보고 id (한 번 더 눌러야 취소)
   취소중: {}, 보기오류: "",    // 취소 중인 보고 id → true
   고치기대기: "",              // [고치기]가 현황을 기다리는 보고 id
+  파일함중: "", 파일함표: null, 파일함판: {},   // [종이 영수증 제출했어요]를 보내는 중인 샘터 · 그 요청 · 샘터마다 답을 받은 횟수 (그 전에 보낸 현황의 파일함은 쓰지 않음)
 };
 
 // ---------- 저장 (이 폰에서는 다음부터 바로 열기) ----------
@@ -360,15 +377,17 @@ async function 설정받기() {
   try {
     const r = await fetch(API주소, { redirect: "follow" });
     const d = await r.json();
-    if (d && d.ok && d.문의) { S.문의 = d.문의; 링크고치기(); }
+    if (d && d.ok && d.문의) { S.문의 = 문의주소(d.문의); 링크고치기(); }
   } catch (e) {}
 }
 function 링크고치기() { document.querySelectorAll("a[data-kakao]").forEach(a => { a.href = S.문의; }); }
+function 문의주소(v) { const s = String(v || "").trim(); return /^https:\/\/[^\s"'<>]+$/i.test(s) ? s : 문의기본; }   // 설정 칸 값이 https 링크일 때만
 
 // ---------- 도구 ----------
 const 요일 = "일월화수목금토";
 function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
 function 숫자만(v) { return String(v || "").replace(/\D/g, ""); }
+function 그림주소(v) { const s = String(v || ""); return /^(blob:[^\s"'<>]+|data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+\/=]+)$/.test(s) ? s : ""; }   // <img src>에 넣어도 되는 주소만
 function 날짜(ymd) { const p = String(ymd || "").split("-").map(Number); return p.length === 3 && p[0] ? new Date(p[0], p[1] - 1, p[2]) : null; }
 function ymd(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
 function 날글(v) { const d = 날짜(v); return d ? `${d.getMonth() + 1}월 ${d.getDate()}일(${요일[d.getDay()]})` : ""; }
@@ -496,7 +515,7 @@ function 고르기화면() {
     const 준비 = t.상태 === "준비됨";
     const on = t.id === S.고른;
     const 상태글 = !준비 ? "준비 중 — 정산폼이 만들어지면 보고할 수 있어요"
-      : t.지난달 ? `${달숫자(t)}월 샘터 · ${날글(t.마감)}까지 보고` : "이번 달 샘터";
+      : (t.지난달 ? `${달숫자(t)}월 샘터 · ${날글(t.마감)}까지 보고` : "이번 달 샘터") + (파일함번호(t) ? ` · 파일함 ${파일함번호(t)}번` : "");
     const 색 = !준비 ? "var(--sub)" : t.지난달 ? "var(--amber)" : "var(--navy)";
     return `
     <label class="card${on ? " on" : ""}${준비 ? "" : " off"}">
@@ -538,7 +557,7 @@ function 샘터화면() {
   <div class="head" style="gap:6px">
     <p class="eyebrow">${esc([월글(t.운영월), 언제(t)].filter(Boolean).join(" · "))} <span class="trial">시범</span></p>
     <h1>${t.지난달 ? `${달숫자(t)}월 모임 보고` : "이번 달 모임 보고"}</h1>
-    <p class="due">${달력}${t.지난달 ? "지난달 보고 마감" : "정산 마감"} ${esc(날글(t.마감))}</p>
+    <p class="due">${달력}<span>${t.지난달 ? "지난달 보고 마감" : "정산 마감"} ${esc(날글(t.마감))}</span><span id="fb-top">${파일함위(t)}</span></p>
   </div>
   ${S.서버옛날 || S.서버4전 ? `<div style="margin-top:12px">${서버알림()}</div>` : ""}
   ${안내}
@@ -546,6 +565,7 @@ function 샘터화면() {
   <div class="wk-head"><h2>주차별 보고</h2><span class="hint" id="hy-state">${현황상태글(t)}</span></div>
   <ul class="weeks" aria-label="주차별 보고">${주차목록(t)}</ul>
   ${지원칸(t)}
+  <div id="fb-wrap" aria-live="polite">${파일함칸(t)}</div>
   ${알림칸(t)}
   ${S.결과.안내 ? `<p class="msg info" style="margin-top:16px">${esc(S.결과.안내)}</p>` : ""}
   <nav class="help" aria-label="도움말"><a href="${영수증제출안내}" target="_blank" rel="noopener">영수증 제출 안내</a><a href="${샘지기매뉴얼}" target="_blank" rel="noopener">샘지기 매뉴얼</a><a data-kakao href="${esc(S.문의)}" target="_blank" rel="noopener">카카오톡 문의</a></nav>`;
@@ -565,7 +585,7 @@ function 현황받기(t, 억지로) {
   return 약속;
 }
 async function 현황받는중(t, h) {
-  const 표 = {};
+  const 표 = {}, 함판 = S.파일함판[t.id] || 0;
   S.현황[t.id] = Object.assign({}, h || {}, { 상태: "읽는중", 표 });
   delete S.현황[t.id].약속;
   칸("hy-state", 현황상태글(t));
@@ -576,6 +596,7 @@ async function 현황받는중(t, h) {
     if (S.서버4전) { S.서버4전 = false; 칸("srv-note", 서버알림()); }   // 그사이 새 버전으로 배포함
     S.현황[t.id] = { 상태: "됨", 값: d.현황, 때: Date.now() };
     t.보고 = d.현황.보고.map(b => ({ 날짜: b.날짜, 주차: b.주차, 영수증: b.영수증.length, 합계: b.합계, 인원: b.인원, 제출: b.판, 보고: b.보고 }));
+    if ("파일함" in d && S.파일함중 !== t.id && (S.파일함판[t.id] || 0) === 함판) 파일함넣기(t, d.파일함);   // 양육국이 받음에 체크했는지 등 — 제출 표시를 누른 뒤 늦게 온 옛 현황 것은 쓰지 않음
   } else {
     if (d && d.ok === false && d.코드 === "본인") { S.현황[t.id] = { 상태: "실패", 때: Date.now() }; 본인풀림(d.안내); return; }
     서버글(d, "", true);
@@ -667,6 +688,48 @@ function 모임줄(m) {
   else if (m.뺌 === "명단없음") 줄.push(`<span class="wk-warn">정산폼에 참석자 명단이 없어 지원에서 빠져요</span>`);
   return 줄.join("");
 }
+// ---------- 종이 영수증 파일함 ----------
+//  파일함은 샘터마다 하나. 양육국이 그 달 번호를 매겼을 때만 서버가 샘터마다 파일함 { 번호, 냈음, 때, 받음, 대기 }를 줌
+//  [종이 영수증 제출했어요]를 누르면 양육국 '파일함' 탭 그 샘터 줄에 누른 때가 적히고, 양육국이 받음에 체크하면 여기에 보임
+function 파일함번호(t) {   // 1~9999의 정수일 때만 (아니면 0 — 칸을 그리지 않음)
+  const f = t && t.파일함, v = f ? f.번호 : null, n = typeof v === "number" || typeof v === "string" ? Number(v) : NaN;
+  return Number.isInteger(n) && n >= 1 && n <= 9999 ? n : 0;
+}
+function 파일함말(t) { const n = 파일함번호(t); return n ? `교역자실 앞 ${n}번 파일함` : "교역자실 앞 파일함"; }
+function 파일함여럿(t) { const n = 파일함번호(t); return 샘터들().some(x => x.id !== t.id && 파일함번호(x) && 파일함번호(x) !== n); }   // 번호가 다른 샘터가 또 있음
+function 파일함이름(t) { return 파일함여럿(t) ? "이 샘터 파일함" : "내 파일함"; }
+function 파일함넣기(t, f) { 샘터들().forEach(x => { if (x.id === t.id) x.파일함 = f && typeof f === "object" ? Object.assign({}, f) : null; }); }   // 그 샘터 것만
+function 파일함때(v) {   // 10.5 14:20 → 10월 5일 14:20 (글자가 아니면 빈 글)
+  const s = typeof v === "string" ? v.slice(0, 40) : "", m = s.match(/^(\d{1,2})\.(\d{1,2}) (\d{1,2}:\d{2})$/);
+  return m ? `${Number(m[1])}월 ${Number(m[2])}일 ${m[3]}` : s;
+}
+function 파일함위(t) {   // 화면 맨 위 마감 옆 — 번호만 (누르면 아래 파일함 칸으로)
+  const n = 파일함번호(t);
+  return n ? `<button type="button" class="fbno" data-act="파일함보기">${파일함이름(t)} ${n}번</button>` : "";
+}
+function 파일함그리기(t, 초점) {   // 누른 버튼이 사라지므로 초점은 파일함 칸으로 옮겨 둠
+  const 안 = document.getElementById("fb-wrap"), 있던 = !!안 && 안.contains(document.activeElement);
+  칸("fb-top", 파일함위(t)); 칸("fb-wrap", 파일함칸(t));
+  const el = 안 && 안.querySelector(".fb");
+  if (el && (초점 || 있던)) { try { el.focus({ preventScroll: true }); } catch (e) {} }
+}
+function 파일함칸(t) {
+  const n = 파일함번호(t), f = t && t.파일함;
+  if (!n) return "";
+  const 중 = !!S.파일함중, 여기 = S.파일함중 === t.id, 대기 = Math.max(0, Math.floor(Number(f.대기)) || 0);
+  const 여럿 = 파일함여럿(t), 때 = 파일함때(f.때);
+  let 아래;
+  if (f.받음 === true) 아래 = `<p class="box blue">${체크(16)}<span>양육국이 종이 영수증을 받았어요.${대기 > 0 ? ` 그 뒤에 보고한 종이 영수증 ${대기}장도 같은 파일함에 넣어 주세요.` : ""}</span></p>`;
+  else if (f.냈음 === true) 아래 = `<p class="box blue">${체크(16)}<span>${때 ? esc(때) + "에 " : ""}제출했다고 표시했어요. 양육국이 받으면 여기에 보여요. <button type="button" class="linkbtn" data-act="실물취소"${중 ? " disabled" : ""}>${여기 ? "취소하는 중…" : "표시 취소"}</button></span></p>`;
+  else if (t.상태 !== "준비됨") 아래 = `<p class="note sm">정산폼이 만들어지면 여기서 제출 표시를 할 수 있어요.</p>`;
+  else 아래 = `<button type="button" class="btn sub" data-act="실물제출"${중 ? " disabled" : ""}>${여기 ? `<span class="spin sm"></span>표시하는 중…` : "종이 영수증 제출했어요"}</button>
+    <p class="note sm">${달숫자(t)}월 종이 영수증을 파일함에 다 넣은 뒤에 눌러 주세요.${여럿 ? " 파일함은 샘터마다 달라요. 이 샘터 영수증만 여기에 넣어 주세요." : ""} 전자영수증만 있으면 누르지 않아도 돼요.</p>`;
+  return `
+  <section class="fb" tabindex="-1" aria-label="종이 영수증 파일함">
+    <div class="fb-top"><div><span class="t">${파일함이름(t)}</span><span class="n">교역자실 앞 · <span class="nw">종이 영수증 넣는 곳</span></span></div><b>${n}번</b></div>
+    ${아래}
+  </section>`;
+}
 function 지원칸(t) {
   const 틀 = (설명, 금액) => `<section class="sup" aria-label="이 샘터 지원 예상"><div><span class="t">이 샘터 지원 예상</span><span class="n">${설명}</span></div><b>${금액}</b></section>`;
   if (t.상태 !== "준비됨") return 틀("정산폼이 만들어지면 보여요", "—");
@@ -744,7 +807,7 @@ function 보기화면() {
   const 영수증 = c ? c.영수증.map((r, i) => Object.assign({}, (b && b.영수증[i]) || {}, r)) : (b.영수증 || []);
   const 합계 = 영수증.reduce((a, r) => a + (Number(r.금액) || 0), 0) || (b && b.합계) || 0;
   const 모임 = 이달모임(t).find(m => m.날짜 === 날);
-  const 사진칸 = (x, 이름, 작은) => x ? `<div class="thumb">${x.그림 ? `<img src="${x.그림}" alt="${esc(이름)}">` : `<span class="ph" role="img" aria-label="${esc(이름)}">${x.pdf ? "PDF" : 작은 ? 영수증그림 : "사진"}</span>`}${x.없음 ? `<span class="ov bad" aria-hidden="true">!</span>` : ""}</div>`
+  const 사진칸 = (x, 이름, 작은) => x ? `<div class="thumb">${그림주소(x.그림) ? `<img src="${esc(그림주소(x.그림))}" alt="${esc(이름)}">` : `<span class="ph" role="img" aria-label="${esc(이름)}">${x.pdf ? "PDF" : 작은 ? 영수증그림 : "사진"}</span>`}${x.없음 ? `<span class="ov bad" aria-hidden="true">!</span>` : ""}</div>`
     : `<div class="thumb"><span class="ov" title="불러오는 중"><span class="spin"></span></span></div>`;
   const 인증 = c ? c.인증샷 : null;
   const 인증칸 = 인증 ? (인증.length ? `<div class="mini-shots">${인증.map((x, i) => 사진칸(x, "인증샷 " + (i + 1))).join("")}</div>` : `<p class="note">인증샷을 찾지 못했어요.</p>`)
@@ -1069,7 +1132,7 @@ function 인증샷목록(초) {
 }
 
 function 썸네일속(p, 이름) {
-  const 그림 = p.주소 && !p.미리보기실패 ? `<img src="${p.주소}" alt="${esc(이름)}" data-key="${p.키}">`
+  const 그림 = 그림주소(p.주소) && !p.미리보기실패 ? `<img src="${esc(그림주소(p.주소))}" alt="${esc(이름)}" data-key="${p.키}">`
     : `<span class="ph" role="img" aria-label="${esc(이름)}">${p.pdf ? "PDF" : p.종류 === "영수증" ? 영수증그림 : "사진"}</span>`;
   let 상태 = "";
   if (p.올림 === "올리는중" || p.올림 === "대기") 상태 = `<span class="ov" title="올리는 중"><span class="spin"></span></span>`;
@@ -1211,7 +1274,7 @@ function 합계칸(초) {
       <div class="tot"><span>지원 예상</span><b>${합 > 0 && 인원 > 0 ? 원(Math.min(합, 5000 * 인원, 25000)) + "원" : "—"}</b></div>
       <p class="note sm">영수증 합계, 인당 5,000원, 모임당 25,000원 중 가장 적은 금액이에요. 월말에 확인한 뒤 확정돼요.</p>
     </div>
-    ${종이 ? `<p class="note ink">${고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 교역자실 앞 파일함에 넣어 주세요.${종이붙임 ? " 품목 영수증을 따로 받았으면 함께 넣어 주세요." : ""} <a href="${영수증제출안내}" target="_blank" rel="noopener">제출 위치 보기</a></p>` : ""}
+    ${종이 ? `<p class="note ink">${고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 ${파일함말(지금샘터())}에 넣어 주세요.${종이붙임 ? " 품목 영수증을 따로 받았으면 함께 넣어 주세요." : ""} <a href="${영수증제출안내}" target="_blank" rel="noopener">제출 위치 보기</a></p>` : ""}
     ${전자 ? `<p class="note ink">전자영수증은 올린 캡처가 증빙이에요. 편집하지 않은 원본 그대로 올려 주세요.</p>` : ""}`;
 }
 
@@ -1690,6 +1753,41 @@ const 동작 = {
     if (!d || d.코드 === "바뀜") { delete S.현황[t.id]; delete S.열린[b.보고]; }
     if (여기) { S.보기오류 = 글; 그리기(); } else 알림(글);
   },
+  // 종이 영수증을 파일함에 넣었다는 표시 · 표시 취소 (양육국이 받음에 체크한 뒤에는 취소할 수 없음)
+  async 실물제출(el, e, 취소) {
+    const t = 지금샘터(), 누구 = S.초안주인;
+    if (!t || !파일함번호(t) || S.파일함중 || t.상태 !== "준비됨") return;
+    const 표 = S.파일함표 = {};
+    S.파일함중 = t.id; 파일함그리기(t);
+    let d = null;
+    try { d = await 요청({ action: "실물제출", 샘터: t.id, 취소: 취소 === true }, 45); } catch (err) { d = null; }
+    if (S.파일함표 !== 표) return;            // 그사이 다른 사람으로 바꿈 — 새로 누른 것이 있으면 그쪽이 풂
+    S.파일함표 = null; S.파일함중 = "";
+    if (S.초안주인 !== 누구 || !S.결과) return;
+    if (!d || typeof d !== "object") d = null;
+    if (d && d.ok === false && d.코드 === "본인") { 본인풀림(d.안내); return; }
+    if (d && "파일함" in d) { 파일함넣기(t, d.파일함); S.파일함판[t.id] = (S.파일함판[t.id] || 0) + 1; }
+    const 보는 = 지금샘터();
+    if (!d) {   // 끊겼거나 너무 오래 걸림 — 들어갔을 수도 있으니 현황을 새로 받아 맞춤
+      알림(취소 ? "연결이 끊겨 취소됐는지 확인하지 못했어요. 잠시 뒤 다시 확인해 주세요." : "연결이 끊겨 표시됐는지 확인하지 못했어요. 잠시 뒤 다시 확인해 주세요.");
+      const h = S.현황[t.id];
+      if (S.화면 === "샘터" && 보는 && 보는.id === t.id) { delete S.현황[t.id]; 현황받기(t, true); }
+      else if (h && h.상태 !== "읽는중") h.때 = 0;   // 다른 샘터 · 다른 화면을 보고 있으면 이 샘터로 돌아올 때 새로 받음
+    } else if (!d.ok) {
+      알림(d.안내 === "알 수 없는 요청이에요." ? "서버가 아직 이 기능을 몰라요. 양육국에 문의해 주세요."
+        : d.안내 || (취소 ? "취소하지 못했어요. 잠시 뒤 다시 해 주세요." : "표시하지 못했어요. 잠시 뒤 다시 해 주세요."));
+    }
+    if (S.화면 === "샘터" && 보는) 파일함그리기(보는, 보는.id === t.id);
+  },
+  실물취소(el, e) { return 동작.실물제출(el, e, true); },
+  파일함보기() {
+    const el = document.querySelector(".fb");
+    if (!el) return;
+    let 천천히 = true;
+    try { 천천히 = !window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+    try { el.focus({ preventScroll: true }); } catch (e) {}
+    el.scrollIntoView({ behavior: 천천히 ? "smooth" : "auto", block: "center" });
+  },
   현황새로() {   // 바뀐 보고 · 못 읽은 현황 — 현황을 다시 받고 현황으로
     const t = 지금샘터();
     if (!t) return;
@@ -1850,7 +1948,10 @@ function 이벤트붙이기() {
   window.addEventListener("popstate", 뒤로왔을때);
   window.addEventListener("beforeunload", e => { 초안저장지금(); if (올리는중() || S.보내는.size) { e.preventDefault(); e.returnValue = ""; } });
   // 폰이 창을 뒤로 보내면(다른 앱 · 사진 고르기) 쓰던 보고를 바로 저장 — 창이 닫혀도 이어 쓰게
-  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") 초안저장지금(); });
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") 초안저장지금();
+    else if (S.화면 === "샘터" && S.결과 && !S.보내는중) 현황받기(지금샘터());   // 다시 돌아왔을 때 — 1분이 지났으면 현황 · 파일함(양육국이 받았는지)을 새로
+  });
   window.addEventListener("pagehide", () => 초안저장지금());
 }
 
@@ -1978,7 +2079,7 @@ function 완료짧은글(c, t) {   // 다른 보고를 쓰는 동안 끝난 보�
   const 폼 = b.정산폼 || "";
   if (폼 === "줄 부족" || 폼 === "양식 다름" || 폼 === "못 엶" || /^안 씀/.test(b.정산폼글 || "")) 글 += " 정산폼에는 아직 적지 못했어요. 양육국이 확인해요.";
   const 종이 = c.고침 ? Number((c.낸 || {}).새종이) || 0 : Number(b.종이) || 0;
-  if (종이) 글 += ` ${c.고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 ${날글(b.마감 || (t && t.마감))}까지 교역자실 앞 파일함에 넣어 주세요.`;
+  if (종이) 글 += ` ${c.고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 ${날글(b.마감 || (t && t.마감))}까지 ${파일함말(t)}에 넣어 주세요.`;
   return 글;
 }
 
@@ -2017,7 +2118,7 @@ function 완료알림(b, t, c) {
   const 줄 = [], 상자 = (색, 글) => `<p class="box ${색}">${느낌표()}<span>${글}</span></p>`;
   const 영수증 = Number(b.영수증) || 0, 종이 = c.고침 ? Number((c.낸 || {}).새종이) || 0 : Number(b.종이) || 0;
   if (c.이미) 줄.push(`<p class="box blue">${체크(16)}<span>이 보고는 앞서 이미 ${c.고침 ? "고쳤어요" : "받았어요"}. 두 번 적히지 않았어요.</span></p>`);
-  if (종이) 줄.push(`<p class="box blue">${영수증그림.replace('width="26" height="34"', 'width="16" height="21"')}<span>${c.고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 ${esc(날글(b.마감 || (t && t.마감)))}까지 교역자실 앞 파일함에 넣어 주세요.${b.종이붙임 ? " 품목 영수증을 따로 받았으면 함께 넣어 주세요." : ""} <a href="${영수증제출안내}" target="_blank" rel="noopener">제출 위치 보기</a></span></p>`);
+  if (종이) 줄.push(`<p class="box blue">${영수증그림.replace('width="26" height="34"', 'width="16" height="21"')}<span>${c.고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 ${esc(날글(b.마감 || (t && t.마감)))}까지 ${파일함말(t)}에 넣어 주세요.${b.종이붙임 ? " 품목 영수증을 따로 받았으면 함께 넣어 주세요." : ""} <a href="${영수증제출안내}" target="_blank" rel="noopener">제출 위치 보기</a></span></p>`);
   if (!영수증) 줄.push(상자("blue", "영수증 없이 낸 보고라 지원 예상은 없어요. 영수증을 빠뜨렸으면 이번 달 현황에서 이 보고를 눌러 [고치기]로 넣어 주세요."));
   const 폼 = b.정산폼 || "", 겹친 = Array.isArray(b.겹친) ? b.겹친 : [];
   if (폼 === "반영" && Array.isArray(b.정산폼줄) && b.정산폼줄.length) 줄.push(`<p class="note sm">정산폼 ${b.정산폼줄.join(" · ")}행에 ${c.고침 ? "고쳐 " : ""}적었어요.</p>`);
@@ -2039,6 +2140,9 @@ let 초안타이머 = 0;
 function 초안저장() { clearTimeout(초안타이머); 초안타이머 = setTimeout(초안저장지금, 500); }
 function 저장소(종류) { try { return 종류 === "local" ? window.localStorage : window.sessionStorage; } catch (e) { return null; } }
 function 초안저장소비우기() { ["local", "session"].forEach(k => { try { const s = 저장소(k); if (s) s.removeItem(초안키); } catch (e) {} }); }
+function 묵은초안지우기() {   // 7일 손대지 않은 쓰던 보고는 확인 전에도 지움
+  ["local", "session"].forEach(k => { try { const s = 저장소(k), x = s && JSON.parse(s.getItem(초안키) || "null"); if (x && !(Date.now() - Number(x.때) < 초안기한)) s.removeItem(초안키); } catch (e) {} });
+}
 function 초안저장지금() {
   clearTimeout(초안타이머);
   if (!S.초안주인) return;
@@ -2085,7 +2189,7 @@ function 초안불러오기() {
       if (s.올린때 && Date.now() - s.올린때 > 사진기한) return;   // 올리는 중 폴더에서 곧 정리될 사진
       const 첫 = s.종류 === "영수증" && !s.부모;
       const p = { 키: "p" + (++키수), 종류: s.종류, 샘터: id, 초안: 초, 토큰: S.토큰, file: null, pdf: !!s.pdf,
-        주소: /^data:image\//.test(s.미리작은 || "") ? s.미리작은 : "", 미리작은: s.미리작은 || "", 부모: s.부모 || "",
+        주소: /^data:/.test(그림주소(s.미리작은)) ? s.미리작은 : "", 미리작은: /^data:/.test(그림주소(s.미리작은)) ? s.미리작은 : "", 부모: s.부모 || "",
         올림: "저장됨", 올림오류: "", 파일id: String(s.파일id), 올린때: Number(s.올린때) || 0,
         판독: 첫 ? (s.판독 === "읽음" || s.판독 === "못읽음" ? s.판독 : "읽는중") : "",
         읽은금액: typeof s.읽은금액 === "number" ? s.읽은금액 : null, 후보: Array.isArray(s.후보) ? s.후보.filter(x => typeof x === "number") : [],
@@ -2154,7 +2258,7 @@ const 붙이기 = {
       사진정리();
       초안저장소비우기();
       Object.assign(S, { 이름: "", 번호: "", 전체: "", 전체필요: false, 결과: null, 로그인: null, 토큰: "", 초안: {}, 초안주인: "", 고른: "", 메시지: "", 메시지종류: "", 완료: null,
-                         현황: {}, 열린: {}, 보는: "", 편집: null, 안내글: null });
+                         현황: {}, 열린: {}, 보는: "", 편집: null, 안내글: null, 파일함중: "", 파일함표: null, 파일함판: {} });
       뿌리표시();
       가기("확인");
     });
@@ -2179,7 +2283,7 @@ async function 확인하기(자동) {
     return;
   }
   S.보내는중 = false;
-  if (d && d.문의) { S.문의 = d.문의; }
+  if (d && d.문의) { S.문의 = 문의주소(d.문의); }
   if (!d || d.ok === false) {
     S.메시지종류 = "오류"; S.메시지 = (d && d.안내) || "잠시 문제가 생겼어요. 조금 뒤 다시 해 주세요.";
     가기("확인"); return;
@@ -2197,7 +2301,10 @@ async function 확인하기(자동) {
       S.초안주인 = 주인;
       const 불러옴 = 초안불러오기();   // 이 폰에 저장해 둔 쓰던 보고 (같은 사람일 때만)
       setTimeout(() => { 올림돌리기(); 판독돌리기(); if (불러옴) 알림("쓰던 보고를 불러왔어요."); }, 0);   // 확인이 풀려 멈췄던 사진 · 금액 읽기도 이어서
-      if (S.기억) 쓰기({ 이름: S.이름.trim(), 번호: 번호, 샘터: (읽기() || {}).샘터 || "" });
+      if (S.기억) {   // 이름 + 뒤 4자리만 저장 (전체 번호는 폰에 남기지 않음 — 두 사람이 겹치는 분은 열 때마다 전체 번호를 한 번 더)
+        const 전 = 읽기() || {};
+        쓰기({ 이름: S.이름.trim(), 번호: 번호.slice(-4), 샘터: 이름키(전.이름 || "") === 이름키(S.이름) ? 전.샘터 || "" : "", 때: Date.now() });
+      } else 쓰기(null);   // 바로 열기를 끄고 확인하면 이 폰에 저장해 둔 이름 · 번호를 지움 (앞사람 것이어도)
       const 쓸수있는 = d.샘터.filter(t => t.상태 === "준비됨");
       const 지난번 = (읽기() || {}).샘터;
       const 오늘 = 오늘요일();
@@ -2225,8 +2332,10 @@ async function 확인하기(자동) {
 (function 시작() {
   이벤트붙이기();
   뿌리표시();
-  if (/[?&]reset\b/.test(location.search)) 쓰기(null);
-  const 저장 = 읽기();
+  if (/[?&]reset\b/.test(location.search)) { 쓰기(null); 초안저장소비우기(); }
+  묵은초안지우기();
+  let 저장 = 읽기();
+  if (저장 && 저장.때 && !(Date.now() - Number(저장.때) < 기억기한)) { 쓰기(null); 저장 = null; }   // 오래 열지 않은 폰
   설정받기();
   if (저장 && 저장.이름 && 저장.번호) {
     S.이름 = 저장.이름;
