@@ -81,38 +81,19 @@ h1{font-size:clamp(28px,7.4vw,38px); font-weight:900; margin:0 0 10px; letter-sp
 .valid b{color:var(--amber)}
 mark{background:#FFF2A8; color:#7A5C00; font-weight:700; padding:1px 5px; border-radius:3px}
 
-/* 번호 찾기 */
+/* 번호 확인 — 모임 보고 페이지로 */
 .finder{
   background:var(--blue-soft); border-radius:14px; padding:22px 22px 24px; margin:26px 0 0;
 }
 .finder h2{font-size:18px; font-weight:700; margin:0 0 4px; color:var(--navy)}
 .finder .hint{margin:0 0 14px; font-size:13.5px; color:var(--ink-soft)}
-#q{
-  width:100%; padding:14px 16px; font:inherit; font-size:17px; font-weight:500;
-  color:var(--ink); background:var(--paper);
-  border:2px solid var(--rule); border-radius:10px;
+.finder .hint.sub{margin:12px 0 0}
+.go{
+  display:block; text-align:center; text-decoration:none;
+  background:var(--navy); color:var(--paper);
+  border-radius:10px; padding:14px 16px; font-size:16.5px; font-weight:700;
 }
-#q:focus{outline:none; border-color:var(--blue)}
-#out{margin-top:14px}
-.hit{
-  display:flex; align-items:center; gap:16px; background:var(--paper);
-  border-radius:10px; padding:14px 18px; margin-bottom:9px;
-}
-.hit .num{
-  font-size:38px; font-weight:900; color:var(--blue); line-height:1; min-width:64px; text-align:center;
-  letter-spacing:-.03em;
-}
-.hit .who{font-size:17px; font-weight:700}
-.hit .who span{display:block; font-size:12.5px; font-weight:400; color:var(--ink-soft)}
-.msg{font-size:14.5px; color:var(--ink-soft); padding:6px 2px}
-.stale{
-  background:var(--amber-bg); color:var(--amber); border-radius:8px;
-  padding:11px 15px; font-size:13.5px; margin:0 0 14px; font-weight:500;
-}
-.nolist{
-  background:var(--paper); border-radius:10px; padding:16px 18px; font-size:14.5px;
-}
-.nolist b{display:block; margin-bottom:4px; color:var(--navy)}
+.step p a{color:var(--navy); font-weight:700; text-underline-offset:2px}
 
 /* 단계 */
 h2.sec{
@@ -200,11 +181,10 @@ footer .right{margin-left:auto}
   </div>
 
   <div class="finder">
-    <h2>내 파일함 번호 찾기</h2>
-    <p class="hint">이름을 입력하면 번호가 나옵니다. 성 없이 이름만 넣어도 찾아집니다.</p>
-    <div id="staleBox"></div>
-    <input id="q" type="search" placeholder="이름 (예: 김민수)" autocomplete="off" enterkeyhint="search" aria-label="샘지기 이름으로 파일함 번호 찾기">
-    <div id="out"></div>
+    <h2>내 파일함 번호 확인</h2>
+    <p class="hint">모임 보고 페이지에서 이름과 휴대폰 뒤 4자리로 본인 확인을 하면 내 샘터의 파일함 번호가 보입니다.</p>
+    <a class="go" href="../report/">내 번호 확인하기 →</a>
+    <p class="hint sub">교역자실 앞 테이블에 놓인 QR코드를 찍어도 같은 페이지가 열립니다. 번호가 보이지 않으면 양육국에 문의해주세요.</p>
   </div>
 
   <h2 class="sec">제출 방법</h2>
@@ -221,7 +201,7 @@ footer .right{margin-left:auto}
       <div class="n">2</div>
       <div>
         <h3>내 번호를 확인합니다</h3>
-        <p>샘지기 이름 <b>가나다순</b>으로 번호가 매겨져 있습니다. 위에서 찾거나, 테이블에 놓인 종이 명단에서 확인하세요.</p>
+        <p><a href="../report/">모임 보고 페이지</a>에 들어가면 화면 위쪽 마감일 옆에 <b>파일함 번호</b>가 보입니다. 테이블에 놓인 <b>QR코드</b>를 찍어도 같은 페이지가 열립니다.</p>
       </div>
     </div>
     <div class="step">
@@ -229,6 +209,13 @@ footer .right{margin-left:auto}
       <div>
         <h3>같은 번호 파일함에 넣습니다</h3>
         <p>번호 카드가 꽂힌 칸에 영수증을 넣어주세요. 파일함은 <b>1~36 / 37~72 / 73~</b> 세 개로 나뉘어 있습니다.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="n">4</div>
+      <div>
+        <h3>넣은 뒤 제출 표시를 누릅니다</h3>
+        <p>모임 보고 페이지의 파일함 칸에서 <b>종이 영수증 제출했어요</b>를 눌러주세요. 양육국이 영수증을 받으면 같은 자리에 받았다고 표시됩니다.</p>
       </div>
     </div>
   </div>
@@ -240,7 +227,7 @@ footer .right{margin-left:auto}
 
   <div class="box ok">
     <span class="bt">샘터를 두 개 맡고 있다면</span>
-    <p>샘터마다 번호가 따로 있습니다. 샘터별 번호 파일함에 <b>각각</b> 넣어주세요. 한 곳에 몰아 넣으면 한 샘터만 정산됩니다.</p>
+    <p>샘터마다 번호가 따로 있습니다. 모임 보고 페이지 위쪽에서 샘터를 바꾸면 그 샘터의 번호가 보입니다. 샘터별 번호 파일함에 <b>각각</b> 넣고, 제출 표시도 샘터마다 눌러주세요. 한 곳에 몰아 넣으면 한 샘터만 정산됩니다.</p>
   </div>
 
   <div class="box stop">
@@ -278,71 +265,10 @@ footer .right{margin-left:auto}
 
 <footer>
   <span>사랑의교회 청년부 · 양육국</span>
-  <span class="right" id="stamp">최종 수정 2026-09-19</span>
+  <span class="right" id="stamp">최종 수정 2026-10-06</span>
 </footer>
 
 </div>
 
-<script src="names.js"></script>
-<script>
-(function(){
-  var data = (window.SAEMTEO_NAMES || {});
-  var list = data.names || [];
-  var q = document.getElementById('q');
-  var out = document.getElementById('out');
-  var staleBox = document.getElementById('staleBox');
-  var finder = q.closest('.finder');
-
-  // 명단이 비어 있으면 검색창을 숨기고 안내로 대체
-  if(!list.length){
-    q.style.display = 'none';
-    finder.querySelector('.hint').style.display = 'none';
-    out.innerHTML = '<div class="nolist"><b>번호는 현장 명단에서 확인해주세요</b>' +
-      '테이블에 샘지기 이름 가나다순 명단이 놓여 있습니다. 본인 번호를 확인한 뒤 같은 번호 파일함에 넣어주세요.</div>';
-    return;
-  }
-
-  // 기준 월이 지났으면 경고
-  (function(){
-    var m = String(data.운영월 || '');
-    if(!/^\d{4}-\d{2}$/.test(m)) return;
-    var now = new Date();
-    var cur = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
-    if(m < cur){
-      staleBox.innerHTML = '<div class="stale">이 명단은 ' + m.replace('-','년 ') +
-        '월 기준입니다. 이번 달 번호는 현장 종이 명단을 확인해주세요.</div>';
-    }
-  })();
-
-  function render(hits, typed){
-    if(!typed){ out.innerHTML = ''; return; }
-    if(!hits.length){
-      out.innerHTML = '<p class="msg">"' + typed + '" 이름을 찾지 못했습니다. 현장 종이 명단을 확인해주세요.</p>';
-      return;
-    }
-    out.innerHTML = hits.slice(0,8).map(function(h){
-      var team = h.team ? '<span>' + h.team + '</span>' : '<span>영수증 파일함 번호</span>';
-      return '<div class="hit"><div class="num">' + h.no + '</div>' +
-             '<div class="who">' + h.name + team + '</div></div>';
-    }).join('');
-    if(hits.length > 1){
-      out.innerHTML += '<p class="msg">같은 이름이 여러 명입니다. 샘터 구분을 확인해주세요.</p>';
-    }
-  }
-
-  q.addEventListener('input', function(){
-    var v = q.value.trim();
-    if(!v){ render([], ''); return; }
-    var lv = v.toLowerCase();
-    var exact = [], partial = [];
-    list.forEach(function(p){
-      var n = String(p.name || '').toLowerCase();
-      if(n === lv) exact.push(p);
-      else if(n.indexOf(lv) >= 0) partial.push(p);
-    });
-    render(exact.concat(partial), v);
-  });
-})();
-</script>
 </body>
 </html>
