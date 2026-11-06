@@ -242,6 +242,7 @@
   .cta { margin-top: 20px; padding: 20px; display: flex; flex-direction: column; gap: 16px; background: #fff; border-radius: 18px; box-shadow: 0 1px 2px rgba(27,58,92,.08); }
   .cta .e { display: block; font-size: 14px; color: var(--sub); }
   .cta .t { display: block; margin-top: 4px; font-size: 20px; font-weight: 700; color: var(--ink); }
+  .cta .n { display: block; margin-top: 8px; font-size: 14px; line-height: 1.6; color: var(--sub); }
   .btn.sub { background: #fff; color: var(--navy); box-shadow: inset 0 0 0 1.5px var(--navy); }
   .wk-head { margin: 28px 4px 10px; display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
   .wk-head h2 { margin: 0; font-size: 15px; font-weight: 700; }
@@ -309,7 +310,9 @@
 
 <script>
 // ============================================================
-//  청년샘터 모임 보고 — 샘지기 화면 (시범: 본인 확인 · 샘터 고르기 · 이번 달 현황 · 모임 보고 쓰기 · 보고 제출 · 완료 ·
+//  ★ 11월 7일: 정산 마감이 지난 샘터(서버가 보내는 마감지남) — '마감됨 · 마감 뒤에는 정산이 어려워요 · 요청받은 보완만' 안내,
+//    마감 뒤 종이 영수증은 양육국에 직접, 본인 확인 뒤 고르기 화면에 세지 않음(위 탭으로). '시범' 표시를 뺌
+//  청년샘터 모임 보고 — 샘지기 화면 (본인 확인 · 샘터 고르기 · 이번 달 현황 · 모임 보고 쓰기 · 보고 제출 · 완료 ·
 //                                     보고 보기 · 고치기 · 보고 취소 · 종이 영수증 파일함)
 //  ★ 아래 API에 Apps Script 웹앱 배포 주소(…/exec)를 넣습니다.
 // ============================================================
@@ -403,6 +406,7 @@ function 샘터들() { return (S.결과 && S.결과.샘터) || []; }
 function 지금샘터() { const a = 샘터들(); return a.find(t => t.id === S.고른) || a[0]; }
 function 언제(t) { return [t.요일 ? "매주 " + 요일글(t.요일) : "", t.시간].filter(Boolean).join(" "); }
 function 달숫자(t) { return Number(String(t.운영월).slice(5)); }
+function 마감뒤(t, 마감) { const v = 마감 || (t && t.마감); return !!(t && t.마감지남 === true) || (/^\d{4}-\d{2}-\d{2}$/.test(v || "") && v < 오늘값()); }   // 정산 마감 다음 날부터
 
 const 물방울 = (w, h) => `<svg width="${w}" height="${h}" viewBox="0 0 22 28" aria-hidden="true"><path d="M11 1.5C11 1.5 2.5 11.2 2.5 17.3a8.5 8.5 0 0 0 17 0C19.5 11.2 11 1.5 11 1.5Z" fill="#1B3A5C"/><path d="M6.8 17.6a4.3 4.3 0 0 0 3.6 4.2" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>`;
 const 말풍선 = `<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5c-4.2 0-7.5 2.7-7.5 6 0 2 1.2 3.8 3.1 4.9l-.6 2.6 3-1.7c.6.1 1.3.2 2 .2 4.2 0 7.5-2.7 7.5-6s-3.3-6-7.5-6z"/></svg>`;
@@ -481,7 +485,7 @@ function 확인화면() {
   const 됨 = S.이름.trim() && 숫자만(S.번호).length === 4 && (!S.전체필요 || 숫자만(S.전체).length >= 10);
   return `
   <div class="hero">
-    <div class="logo">${물방울(22, 28)}<div><b>청년샘터</b><small>YOUTH SAEMTEO</small></div><span class="trial" style="margin-left:auto">시범</span></div>
+    <div class="logo">${물방울(22, 28)}<div><b>청년샘터</b><small>YOUTH SAEMTEO</small></div></div>
     <h1>모임 보고</h1>
     <p class="lead">모임을 마친 자리에서 참석자와 사진을 남겨 주세요. 로그인은 필요 없어요.</p>
   </div>
@@ -515,7 +519,7 @@ function 고르기화면() {
     const 준비 = t.상태 === "준비됨";
     const on = t.id === S.고른;
     const 상태글 = !준비 ? "준비 중 — 정산폼이 만들어지면 보고할 수 있어요"
-      : (t.지난달 ? `${달숫자(t)}월 샘터 · ${날글(t.마감)}까지 보고` : "이번 달 샘터") + (파일함번호(t) ? ` · 파일함 ${파일함번호(t)}번` : "");
+      : (t.마감지남 ? `${달숫자(t)}월 샘터 · ${날짧게(t.마감)} 마감됨 · 요청받은 보완만` : t.지난달 ? `${달숫자(t)}월 샘터 · ${날글(t.마감)}까지 보고` : "이번 달 샘터") + (파일함번호(t) ? ` · 파일함 ${파일함번호(t)}번` : "");
     const 색 = !준비 ? "var(--sub)" : t.지난달 ? "var(--amber)" : "var(--navy)";
     return `
     <label class="card${on ? " on" : ""}${준비 ? "" : " off"}">
@@ -555,9 +559,9 @@ function 샘터화면() {
     <span class="who">${esc(S.결과.이름)} 샘지기</span><button class="textbtn" id="swap">바꾸기</button>${문의알약()}</div>
   ${탭}
   <div class="head" style="gap:6px">
-    <p class="eyebrow">${esc([월글(t.운영월), 언제(t)].filter(Boolean).join(" · "))} <span class="trial">시범</span></p>
+    <p class="eyebrow">${esc([월글(t.운영월), 언제(t)].filter(Boolean).join(" · "))}</p>
     <h1>${t.지난달 ? `${달숫자(t)}월 모임 보고` : "이번 달 모임 보고"}</h1>
-    <p class="due">${달력}<span>${t.지난달 ? "지난달 보고 마감" : "정산 마감"} ${esc(날글(t.마감))}</span><span id="fb-top">${파일함위(t)}</span></p>
+    <p class="due">${달력}<span>${t.지난달 ? "지난달 보고 마감" : "정산 마감"} ${esc(날글(t.마감))}${t.마감지남 ? " · 마감됨" : ""}</span><span id="fb-top">${파일함위(t)}</span></p>
   </div>
   ${S.서버옛날 || S.서버4전 ? `<div style="margin-top:12px">${서버알림()}</div>` : ""}
   ${안내}
@@ -719,9 +723,10 @@ function 파일함칸(t) {
   const 중 = !!S.파일함중, 여기 = S.파일함중 === t.id, 대기 = Math.max(0, Math.floor(Number(f.대기)) || 0);
   const 여럿 = 파일함여럿(t), 때 = 파일함때(f.때);
   let 아래;
-  if (f.받음 === true) 아래 = `<p class="box blue">${체크(16)}<span>양육국이 종이 영수증을 받았어요.${대기 > 0 ? ` 그 뒤에 보고한 종이 영수증 ${대기}장도 같은 파일함에 넣어 주세요.` : ""}</span></p>`;
+  if (f.받음 === true) 아래 = `<p class="box blue">${체크(16)}<span>양육국이 종이 영수증을 받았어요.${대기 > 0 ? (t.마감지남 ? ` 그 뒤에 보고한 종이 영수증 ${대기}장은 양육국에 직접 전해 주세요.` : ` 그 뒤에 보고한 종이 영수증 ${대기}장도 같은 파일함에 넣어 주세요.`) : ""}</span></p>`;
   else if (f.냈음 === true) 아래 = `<p class="box blue">${체크(16)}<span>${때 ? esc(때) + "에 " : ""}제출했다고 표시했어요. 양육국이 받으면 여기에 보여요. <button type="button" class="linkbtn" data-act="실물취소"${중 ? " disabled" : ""}>${여기 ? "취소하는 중…" : "표시 취소"}</button></span></p>`;
   else if (t.상태 !== "준비됨") 아래 = `<p class="note sm">정산폼이 만들어지면 여기서 제출 표시를 할 수 있어요.</p>`;
+  else if (t.마감지남) 아래 = `<p class="note sm">${달숫자(t)}월 파일함 제출은 마감됐어요. 보완하는 종이 영수증은 양육국에 직접 전해 주세요.</p>`;
   else 아래 = `<button type="button" class="btn sub" data-act="실물제출"${중 ? " disabled" : ""}>${여기 ? `<span class="spin sm"></span>표시하는 중…` : "종이 영수증 제출했어요"}</button>
     <p class="note sm">${달숫자(t)}월 종이 영수증을 파일함에 다 넣은 뒤에 눌러 주세요.${여럿 ? " 파일함은 샘터마다 달라요. 이 샘터 영수증만 여기에 넣어 주세요." : ""} 전자영수증만 있으면 누르지 않아도 돼요.</p>`;
   return `
@@ -762,7 +767,7 @@ function 다음모임날(t, 오늘) {   // 내일부터 이 달 안에서 첫 �
 function 할일칸(t) {
   const 준비 = t.상태 === "준비됨";
   const 초 = S.초안[t.id], 쓰던 = 초 && (초.참석.length || 초.사진.length), 보내던 = 초 && 초.제출 && 초.제출.상태 === "모름";
-  let 위, 제목, 글 = "모임 보고하기", 보조 = false;
+  let 위, 제목, 글 = "모임 보고하기", 보조 = false, 덧 = "";
   if (!준비) { 위 = "샘터를 준비하고 있어요"; 제목 = "정산폼이 만들어지면 보고할 수 있어요"; }
   else if (보내던) { 위 = "보내던 보고가 있어요"; 제목 = "들어갔는지 확인이 필요해요"; 글 = "보내던 보고 확인하기"; }
   else if (쓰던) { 위 = "쓰던 보고가 있어요"; 제목 = 날짜맞음(t, 초.날짜) ? `${날글(초.날짜)} 모임` : "모임 보고"; 글 = "모임 보고 이어서 쓰기"; }
@@ -780,9 +785,13 @@ function 할일칸(t) {
       제목 = 기본 && (주차정보(기본) || {}).주 === w.주 ? `${긴날(기본)} 모임` : "모임을 마쳤으면 보고해 주세요";
     }
   }
+  if (준비 && t.마감지남 && !보내던) {   // 정산 마감이 지남 — 받기는 받되(요청받은 보완) 정산이 어렵다고 분명히
+    위 = `${달숫자(t)}월 보고는 ${날짧게(t.마감)}에 마감됐어요`; 제목 = "마감 뒤에는 정산이 어려워요";
+    덧 = "양육국이 보완을 요청한 경우에만 내 주세요."; 글 = 쓰던 ? "요청받은 보완 이어서 쓰기" : "요청받은 보완 내기"; 보조 = true;
+  }
   return `
   <section class="cta" aria-label="모임 보고">
-    <div><span class="e">${esc(위)}</span><span class="t">${esc(제목)}</span></div>
+    <div><span class="e">${esc(위)}</span><span class="t">${esc(제목)}</span>${덧 ? `<span class="n">${esc(덧)}</span>` : ""}</div>
     ${준비 ? `<button type="button" class="btn${보조 ? " sub" : ""}" data-act="보고열기">${더하기}${esc(글)}</button>` : `<button class="btn" disabled>모임 보고하기</button>`}
   </section>`;
 }
@@ -1013,10 +1022,11 @@ function 보고화면() {
   return `
   <div class="top"><button type="button" class="back" data-act="뒤로">${꺾쇠}${고침 ? "보고 보기" : t.지난달 ? `${달숫자(t)}월 현황` : "이번 달 현황"}</button><span class="grow"></span>${문의알약()}</div>
   <div id="srv-note">${서버알림()}</div>
+  ${t.마감지남 ? `<p class="box amber" style="margin-top:12px">${느낌표()}<span>${달숫자(t)}월 보고는 ${esc(날글(t.마감))}에 마감됐어요. 마감 뒤에는 정산이 어려워서, 양육국이 보완을 요청한 경우에만 내 주세요.</span></p>` : ""}
   <div class="head" style="padding-top:6px;gap:6px">
     <p class="place">${핀}${esc(t.이름표)} 샘터${t.팀구분 ? ` <span class="tag">${esc(t.팀구분)}</span>` : ""}${t.지난달 ? ` <span class="tag">${달숫자(t)}월</span>` : ""}</p>
     <h1>${고침 ? "보고 고치기" : "모임 보고"}</h1>
-    <p>${고침 ? `${esc(날글(고침.날짜))}에 낸 보고예요. 고친 뒤 [고친 보고 내기]를 누르면 바뀌어요` : `${esc(S.결과.이름)} 샘지기 · 모임이 끝난 자리에서 영수증까지 한 번에 내 주세요`}</p>
+    <p>${고침 ? `${esc(날글(고침.날짜))}에 낸 보고예요. 고친 뒤 [고친 보고 내기]를 누르면 바뀌어요` : `${esc(S.결과.이름)} 샘지기${t.마감지남 ? "" : " · 모임이 끝난 자리에서 영수증까지 한 번에 내 주세요"}`}</p>
   </div>
 
   <div id="rp-body"${보고잠김(초) ? ` class="locked" inert` : ""}>
@@ -1274,7 +1284,8 @@ function 합계칸(초) {
       <div class="tot"><span>지원 예상</span><b>${합 > 0 && 인원 > 0 ? 원(Math.min(합, 5000 * 인원, 25000)) + "원" : "—"}</b></div>
       <p class="note sm">영수증 합계, 인당 5,000원, 모임당 25,000원 중 가장 적은 금액이에요. 월말에 확인한 뒤 확정돼요.</p>
     </div>
-    ${종이 ? `<p class="note ink">${고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 ${파일함말(지금샘터())}에 넣어 주세요.${종이붙임 ? " 품목 영수증을 따로 받았으면 함께 넣어 주세요." : ""} <a href="${영수증제출안내}" target="_blank" rel="noopener">제출 위치 보기</a></p>` : ""}
+    ${종이 ? (마감뒤(지금샘터()) ? `<p class="note ink">마감이 지나 ${고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 파일함 대신 양육국에 직접 전해 주세요.${종이붙임 ? " 품목 영수증을 따로 받았으면 함께 전해 주세요." : ""}</p>`
+      : `<p class="note ink">${고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 ${파일함말(지금샘터())}에 넣어 주세요.${종이붙임 ? " 품목 영수증을 따로 받았으면 함께 넣어 주세요." : ""} <a href="${영수증제출안내}" target="_blank" rel="noopener">제출 위치 보기</a></p>`) : ""}
     ${전자 ? `<p class="note ink">전자영수증은 올린 캡처가 증빙이에요. 편집하지 않은 원본 그대로 올려 주세요.</p>` : ""}`;
 }
 
@@ -2078,8 +2089,10 @@ function 완료짧은글(c, t) {   // 다른 보고를 쓰는 동안 끝난 보�
   let 글 = `${날짧게(b.날짜)} 모임 보고를 ${c.고침 ? "고쳤어요" : "받았어요"}.`;
   const 폼 = b.정산폼 || "";
   if (폼 === "줄 부족" || 폼 === "양식 다름" || 폼 === "못 엶" || /^안 씀/.test(b.정산폼글 || "")) 글 += " 정산폼에는 아직 적지 못했어요. 양육국이 확인해요.";
-  const 종이 = c.고침 ? Number((c.낸 || {}).새종이) || 0 : Number(b.종이) || 0;
-  if (종이) 글 += ` ${c.고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 ${날글(b.마감 || (t && t.마감))}까지 ${파일함말(t)}에 넣어 주세요.`;
+  const 종이 = c.고침 ? Number((c.낸 || {}).새종이) || 0 : Number(b.종이) || 0, 늦음 = b.마감지남 === true || 마감뒤(t, b.마감);
+  if (늦음) 글 += " 정산 마감 뒤에 낸 보고예요. 요청받은 보완이면 카카오톡 문의로 알려 주세요.";
+  if (종이) 글 += 늦음 ? ` ${c.고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 양육국에 직접 전해 주세요.`
+    : ` ${c.고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 ${날글(b.마감 || (t && t.마감))}까지 ${파일함말(t)}에 넣어 주세요.`;
   return 글;
 }
 
@@ -2117,8 +2130,11 @@ function 완료화면() {
 function 완료알림(b, t, c) {
   const 줄 = [], 상자 = (색, 글) => `<p class="box ${색}">${느낌표()}<span>${글}</span></p>`;
   const 영수증 = Number(b.영수증) || 0, 종이 = c.고침 ? Number((c.낸 || {}).새종이) || 0 : Number(b.종이) || 0;
+  const 늦음 = b.마감지남 === true || 마감뒤(t, b.마감);
   if (c.이미) 줄.push(`<p class="box blue">${체크(16)}<span>이 보고는 앞서 이미 ${c.고침 ? "고쳤어요" : "받았어요"}. 두 번 적히지 않았어요.</span></p>`);
-  if (종이) 줄.push(`<p class="box blue">${영수증그림.replace('width="26" height="34"', 'width="16" height="21"')}<span>${c.고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 ${esc(날글(b.마감 || (t && t.마감)))}까지 ${파일함말(t)}에 넣어 주세요.${b.종이붙임 ? " 품목 영수증을 따로 받았으면 함께 넣어 주세요." : ""} <a href="${영수증제출안내}" target="_blank" rel="noopener">제출 위치 보기</a></span></p>`);
+  if (늦음) 줄.push(상자("amber", `${t ? 달숫자(t) + "월 " : ""}정산 마감 뒤에 낸 보고예요. 양육국이 요청한 보완이면 카카오톡 문의로 냈다고 알려 주세요. 요청 없이 낸 보고는 정산이 어려워요.`));
+  if (종이 && 늦음) 줄.push(`<p class="box blue">${영수증그림.replace('width="26" height="34"', 'width="16" height="21"')}<span>${c.고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 파일함 대신 양육국에 직접 전해 주세요.${b.종이붙임 ? " 품목 영수증을 따로 받았으면 함께 전해 주세요." : ""}</span></p>`);
+  else if (종이) 줄.push(`<p class="box blue">${영수증그림.replace('width="26" height="34"', 'width="16" height="21"')}<span>${c.고침 ? "새로 넣은 " : ""}종이 영수증 ${종이}장은 ${esc(날글(b.마감 || (t && t.마감)))}까지 ${파일함말(t)}에 넣어 주세요.${b.종이붙임 ? " 품목 영수증을 따로 받았으면 함께 넣어 주세요." : ""} <a href="${영수증제출안내}" target="_blank" rel="noopener">제출 위치 보기</a></span></p>`);
   if (!영수증) 줄.push(상자("blue", "영수증 없이 낸 보고라 지원 예상은 없어요. 영수증을 빠뜨렸으면 이번 달 현황에서 이 보고를 눌러 [고치기]로 넣어 주세요."));
   const 폼 = b.정산폼 || "", 겹친 = Array.isArray(b.겹친) ? b.겹친 : [];
   if (폼 === "반영" && Array.isArray(b.정산폼줄) && b.정산폼줄.length) 줄.push(`<p class="note sm">정산폼 ${b.정산폼줄.join(" · ")}행에 ${c.고침 ? "고쳐 " : ""}적었어요.</p>`);
@@ -2305,13 +2321,15 @@ async function 확인하기(자동) {
         const 전 = 읽기() || {};
         쓰기({ 이름: S.이름.trim(), 번호: 번호.slice(-4), 샘터: 이름키(전.이름 || "") === 이름키(S.이름) ? 전.샘터 || "" : "", 때: Date.now() });
       } else 쓰기(null);   // 바로 열기를 끄고 확인하면 이 폰에 저장해 둔 이름 · 번호를 지움 (앞사람 것이어도)
-      const 쓸수있는 = d.샘터.filter(t => t.상태 === "준비됨");
+      // 정산 마감이 지난 지난달 샘터는 뒤로 — 고르기 화면에 세지 않고 이번 달 샘터가 바로 열림 (지난달은 위 탭으로)
+      const 앞 = d.샘터.filter(t => !(t.지난달 && t.마감지남));
+      const 쓸수있는 = d.샘터.filter(t => t.상태 === "준비됨"), 앞쓸 = 쓸수있는.filter(t => 앞.indexOf(t) >= 0);
       const 지난번 = (읽기() || {}).샘터;
       const 오늘 = 오늘요일();
-      const 고를 = 쓸수있는.find(t => !t.지난달 && t.요일들 && t.요일들.indexOf(오늘) >= 0)
-        || 쓸수있는.find(t => t.id === 지난번) || 쓸수있는[0] || d.샘터[0];
+      const 고를 = 앞쓸.find(t => !t.지난달 && t.요일들 && t.요일들.indexOf(오늘) >= 0)
+        || 앞쓸.find(t => t.id === 지난번) || 앞쓸[0] || 앞[0] || 쓸수있는[0] || d.샘터[0];
       S.고른 = 고를 ? 고를.id : "";
-      가기(d.샘터.length > 1 ? "고르기" : "샘터");
+      가기((앞.length || d.샘터.length) > 1 ? "고르기" : "샘터");
       return;
     }
     case "전체번호":
