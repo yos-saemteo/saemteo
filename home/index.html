@@ -295,14 +295,13 @@ const 설정 = {
           if (d && d.오늘 && d.오늘 > 오늘) 오늘 = d.오늘;
           if (!d || d.ok === false || d.상태 !== "확인") {
             if (손으로) 묻기화면((d && d.안내) || "확인하지 못했어요. 이름과 번호를 다시 봐 주세요.");
-            else if (d && (d.상태 === "이번달없음" || d.상태 === "준비중")) { $("my").hidden = true; $("my-ask").hidden = true; }   // 이번 달 샘터가 없는 분 — 묻지 않고 기본 화면
-            else 묻기화면(d && d.상태 === "전체번호" ? (d.안내 || "휴대폰 번호 전체로 한 번 더 확인해 주세요.") : "");
-            return;
+            else if (d && d.상태 === "전체번호") 묻기화면(d.안내 || "휴대폰 번호 전체로 한 번 더 확인해 주세요.");
+            return false;
           }
           내이름 = (d.이름 || 이름).trim();
           var 이번 = (d.샘터 || []).filter(function (t) { return !t.지난달; });
           샘터들 = 이번.length ? 이번 : [];
-          if (!샘터들.length) { 묻기화면(""); $("my-ask").hidden = true; return; }
+          if (!샘터들.length) { if (손으로) 묻기화면("이번 달에 운영 중인 샘터가 없어요. 다음 달 샘터는 달이 바뀌면 여기에 보여요."); return false; }
           var 요일 = now.getDay(); 고른 = 0;
           샘터들.forEach(function (t, i) { if (t.요일들 && t.요일들.indexOf(요일) >= 0) 고른 = i; });
           if (손으로) {
@@ -311,8 +310,9 @@ const 설정 = {
             if (!읽기(보고키)) 쓰기(보고키, { 이름: 이름, 번호: 번호.slice(-4), 샘터: "", 때: Date.now() });   // 모임 보고 페이지도 바로 열리게 (그 페이지가 쓰는 모양 그대로: 이름 + 뒤 4자리)
           }
           그리기();
+          return true;
         })
-        .catch(function () { if (손으로) 묻기화면("연결이 안 돼요. 잠시 뒤 다시 해 주세요."); });
+        .catch(function () { if (손으로) 묻기화면("연결이 안 돼요. 잠시 뒤 다시 해 주세요."); return false; });
     }
     $("my-tel").addEventListener("input", function () {
       var d = this.value.replace(/\D/g, "").slice(0, 11);
@@ -325,12 +325,22 @@ const 설정 = {
       var b = $("my-go"); b.disabled = true; b.textContent = "확인하는 중…";
       확인(이름, 번호, true).then(function () { b.disabled = false; b.textContent = "확인"; });
     });
-    $("my-forget").addEventListener("click", function () { 쓰기(홈키, null); location.reload(); });
+    $("my-forget").addEventListener("click", function () { 쓰기(홈키, null); 쓰기(보고키, null); location.reload(); });   // 모임 보고 페이지에 기억된 것도 함께 지움 (안 지우면 같은 사람이 다시 뜸)
 
     var 홈 = 읽기(홈키), 보 = 읽기(보고키);
-    if (홈 && 홈.이름 && 홈.전화) 확인(String(홈.이름), String(홈.전화).replace(/\D/g, ""), false);
-    else if (보 && 보.이름 && 보.번호) 확인(String(보.이름), String(보.번호).replace(/\D/g, ""), false);   // 모임 보고 페이지를 쓰던 폰이면 그 확인을 그대로
-    else 묻기화면("");
+    // 이 폰에 기억된 이름으로 차례로 확인: ① 홈 · 이어가기에서 확인한 것 ② 모임 보고 페이지에서 확인한 것.
+    // 어느 것으로도 이번 달 샘터를 못 찾으면 '내 샘터 보기' 칸을 보여 줌 (전에는 아무것도 안 보였음)
+    var 후보 = [];
+    if (홈 && 홈.이름 && 홈.전화) 후보.push([String(홈.이름), String(홈.전화).replace(/\D/g, "")]);
+    if (보 && 보.이름 && 보.번호 && !(후보[0] && 후보[0][0] === String(보.이름))) 후보.push([String(보.이름), String(보.번호).replace(/\D/g, "")]);
+    묻기화면("");
+    (function 다음(i) {
+      if (i >= 후보.length) {
+        if (후보.length && $("my").hidden && $("my-ask-n").textContent.indexOf("전체") < 0) 묻기화면(후보[0][0] + " 님 이름으로는 이번 달 샘터를 찾지 못했어요. 이름과 휴대폰 번호를 확인해 주세요.");
+        return;
+      }
+      확인(후보[i][0], 후보[i][1], false).then(function (됨) { if (!됨) 다음(i + 1); });
+    })(0);
   })();
 
   // ---- 모임 보고 마감 알림: 기본은 '다음 달 첫 일요일', ⚙️설정에 날짜가 있으면 그 날 (웹앱이 알려 줌)
