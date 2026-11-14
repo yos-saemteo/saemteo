@@ -24,6 +24,7 @@ const 설정 = {
   운영주소: "https://yos-saemteo.github.io/saemteo/",   // 지금 운영 중인 페이지들 (모임 보고 · 은혜 나눔 · 안내)
   문의: "https://open.kakao.com/o/sWdAUBFi",            // 카카오톡 오픈채팅
   접수: "https://script.google.com/macros/s/AKfycbzw5CWv9MrYzb-cjcIGVrVI_5NlWuJBZqEZOAJfJ5GwYmJIYEkwzRzf6WiBI9JD2RsMrw/exec",   // 샘지기 홈 웹앱 주소 (apply · again 과 같은 주소). 비우면 신청 여부 알림이 꺼집니다
+  보고: "https://script.google.com/macros/s/AKfycbwZFOS7D9T4-haOAyQxBPy0SP0NJ4m4uO3KgTt6d81g8RA2BpXGCID2YpVaJlPI9zQj/exec",   // 모임 보고 웹앱 주소 (report/index.html 의 API 와 같은 주소). 비우면 '내 샘터'가 꺼집니다
   신청폼: "https://forms.gle/7uQZ7tqPUk4V9ria6",        // 샘터를 새로 열 때 쓰는 구글폼 (랜딩 페이지 신청 버튼과 같은 주소)
 };
 </script>
@@ -60,6 +61,26 @@ const 설정 = {
   .dl { margin: 0; padding: 10px 12px; border-radius: 10px; background: #F4F7FA; font-size: 14px; line-height: 1.6; color: var(--sub2); }
   .dl b { color: var(--ink); }
   .card.due .dl { background: #FBEFD9; color: #6B4506; }
+  .my-lab { font-size: 13px; font-weight: 600; color: var(--sub); }
+  .my-t { margin-top: 4px; font-size: 19px; font-weight: 700; }
+  .my-n { margin-top: 4px; font-size: 14px; line-height: 1.55; color: var(--sub); }
+  .my-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .my-tabs button { height: 40px; padding: 0 14px; border: 0; border-radius: 20px; background: #fff; box-shadow: inset 0 0 0 1.5px var(--line); color: var(--sub2); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .my-tabs button[aria-pressed="true"] { background: var(--navy); box-shadow: none; color: #fff; }
+  .wks { display: grid; gap: 6px; }
+  .wk { padding: 9px 0; border-radius: 12px; text-align: center; background: #F4F7FA; color: var(--sub); }
+  .wk b { display: block; font-size: 13px; font-weight: 600; }
+  .wk span { display: block; margin-top: 2px; font-size: 13.5px; font-weight: 700; }
+  .wk.done { background: #E4EFF8; color: var(--navy); }
+  .wk.now { background: var(--amber-bg); color: var(--amber); }
+  .wk.miss { background: #F1F4F7; color: #5E6A76; }
+  .my-row { display: flex; align-items: baseline; justify-content: space-between; padding-top: 12px; border-top: 1px solid #E6ECF1; font-size: 14px; color: var(--sub); }
+  .my-row b { font-size: 16px; color: var(--ink); }
+  .my-warn { margin: 0; padding: 9px 12px; border-radius: 10px; background: var(--amber-bg); color: #6B4506; font-size: 14px; line-height: 1.55; }
+  .my-form { display: flex; flex-direction: column; gap: 10px; }
+  .my-form input { width: 100%; height: 48px; padding: 0 14px; border: 1.5px solid var(--line2); border-radius: 12px; font: inherit; font-size: 16px; color: var(--ink); outline: none; }
+  .my-form input:focus { border-color: var(--navy); }
+  .linkbtn { padding: 0; border: 0; background: none; color: var(--link); font: inherit; font-size: 13px; text-decoration: underline; cursor: pointer; }
   .tag.ok { background: #E3F1E8; color: #1F6B3F; }
   .tag.late { background: #8C4A00; color: #fff; }
   .foot { margin: 0; text-align: center; font-size: 13px; line-height: 1.5; color: var(--sub); }
@@ -78,7 +99,7 @@ const 설정 = {
 </style>
 </head>
 <body>
-<div class="testbar" id="testbar" hidden>테스트 페이지입니다 · 이어가기는 아직 접수되지 않습니다</div>
+<div class="testbar" id="testbar" hidden>테스트 페이지입니다 · 여기서 낸 신청은 테스트용 시트에만 적힙니다</div>
 <div class="page">
 
   <div class="top">
@@ -98,7 +119,33 @@ const 설정 = {
     <p>모임 보고부터 다음 달 신청까지, 샘지기가 할 일을 여기 모았어요.</p>
   </div>
 
-  <section class="card" id="report-card" aria-label="모임 보고">
+  <section class="card" id="my" aria-label="내 샘터" hidden>
+    <div class="my-tabs" id="my-tabs" hidden></div>
+    <div>
+      <div class="my-lab" id="my-lab">이번 달 샘터</div>
+      <div class="my-t" id="my-t"></div>
+      <div class="my-n" id="my-n"></div>
+    </div>
+    <div class="wks" id="my-wks"></div>
+    <p class="my-warn" id="my-warn" hidden></p>
+    <a class="btn" id="my-btn" data-live="report/" href="#">모임 보고하기</a>
+    <div class="my-row" id="my-sum" hidden><span id="my-sum-k"></span><b id="my-sum-v"></b></div>
+    <p class="foot"><span id="my-who"></span> 님 · <button type="button" class="linkbtn" id="my-forget">다른 사람이에요</button></p>
+  </section>
+
+  <section class="card" id="my-ask" aria-label="내 샘터 확인" hidden>
+    <div>
+      <div class="t" style="margin-top:0">내 샘터 보기</div>
+      <div class="n" id="my-ask-n">이름과 휴대폰 번호를 한 번 확인하면, 이번 달 보고 현황이 여기에 바로 보여요.</div>
+    </div>
+    <form class="my-form" id="my-form" novalidate>
+      <input type="text" id="my-name" maxlength="20" placeholder="샘지기 이름" autocomplete="name" aria-label="샘지기 이름">
+      <input type="tel" id="my-tel" inputmode="numeric" maxlength="13" placeholder="휴대폰 번호 (010-1234-5678)" autocomplete="tel" aria-label="휴대폰 번호">
+      <button class="btn sub" type="submit" id="my-go">확인</button>
+    </form>
+  </section>
+
+  <section class="card" id="report-card" aria-label="모임 보고" style="margin-top:14px">
     <div>
       <span class="tag" id="report-tag" hidden></span>
       <div class="t" id="report-t" style="margin-top:0">모임 보고</div>
@@ -164,6 +211,127 @@ const 설정 = {
   document.querySelectorAll('[data-link="문의"]').forEach(function (a) { a.href = 문의; });
   var 폼 = /^https:\/\/[^\s"'<>]+$/.test(설정.신청폼) ? 설정.신청폼 : 운영;
   document.querySelectorAll('[data-link="신청폼"]').forEach(function (a) { a.href = 폼; });
+
+  // ---- 내 샘터: 모임 보고 웹앱에 이름 + 번호로 물어 이번 달 샘터 · 주차별 보고 여부를 보여 줌 (읽기만 함)
+  (function () {
+    var $ = function (id) { return document.getElementById(id); };
+    if (!/^https:\/\/script\.google\.com\//.test(설정.보고 || "")) return;
+    var 홈키 = "saemteo.home.v1", 보고키 = "saemteo.report.v1";
+    function 읽기(k) { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } }
+    function 쓰기(k, v) { try { v ? localStorage.setItem(k, JSON.stringify(v)) : localStorage.removeItem(k); } catch (e) {} }
+    function 두자리(n) { return String(n).padStart(2, "0"); }
+    function ymd(d) { return d.getFullYear() + "-" + 두자리(d.getMonth() + 1) + "-" + 두자리(d.getDate()); }
+    function 원(n) { return (Number(n) || 0).toLocaleString("ko-KR"); }
+    // 그 달의 주차 — 모임 보고 페이지와 같은 규칙 (월요일 시작, 1일이 토 · 일이면 다음 월요일부터 1주차)
+    function 주차들(월) {
+      var p = String(월).split("-").map(Number), y = p[0], m = p[1];
+      var first = new Date(y, m - 1, 1), last = new Date(y, m, 0), mon1 = new Date(first);
+      mon1.setDate(1 - ((first.getDay() + 6) % 7));
+      if (first.getDay() === 0 || first.getDay() === 6) mon1.setDate(mon1.getDate() + 7);
+      var n = Math.floor(Math.round((last - mon1) / 86400000) / 7) + 1, out = [];
+      for (var i = 1; i <= n; i++) {
+        var a = new Date(mon1); a.setDate(mon1.getDate() + 7 * (i - 1));
+        var b = new Date(a); b.setDate(a.getDate() + 6);
+        if (i === 1 || a < first) a = new Date(first);
+        if (b > last) b = new Date(last);
+        out.push({ 주: i, 시작: ymd(a), 끝: ymd(b) });
+      }
+      return out;
+    }
+    function 주찾기(주들, 날) { for (var i = 0; i < 주들.length; i++) if (날 >= 주들[i].시작 && 날 <= 주들[i].끝) return 주들[i].주; return 0; }
+    var 샘터들 = [], 고른 = 0, 오늘 = ymd(now), 내이름 = "";
+
+    function 그리기() {
+      var t = 샘터들[고른]; if (!t) return;
+      var 탭 = $("my-tabs"); 탭.textContent = ""; 탭.hidden = 샘터들.length < 2;
+      샘터들.forEach(function (x, i) {
+        var b = document.createElement("button"); b.type = "button";
+        b.textContent = 내이름 + (x.팀구분 ? "_" + x.팀구분 : " · " + (x.이름표 || "샘터"));
+        b.setAttribute("aria-pressed", i === 고른 ? "true" : "false");
+        b.addEventListener("click", function () { 고른 = i; 그리기(); });
+        탭.appendChild(b);
+      });
+      var 달 = Number(String(t.운영월).slice(5)) + "월";
+      $("my-lab").textContent = 달 + " 샘터";
+      $("my-t").textContent = [t.이름표 || t.팀구분 || "샘터", t.시간 || ""].filter(Boolean).join(" · ");
+      var 함 = t.파일함 && Number(t.파일함.번호);
+      $("my-n").textContent = "샘원 " + ((t.샘원 || []).join(", ") || "—") + (함 >= 1 ? " · 파일함 " + 함 + "번" : "");
+      var 주들 = 주차들(t.운영월), 보고 = t.보고 || [], 낸주 = {}, 합 = 0;
+      보고.forEach(function (b) { var w = Number(b.주차) || 주찾기(주들, String(b.날짜 || "")); if (w) 낸주[w] = true; 합 += Number(b.합계) || 0; });
+      var 칸 = $("my-wks"), 빠진 = [], 이번주전 = 0; 칸.textContent = "";
+      var 준비 = t.상태 === "준비됨" || t.상태 === undefined;
+      주들.forEach(function (w) {
+        var 종류 = 낸주[w.주] ? "done" : (오늘 >= w.시작 && 오늘 <= w.끝) ? "now" : 오늘 > w.끝 ? "miss" : "";
+        if (종류 === "miss") 빠진.push(w.주); if (종류 === "now") 이번주전 = w.주;
+        var d = document.createElement("div"), a = document.createElement("b"), c = document.createElement("span");
+        d.className = "wk" + (종류 ? " " + 종류 : ""); a.textContent = w.주 + "주";
+        c.textContent = 종류 === "done" ? "완료" : 종류 === "now" ? "보고 전" : 종류 === "miss" ? "없음" : "—";
+        d.appendChild(a); d.appendChild(c); 칸.appendChild(d);
+      });
+      칸.style.gridTemplateColumns = "repeat(" + 주들.length + ", minmax(0, 1fr))";
+      칸.hidden = !준비;
+      var 경고 = $("my-warn");
+      if (!준비) { 경고.textContent = "이 샘터는 모임 보고를 준비하고 있어요. 준비되면 여기에 주차별 현황이 보여요."; 경고.hidden = false; }
+      else if (빠진.length) { 경고.textContent = 빠진.join(" · ") + "주차 보고가 없어요. 모임을 했다면 지금 보고해 주세요."; 경고.hidden = false; }
+      else 경고.hidden = true;
+      $("my-btn").textContent = 이번주전 ? 이번주전 + "주차 모임 보고하기" : "모임 보고하기";
+      $("my-btn").hidden = !준비;
+      $("my-sum").hidden = !준비;
+      $("my-sum-k").textContent = 달 + " 보고한 금액 · " + 보고.length + "번";
+      $("my-sum-v").textContent = 원(합) + "원";
+      $("my-who").textContent = 내이름;
+      $("my").hidden = false; $("my-ask").hidden = true;
+      $("report-card").querySelector(".btn").hidden = 준비;   // 위 카드에 보고 버튼이 있으니 아래 카드는 마감 안내만
+    }
+    function 묻기화면(msg) {
+      $("my").hidden = true; $("my-ask").hidden = false;
+      if (msg) $("my-ask-n").textContent = msg;
+      $("report-card").querySelector(".btn").hidden = false;
+    }
+    function 확인(이름, 번호, 손으로) {
+      return fetch(설정.보고, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "본인", 이름: 이름, 번호: 번호 }), redirect: "follow" })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d && d.오늘 && d.오늘 > 오늘) 오늘 = d.오늘;
+          if (!d || d.ok === false || d.상태 !== "확인") {
+            if (손으로) 묻기화면((d && d.안내) || "확인하지 못했어요. 이름과 번호를 다시 봐 주세요.");
+            else if (d && (d.상태 === "이번달없음" || d.상태 === "준비중")) { $("my").hidden = true; $("my-ask").hidden = true; }   // 이번 달 샘터가 없는 분 — 묻지 않고 기본 화면
+            else 묻기화면(d && d.상태 === "전체번호" ? (d.안내 || "휴대폰 번호 전체로 한 번 더 확인해 주세요.") : "");
+            return;
+          }
+          내이름 = (d.이름 || 이름).trim();
+          var 이번 = (d.샘터 || []).filter(function (t) { return !t.지난달; });
+          샘터들 = 이번.length ? 이번 : [];
+          if (!샘터들.length) { 묻기화면(""); $("my-ask").hidden = true; return; }
+          var 요일 = now.getDay(); 고른 = 0;
+          샘터들.forEach(function (t, i) { if (t.요일들 && t.요일들.indexOf(요일) >= 0) 고른 = i; });
+          if (손으로) {
+            var 전 = 읽기(홈키) || {};
+            쓰기(홈키, { 이름: 이름, 전화: 번호.length >= 10 ? 번호 : (전.이름 === 이름 && 전.전화) || 번호 });
+            if (!읽기(보고키)) 쓰기(보고키, { 이름: 이름, 번호: 번호.slice(-4), 샘터: "", 때: Date.now() });   // 모임 보고 페이지도 바로 열리게 (그 페이지가 쓰는 모양 그대로: 이름 + 뒤 4자리)
+          }
+          그리기();
+        })
+        .catch(function () { if (손으로) 묻기화면("연결이 안 돼요. 잠시 뒤 다시 해 주세요."); });
+    }
+    $("my-tel").addEventListener("input", function () {
+      var d = this.value.replace(/\D/g, "").slice(0, 11);
+      this.value = d.length > 7 ? d.slice(0, 3) + "-" + d.slice(3, d.length === 10 ? 6 : 7) + "-" + d.slice(d.length === 10 ? 6 : 7) : d.length > 3 ? d.slice(0, 3) + "-" + d.slice(3) : d;
+    });
+    $("my-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var 이름 = $("my-name").value.replace(/\s+/g, ""), 번호 = $("my-tel").value.replace(/\D/g, "");
+      if (이름.length < 2 || !/^01[016789]\d{7,8}$/.test(번호)) { $("my-ask-n").textContent = "이름과 휴대폰 번호 전체를 적어 주세요."; return; }
+      var b = $("my-go"); b.disabled = true; b.textContent = "확인하는 중…";
+      확인(이름, 번호, true).then(function () { b.disabled = false; b.textContent = "확인"; });
+    });
+    $("my-forget").addEventListener("click", function () { 쓰기(홈키, null); location.reload(); });
+
+    var 홈 = 읽기(홈키), 보 = 읽기(보고키);
+    if (홈 && 홈.이름 && 홈.전화) 확인(String(홈.이름), String(홈.전화).replace(/\D/g, ""), false);
+    else if (보 && 보.이름 && 보.번호) 확인(String(보.이름), String(보.번호).replace(/\D/g, ""), false);   // 모임 보고 페이지를 쓰던 폰이면 그 확인을 그대로
+    else 묻기화면("");
+  })();
 
   // ---- 모임 보고 마감 알림: 기본은 '다음 달 첫 일요일', ⚙️설정에 날짜가 있으면 그 날 (웹앱이 알려 줌)
   (function () {
