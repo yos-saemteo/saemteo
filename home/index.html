@@ -20,7 +20,8 @@
 // ============================================================
 const 설정 = {
   테스트: false,          // true면 맨 위에 '테스트 페이지' 띠가 보입니다. 운영 저장소로 옮길 때 false
-  열린샘터: false,       // 보류 중. true로 바꾸면 '열린 샘터 찾기' 칸이 나타납니다
+  열린샘터: false,
+  고치기: false,         // true면 '낸 신청 고치기 · 취소' 링크가 보입니다 (change 폴더와 웹앱의 고치기 기능을 함께 올렸을 때만 켜세요)       // 보류 중. true로 바꾸면 '열린 샘터 찾기' 칸이 나타납니다
   운영주소: "https://yos-saemteo.github.io/saemteo/",   // 지금 운영 중인 페이지들 (모임 보고 · 은혜 나눔 · 안내)
   문의: "https://open.kakao.com/o/sWdAUBFi",            // 카카오톡 오픈채팅
   접수: "https://script.google.com/macros/s/AKfycbzw5CWv9MrYzb-cjcIGVrVI_5NlWuJBZqEZOAJfJ5GwYmJIYEkwzRzf6WiBI9JD2RsMrw/exec",   // 샘지기 홈 웹앱 주소 (apply · again 과 같은 주소). 비우면 신청 여부 알림이 꺼집니다
@@ -162,6 +163,7 @@ const 설정 = {
       <div class="n" id="again-n"><span id="apply-due"></span> 이름과 번호만 확인하면 이번 달 샘터 그대로 신청돼요.</div>
     </div>
     <a class="btn sub" id="again-btn" href="again/">이번 달 샘터 그대로 이어가기</a>
+    <p class="foot" id="again-edit" hidden><a href="change/">낸 신청 고치기 · 취소</a></p>
     <p class="foot" id="again-who" hidden><span id="again-name"></span> 님 기준이에요 · <a href="#" id="again-forget">다른 사람이에요</a></p>
     <p class="foot">샘터를 새로 열거나 하나 더 열 때는 <a href="apply/">신청서 작성</a></p>
   </section>
@@ -413,6 +415,7 @@ const 설정 = {
       .then(function (res) {
         if (!res || !res.ok || !res.샘터 || !res.샘터.length) return;   // 이번 달 샘터가 없으면 기본 안내 그대로
         var 이름표 = function (x) { return 나.이름 + (x.팀구분 ? "_" + x.팀구분 : ""); };
+        $("again-edit").hidden = !설정.고치기 || !res.샘터.some(function (x) { return x.이미; });
         var 안한 = res.샘터.filter(function (x) { return !x.이미; }).map(이름표);
         if (안한.length) 전(res.샘터.length > 1 ? 안한 : [], 나.이름); else 완료(res.샘터.length > 1 ? res.샘터.map(이름표) : []);
       })

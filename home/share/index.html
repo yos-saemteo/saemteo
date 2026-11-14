@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1B3A5C">
+<title>은혜 나누기 — 청년샘터</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet">
+<script>
+// ============================================================
+//  ★ 여기만 고치면 됩니다 ★  (apply/index.html 과 같은 주소를 넣습니다)
+// ============================================================
+const API = "https://script.google.com/macros/s/AKfycbzw5CWv9MrYzb-cjcIGVrVI_5NlWuJBZqEZOAJfJ5GwYmJIYEkwzRzf6WiBI9JD2RsMrw/exec";
+const 테스트 = false;
+const 게시판 = "https://yos-saemteo.github.io/saemteo/grace/";
+</script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #EEF3F7; }
+  body { color: #18283A; font-family: 'IBM Plex Sans KR', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; word-break: keep-all; -webkit-text-size-adjust: 100%; }
+  .testbar { padding: 6px 12px; background: #7D5208; color: #fff; font-size: 12.5px; line-height: 1.4; text-align: center; }
+  .page { max-width: 480px; margin: 0 auto; padding: 4px 20px 40px; }
+  .top { display: flex; align-items: center; justify-content: space-between; min-height: 52px; }
+  .back { display: inline-flex; align-items: center; gap: 2px; min-height: 44px; padding: 0; border: 0; background: none; color: #1B3A5C; font: inherit; font-size: 15px; font-weight: 600; text-decoration: none; cursor: pointer; }
+  .step { font-size: 13px; font-weight: 600; color: #56636F; }
+  .bar { display: flex; gap: 6px; margin: 2px 0 0; }
+  .bar i { flex: 1; height: 4px; border-radius: 2px; background: #D5DFE8; }
+  .bar i.on { background: #1B3A5C; }
+  h1 { margin: 22px 2px 0; font-family: 'Noto Serif KR', serif; font-weight: 700; font-size: 26px; line-height: 1.3; color: #1B3A5C; }
+  .lead { margin: 8px 2px 0; font-size: 15px; line-height: 1.6; color: #56636F; }
+  .card { margin-top: 16px; padding: 18px 16px; border-radius: 16px; background: #fff; box-shadow: 0 1px 2px rgba(24,40,58,.06); }
+  .f { margin-top: 18px; }
+  .f:first-child { margin-top: 0; }
+  label, .lab { display: block; font-size: 14px; font-weight: 600; color: #18283A; }
+  .opt { font-weight: 500; color: #7A8794; }
+  .hint { margin-top: 4px; font-size: 13px; line-height: 1.5; color: #7A8794; }
+  input[type=text], input[type=tel], input[type=email], select, textarea {
+    width: 100%; margin-top: 8px; padding: 0 14px; height: 50px; border: 1.5px solid #D5DFE8; border-radius: 12px; background: #fff;
+    color: #18283A; font: inherit; font-size: 16px; outline: none; -webkit-appearance: none; appearance: none; }
+  textarea { height: 120px; padding: 12px 14px; line-height: 1.6; resize: vertical; }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%2356636F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 7.5 5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 40px; }
+  input:focus, select:focus, textarea:focus { border-color: #1B3A5C; }
+  .bad input, .bad select, .bad textarea, .bad .chips { border-color: #B3261E; }
+  .err { display: none; margin-top: 6px; font-size: 13px; color: #B3261E; }
+  .bad .err { display: block; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; border: 1.5px solid transparent; border-radius: 12px; }
+  .chips label { position: relative; flex: 1 1 auto; }
+  .chips input { position: absolute; opacity: 0; pointer-events: none; }
+  .chips span { display: flex; align-items: center; justify-content: center; min-height: 46px; padding: 0 14px; border: 1.5px solid #D5DFE8; border-radius: 12px; background: #fff; font-size: 15px; font-weight: 500; color: #18283A; white-space: nowrap; }
+  .chips input:checked + span { border-color: #1B3A5C; background: #1B3A5C; color: #fff; }
+  .chips input:focus-visible + span { outline: 2px solid #1B3A5C; outline-offset: 2px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .card > .row2 { margin-top: 18px; }
+  .row2 > .f { margin-top: 0; }
+  .mem { margin-top: 12px; padding: 12px; border-radius: 12px; background: #F4F7FA; }
+  .mem:first-of-type { margin-top: 8px; }
+  .mem .no { font-size: 13px; font-weight: 600; color: #56636F; }
+  .mem input, .mem select { margin-top: 6px; }
+  .mem .etc { display: none; }
+  .mem.etc-on .etc { display: block; }
+  .agree { margin-top: 0; padding: 12px 14px; border-radius: 12px; background: #F4F7FA; font-size: 13.5px; line-height: 1.7; color: #3A4856; }
+  .agree b { color: #18283A; }
+  .check { display: flex; align-items: center; gap: 10px; margin-top: 12px; min-height: 48px; padding: 0 12px; border: 1.5px solid #D5DFE8; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .check input { width: 22px; height: 22px; margin: 0; accent-color: #1B3A5C; }
+  .bad .check { border-color: #B3261E; }
+  .btn { display: flex; align-items: center; justify-content: center; width: 100%; height: 54px; margin-top: 20px; border: 0; border-radius: 14px; background: #1B3A5C; color: #fff; font: inherit; font-size: 17px; font-weight: 600; text-decoration: none; cursor: pointer; }
+  .btn[disabled] { opacity: .55; }
+  .btn.ghost { margin-top: 10px; background: transparent; color: #1B3A5C; border: 1.5px solid #C5D2DE; }
+  .note { margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: #FBEFD9; color: #7D5208; font-size: 14px; line-height: 1.6; }
+  .note.red { background: #FCE8E6; color: #8C1D18; }
+  .sum { margin: 0; padding: 0; list-style: none; }
+  .sum li { display: flex; gap: 12px; padding: 10px 0; border-top: 1px solid #E6ECF1; font-size: 15px; line-height: 1.5; }
+  .sum li:first-child { border-top: 0; padding-top: 0; }
+  .sum .k { flex: 0 0 76px; color: #7A8794; font-size: 14px; }
+  .sum .v { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .done-mark { width: 56px; height: 56px; margin: 36px 0 0 2px; border-radius: 50%; background: #1B3A5C; display: flex; align-items: center; justify-content: center; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  [hidden] { display: none !important; }
+  @media (max-width: 350px) { .row2 { grid-template-columns: 1fr; } }
+</style>
+<style>
+  textarea.tall { height: 170px; }
+  .radio { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; border: 1.5px solid transparent; border-radius: 12px; }
+  .radio label { position: relative; display: block; }
+  .radio input { position: absolute; opacity: 0; pointer-events: none; }
+  .radio span { display: block; padding: 12px 14px; border: 1.5px solid #D5DFE8; border-radius: 12px; background: #fff; font-size: 15px; font-weight: 500; line-height: 1.5; }
+  .radio small { display: block; margin-top: 2px; font-size: 13px; font-weight: 400; color: #56636F; }
+  .radio input:checked + span { border-color: #1B3A5C; background: #EEF4FA; }
+  .radio input:focus-visible + span { outline: 2px solid #1B3A5C; outline-offset: 2px; }
+  .bad .radio { border-color: #B3261E; }
+  .cnt { margin-top: 4px; text-align: right; font-size: 12.5px; color: #7A8794; }
+</style>
+</head>
+<body>
+<div class="testbar" id="testbar" hidden>테스트 페이지입니다 · 여기서 올린 나눔은 테스트용으로만 적힙니다</div>
+<div class="page">
+  <div class="top">
+    <a class="back" id="back" href="../"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.5 4.5 7 10l5.5 5.5"/></svg><span id="back-t">홈</span></a>
+  </div>
+
+  <form id="form" novalidate>
+    <div class="hp" aria-hidden="true"><label>이 칸은 비워 두세요<input type="text" id="hp" tabindex="-1" autocomplete="off"></label></div>
+    <h1>은혜 나누기</h1>
+    <p class="lead">샘터에서 받은 은혜를 나눠 주세요. 로그인 없이 바로 쓸 수 있고, 양육국 청년샘터가 확인한 뒤 게시판에 올라가요.</p>
+
+    <div class="card">
+      <div class="f" data-f="제목">
+        <label for="제목">제목 <span class="opt">(선택)</span></label>
+        <input type="text" id="제목" maxlength="60" placeholder="비워 두면 나눔의 첫 문장이 제목이 돼요" autocomplete="off">
+      </div>
+      <div class="f" data-f="나눔">
+        <label for="나눔">샘터에서 받은 은혜</label>
+        <div class="hint">한 줄도 좋고, 길게 쓰셔도 좋습니다.</div>
+        <textarea id="나눔" class="tall" maxlength="3000"></textarea>
+        <div class="cnt"><span id="나눔-n">0</span> / 3,000</div>
+        <div class="err">받은 은혜를 적어 주세요.</div>
+      </div>
+      <div class="f" data-f="장면">
+        <label for="장면">가장 기억에 남는 한 장면 <span class="opt">(선택)</span></label>
+        <textarea id="장면" maxlength="1500" style="height:90px"></textarea>
+      </div>
+      <div class="f" data-f="변화">
+        <label for="변화">나에게, 또는 함께한 사람에게 생긴 변화 <span class="opt">(선택)</span></label>
+        <textarea id="변화" maxlength="1500" style="height:90px"></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row2">
+        <div class="f" data-f="운영월">
+          <label for="운영월">어느 달 샘터인가요</label>
+          <select id="운영월"></select>
+        </div>
+        <div class="f" data-f="참여">
+          <span class="lab">샘지기 / 샘원</span>
+          <div class="chips" role="radiogroup" aria-label="샘지기 또는 샘원">
+            <label><input type="radio" name="참여" value="샘지기"><span>샘지기</span></label>
+            <label><input type="radio" name="참여" value="샘원"><span>샘원</span></label>
+          </div>
+          <div class="err">골라 주세요.</div>
+        </div>
+      </div>
+      <div class="f" data-f="교회">
+        <label for="교회">어느 교회에 다니시나요</label>
+        <select id="교회"><option value="">골라 주세요</option><option>사랑의교회 청년부</option><option>다른 교회</option><option>아직 교회에 다니지 않아요</option></select>
+        <div class="err">골라 주세요.</div>
+      </div>
+      <div class="row2">
+        <div class="f" data-f="소속국" id="f-dept" hidden>
+          <label for="소속국">소속국</label>
+          <select id="소속국"><option value="">골라 주세요</option><option>1국</option><option>2국</option><option>3국</option><option>4국</option><option>5국</option><option>BSC</option></select>
+          <div class="err">소속국을 골라 주세요.</div>
+        </div>
+        <div class="f" data-f="이름">
+          <label for="이름">이름</label>
+          <input type="text" id="이름" maxlength="20" autocomplete="name">
+          <div class="err">이름을 적어 주세요.</div>
+        </div>
+      </div>
+      <div class="hint" style="margin-top:10px">이름은 아래에서 고른 방식대로만 게시판에 보여요.</div>
+    </div>
+
+    <div class="card">
+      <div class="f" data-f="노출">
+        <span class="lab">나눠 주신 이야기를 어떻게 사용해도 될까요</span>
+        <div class="radio" role="radiogroup" aria-label="게시 방식">
+          <label><input type="radio" name="노출" value="실명"><span>실명으로 올려도 좋아요<small>예: 3국 김민수 샘지기</small></span></label>
+          <label><input type="radio" name="노출" value="익명"><span>익명으로 올려 주세요<small>샘지기 · 샘원으로만 표기됩니다</small></span></label>
+          <label><input type="radio" name="노출" value="비공개"><span>게시판에는 올리지 말아 주세요<small>양육국 청년샘터와 교역자님만 봅니다</small></span></label>
+        </div>
+        <div class="err">하나를 골라 주세요.</div>
+      </div>
+      <div class="f" data-f="사진">
+        <span class="lab">샘터 모임 사진을 청년부 홍보에 사용해도 될까요</span>
+        <div class="chips" role="radiogroup" aria-label="사진 사용 동의">
+          <label><input type="radio" name="사진" value="y"><span>네, 좋아요</span></label>
+          <label><input type="radio" name="사진" value="n"><span>아니요</span></label>
+        </div>
+        <div class="err">골라 주세요.</div>
+      </div>
+      <div class="f" data-f="한마디">
+        <label for="한마디">양육국에 하고 싶은 말 <span class="opt">(선택 · 게시판에 올라가지 않아요)</span></label>
+        <textarea id="한마디" maxlength="1500" style="height:90px"></textarea>
+      </div>
+    </div>
+
+    <div class="note red" id="send-err" hidden></div>
+    <button class="btn" type="button" id="send">나눔 올리기</button>
+  </form>
+
+  <section id="done" hidden>
+    <div class="done-mark"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div>
+    <h1>나눔을 받았어요</h1>
+    <p class="lead" id="done-p"></p>
+    <a class="btn" id="to-board" href="#">은혜 나눔 보러 가기</a>
+    <a class="btn ghost" href="../">샘지기 홈으로</a>
+  </section>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var 바쁨 = false, 게시판에서 = /[?&]from=board\b/.test(location.search);
+  if (테스트) $("testbar").hidden = false;
+  if (!API) { $("testbar").hidden = false; $("testbar").textContent = "테스트 페이지입니다 · 아직 접수 주소가 연결되지 않았습니다"; }
+  $("to-board").href = 게시판;
+  if (게시판에서) { $("back").href = 게시판; $("back-t").textContent = "은혜 나눔"; }
+
+  // 운영월: 이번 달(기본) · 지난달 · 그 전 달 (한국 날짜 기준)
+  var k = new Date(Date.now() + 9 * 3600 * 1000), y = k.getUTCFullYear(), m = k.getUTCMonth();
+  for (var i = 0; i < 3; i++) {
+    var d = new Date(Date.UTC(y, m - i, 1)), v = d.getUTCFullYear() + "-" + String(d.getUTCMonth() + 1).padStart(2, "0");
+    $("운영월").add(new Option(d.getUTCFullYear() + "년 " + (d.getUTCMonth() + 1) + "월", v));
+  }
+  $("교회").addEventListener("change", function () { $("f-dept").hidden = this.value !== "사랑의교회 청년부"; });
+  $("나눔").addEventListener("input", function () { $("나눔-n").textContent = this.value.length.toLocaleString("ko-KR"); });
+  $("form").addEventListener("input", function (e) { var f = e.target.closest(".f"); if (f) f.classList.remove("bad"); });
+  $("form").addEventListener("change", function (e) { var f = e.target.closest(".f"); if (f) f.classList.remove("bad"); });
+  $("form").addEventListener("submit", function (e) { e.preventDefault(); });
+
+  function 고른(n) { var r = document.querySelector('input[name="' + n + '"]:checked'); return r ? r.value : ""; }
+  function 표시(bad) {
+    document.querySelectorAll(".f.bad").forEach(function (f) { f.classList.remove("bad"); });
+    bad.forEach(function (n) { var f = document.querySelector('.f[data-f="' + n + '"]'); if (f) f.classList.add("bad"); });
+    var first = bad.length && document.querySelector('.f[data-f="' + bad[0] + '"]');
+    if (first) first.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  function 실패(msg) { var e = $("send-err"); e.textContent = msg; e.hidden = false; e.scrollIntoView({ behavior: "smooth", block: "center" }); }
+
+  $("send").addEventListener("click", function () {
+    if (바쁨) return;
+    var d = { action: "은혜나눔", 확인: $("hp").value, 운영월: $("운영월").value, 참여: 고른("참여"), 교회: $("교회").value, 소속국: $("소속국").value,
+      이름: $("이름").value.replace(/\s+/g, " ").trim(), 제목: $("제목").value.replace(/\s+/g, " ").trim(), 나눔: $("나눔").value.trim(), 장면: $("장면").value.trim(), 변화: $("변화").value.trim(),
+      한마디: $("한마디").value.trim(), 노출: 고른("노출"), 사진: 고른("사진") === "y" ? true : 고른("사진") === "n" ? false : null };
+    var bad = [];
+    if (d.나눔.length < 5) bad.push("나눔");
+    if (!d.참여) bad.push("참여");
+    if (!d.교회) bad.push("교회");
+    if (d.교회 === "사랑의교회 청년부" && !d.소속국) bad.push("소속국");
+    if (d.교회 !== "사랑의교회 청년부") d.소속국 = "";
+    if (d.이름.length < 2) bad.push("이름");
+    if (!d.노출) bad.push("노출");
+    if (d.사진 === null) bad.push("사진");
+    표시(bad); $("send-err").hidden = true;
+    if (bad.length) return;
+    if (!API) { 실패("아직 접수 주소가 연결되지 않은 테스트 화면이에요. 나눔은 저장되지 않았습니다."); return; }
+    바쁨 = true; var btn = $("send"); btn.disabled = true; btn.textContent = "올리는 중…";
+    // text/plain 으로 보내야 Apps Script 웹앱이 그대로 받습니다
+    fetch(API, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(d), redirect: "follow" })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res && res.ok) {
+          $("done-p").textContent = d.노출 === "비공개" ? "게시판에는 올라가지 않고, 양육국 청년샘터와 교역자님만 읽습니다. 나눠 주셔서 감사해요."
+            : "양육국 청년샘터가 확인한 뒤 은혜 나눔 게시판에 " + (d.노출 === "익명" ? "익명으로 " : "") + "올라가요. 나눠 주셔서 감사해요.";
+          $("form").hidden = true; $("done").hidden = false; $("form").reset(); window.scrollTo(0, 0);
+          return;
+        }
+        실패((res && res.안내) || "올리지 못했어요. 잠시 뒤 다시 해 주세요.");
+        if (res && res.칸) 표시([res.칸]);
+      })
+      .catch(function () { 실패("연결이 끊겼어요. 올라갔는지 알 수 없으니, 잠시 뒤 게시판 담당(카카오톡 문의)에 확인하거나 한 번만 더 눌러 주세요."); })
+      .then(function () { 바쁨 = false; btn.disabled = false; btn.textContent = "나눔 올리기"; });
+  });
+})();
+</script>
+</body>
+</html>
