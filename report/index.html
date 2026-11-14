@@ -2171,6 +2171,7 @@ function 완료화면() {
   <div class="stack">
     <button type="button" class="btn" data-act="현황">${t && t.지난달 ? `${달숫자(t)}월 현황 보기` : "이번 달 현황 보기"}</button>
     <p class="foot">고칠 게 생기면 이번 달 현황에서 이 보고를 눌러 고치거나 취소할 수 있어요</p>
+    ${c.고침 ? "" : `<a class="btn ghost" href="../home/share/?from=report">오늘 받은 은혜 나누기</a>`}
     ${문의버튼("카카오톡으로 문의하기")}
   </div>`;
 }

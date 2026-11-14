@@ -208,6 +208,10 @@ const 게시판 = "https://yos-saemteo.github.io/saemteo/grace/";
   if (!API) { $("testbar").hidden = false; $("testbar").textContent = "테스트 페이지입니다 · 아직 접수 주소가 연결되지 않았습니다"; }
   $("to-board").href = 게시판;
   if (게시판에서) { $("back").href = 게시판; $("back-t").textContent = "은혜 나눔"; }
+  if (/[?&]from=report\b/.test(location.search)) {   // 모임 보고를 마치고 온 샘지기 — 뒤로 가기는 모임 보고로, '샘지기'를 미리 골라 둠
+    $("back").href = "../../report/"; $("back-t").textContent = "모임 보고";
+    var r0 = document.querySelector('input[name="참여"][value="샘지기"]'); if (r0) r0.checked = true;
+  }
 
   // 운영월: 이번 달(기본) · 지난달 · 그 전 달 (한국 날짜 기준)
   var k = new Date(Date.now() + 9 * 3600 * 1000), y = k.getUTCFullYear(), m = k.getUTCMonth();
