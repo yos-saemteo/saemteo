@@ -253,6 +253,7 @@ const 문의 = "https://open.kakao.com/o/sWdAUBFi";
 (function () {
   var $ = function (id) { return document.getElementById(id); };
   var 단계 = 1, 보내는중 = false;
+  var 랜딩에서 = /[?&]from=landing\b/.test(location.search);
   if (테스트) $("testbar").hidden = false;
   if (!API) { $("testbar").hidden = false; $("testbar").textContent = "테스트 페이지입니다 · 아직 접수 주소가 연결되지 않아 신청이 저장되지 않습니다"; }
   $("ask").href = 문의;
@@ -403,7 +404,7 @@ const 문의 = "https://open.kakao.com/o/sWdAUBFi";
   });
   $("back").addEventListener("click", function () {
     if (보내는중) return;
-    if (단계 === 1) { location.href = "../"; return; }
+    if (단계 === 1) { location.href = 랜딩에서 ? "../../" : "../"; return; }   // 랜딩에서 온 분은 랜딩으로, 샘지기 홈에서 온 분은 홈으로
     가기(단계 - 1);
   });
   $("edit").addEventListener("click", function () { if (!보내는중) 가기(1); });
