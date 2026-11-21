@@ -78,6 +78,7 @@ const 설정 = {
   .my-row { display: flex; align-items: baseline; justify-content: space-between; padding-top: 12px; border-top: 1px solid #E6ECF1; font-size: 14px; color: var(--sub); }
   .my-row b { font-size: 16px; color: var(--ink); }
   .my-warn { margin: 0; padding: 9px 12px; border-radius: 10px; background: var(--amber-bg); color: #6B4506; font-size: 14px; line-height: 1.55; }
+  .my-form[hidden] { display: none; }
   .my-form { display: flex; flex-direction: column; gap: 10px; }
   .my-form input { width: 100%; height: 48px; padding: 0 14px; border: 1.5px solid var(--line2); border-radius: 12px; font: inherit; font-size: 16px; color: var(--ink); outline: none; }
   .my-form input:focus { border-color: var(--navy); }
@@ -218,7 +219,7 @@ const 설정 = {
   (function () {
     var $ = function (id) { return document.getElementById(id); };
     if (!/^https:\/\/script\.google\.com\//.test(설정.보고 || "")) return;
-    var 홈키 = "saemteo.home.v1", 보고키 = "saemteo.report.v1";
+    var 홈키 = "saemteo.home.v1", 보고키 = "saemteo.report.v1", 내샘터키 = "saemteo.my.v1";   // 내샘터키: 마지막으로 본 내 샘터 (열자마자 먼저 보여 주고 뒤에서 새로 확인)
     function 읽기(k) { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } }
     function 쓰기(k, v) { try { v ? localStorage.setItem(k, JSON.stringify(v)) : localStorage.removeItem(k); } catch (e) {} }
     function 두자리(n) { return String(n).padStart(2, "0"); }
@@ -311,10 +312,11 @@ const 설정 = {
             쓰기(홈키, { 이름: 이름, 전화: 번호.length >= 10 ? 번호 : (전.이름 === 이름 && 전.전화) || 번호 });
             if (!읽기(보고키)) 쓰기(보고키, { 이름: 이름, 번호: 번호.slice(-4), 샘터: "", 때: Date.now() });   // 모임 보고 페이지도 바로 열리게 (그 페이지가 쓰는 모양 그대로: 이름 + 뒤 4자리)
           }
+          쓰기(내샘터키, { 이름: 내이름, 물은: 이름, 샘터: 샘터들, 때: Date.now() });
           그리기();
           return true;
         })
-        .catch(function () { if (손으로) 묻기화면("연결이 안 돼요. 잠시 뒤 다시 해 주세요."); return false; });
+        .catch(function () { if (손으로) 묻기화면("연결이 안 돼요. 잠시 뒤 다시 해 주세요."); return null; });   // null = 연결 문제 (답을 못 받음)
     }
     $("my-tel").addEventListener("input", function () {
       var d = this.value.replace(/\D/g, "").slice(0, 11);
@@ -327,22 +329,58 @@ const 설정 = {
       var b = $("my-go"); b.disabled = true; b.textContent = "확인하는 중…";
       확인(이름, 번호, true).then(function () { b.disabled = false; b.textContent = "확인"; });
     });
-    $("my-forget").addEventListener("click", function () { 쓰기(홈키, null); 쓰기(보고키, null); location.reload(); });   // 모임 보고 페이지에 기억된 것도 함께 지움 (안 지우면 같은 사람이 다시 뜸)
+    $("my-forget").addEventListener("click", function () { 쓰기(홈키, null); 쓰기(보고키, null); 쓰기(내샘터키, null); location.reload(); });   // 모임 보고 페이지에 기억된 것도 함께 지움 (안 지우면 같은 사람이 다시 뜸)
 
-    var 홈 = 읽기(홈키), 보 = 읽기(보고키);
     // 이 폰에 기억된 이름으로 차례로 확인: ① 홈 · 이어가기에서 확인한 것 ② 모임 보고 페이지에서 확인한 것.
-    // 어느 것으로도 이번 달 샘터를 못 찾으면 '내 샘터 보기' 칸을 보여 줌 (전에는 아무것도 안 보였음)
-    var 후보 = [];
-    if (홈 && 홈.이름 && 홈.전화) 후보.push([String(홈.이름), String(홈.전화).replace(/\D/g, "")]);
-    if (보 && 보.이름 && 보.번호 && !(후보[0] && 후보[0][0] === String(보.이름))) 후보.push([String(보.이름), String(보.번호).replace(/\D/g, "")]);
-    묻기화면("");
-    (function 다음(i) {
-      if (i >= 후보.length) {
-        if (후보.length && $("my").hidden && $("my-ask-n").textContent.indexOf("전체") < 0) 묻기화면(후보[0][0] + " 님 이름으로는 이번 달 샘터를 찾지 못했어요. 이름과 휴대폰 번호를 확인해 주세요.");
-        return;
-      }
-      확인(후보[i][0], 후보[i][1], false).then(function (됨) { if (!됨) 다음(i + 1); });
-    })(0);
+    // 서버 답이 몇 초 걸리므로: 지난번에 본 내 샘터가 있으면 그것부터 보여 주고 뒤에서 새로 확인, 없으면 '불러오는 중'.
+    // 다른 화면(모임 보고)에 갔다 돌아오면 다시 확인해서 방금 낸 보고가 바로 보이게 함
+    var 묻는말 = $("my-ask-n").textContent, 확인중 = false, 마지막확인 = 0;
+    var 표 = document.createElement("span"); 표.id = "my-sync"; 표.hidden = true; 표.textContent = " · 새로 확인하는 중…";
+    $("my-who").parentNode.insertBefore(표, $("my-who").nextSibling);
+    function 후보들() {
+      var 홈 = 읽기(홈키), 보 = 읽기(보고키), a = [];
+      if (홈 && 홈.이름 && 홈.전화) a.push([String(홈.이름), String(홈.전화).replace(/\D/g, "")]);
+      if (보 && 보.이름 && 보.번호 && !(a[0] && a[0][0] === String(보.이름))) a.push([String(보.이름), String(보.번호).replace(/\D/g, "")]);
+      return a;
+    }
+    function 불러오는중(켬) { $("my-form").hidden = 켬; if (켬) $("my-ask-n").textContent = "내 샘터를 불러오는 중이에요…"; else if ($("my-ask-n").textContent.indexOf("불러오는 중") >= 0) $("my-ask-n").textContent = 묻는말; }
+    function 새로확인() {
+      var 후보 = 후보들();
+      if (확인중 || !후보.length) return;
+      확인중 = true; 마지막확인 = Date.now(); 표.hidden = false;
+      var 끝 = function () { 확인중 = false; 표.hidden = true; 불러오는중(false); };
+      (function 다음(i) {
+        if (i >= 후보.length) {   // 서버가 '이번 달 샘터 없음'이라고 답함 → 전에 보던 것도 지움
+          끝(); 쓰기(내샘터키, null);
+          if ($("my-ask-n").textContent.indexOf("전체") < 0) 묻기화면(후보[0][0] + " 님 이름으로는 이번 달 샘터를 찾지 못했어요. 이름과 휴대폰 번호를 확인해 주세요.");
+          else 묻기화면("");
+          return;
+        }
+        확인(후보[i][0], 후보[i][1], false).then(function (됨) {
+          if (됨) return 끝();
+          if (됨 === null) {   // 연결 문제 — 전에 보던 것이 있으면 그대로 두고, 없으면 확인 칸
+            끝();
+            if ($("my").hidden) 묻기화면("연결이 늦어요. 잠시 뒤 화면을 다시 열거나, 이름과 휴대폰 번호로 확인해 주세요.");
+            return;
+          }
+          다음(i + 1);
+        });
+      })(0);
+    }
+    (function 처음() {
+      var 후보 = 후보들(), 본 = 읽기(내샘터키);
+      묻기화면("");
+      if (!후보.length) { if (본) 쓰기(내샘터키, null); return; }
+      var 이달 = ymd(now).slice(0, 7);
+      var 쓸만 = 본 && Array.isArray(본.샘터) && 본.샘터.length && 후보.some(function (c) { return c[0] === 본.물은; })
+        && 본.샘터.every(function (t) { return t && t.운영월 === 이달; });
+      if (쓸만) { 내이름 = String(본.이름 || 본.물은); 샘터들 = 본.샘터; 고른 = 0; var 요일 = now.getDay(); 샘터들.forEach(function (t, i) { if (t.요일들 && t.요일들.indexOf(요일) >= 0) 고른 = i; }); 그리기(); }
+      else { if (본) 쓰기(내샘터키, null); 불러오는중(true); }
+      새로확인();
+    })();
+    function 돌아옴() { if (document.visibilityState === "visible" && Date.now() - 마지막확인 > 15000) 새로확인(); }
+    document.addEventListener("visibilitychange", 돌아옴);
+    window.addEventListener("pageshow", function (e) { if (e.persisted) { 마지막확인 = 0; 돌아옴(); } });
   })();
 
   // ---- 모임 보고 마감 알림: 기본은 '다음 달 첫 일요일', ⚙️설정에 날짜가 있으면 그 날 (웹앱이 알려 줌)
