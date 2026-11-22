@@ -139,6 +139,7 @@
   .note.sm { font-size: 13px; line-height: 1.55; }
   .inp { width: 100%; height: 52px; padding: 0 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff; font-size: 17px; color: var(--ink); }
   .inp:disabled { background: #F3F6F9; }
+  .inp.ta { height: 112px; padding: 12px 14px; line-height: 1.6; resize: vertical; font-family: inherit; margin-top: 8px; }
   .box { margin: 0; display: flex; align-items: flex-start; gap: 8px; padding: 10px 12px; border-radius: 10px; font-size: 14px; line-height: 1.55; }
   .box svg { flex-shrink: 0; margin-top: 1px; }
   .box.blue { background: var(--blue-bg); color: var(--navy); }
@@ -595,7 +596,7 @@ function 샘터화면() {
   <div class="head" style="gap:6px">
     <p class="eyebrow">${esc([월글(t.운영월), 언제(t)].filter(Boolean).join(" · "))}</p>
     <h1>${t.지난달 ? `${달숫자(t)}월 모임 보고` : "이번 달 모임 보고"}</h1>
-    <p class="due">${달력}<span>${t.지난달 ? "지난달 보고 마감" : "정산 마감"} ${esc(날글(t.마감))}${t.마감지남 ? " · 마감됨" : ""}</span><span id="fb-top">${파일함위(t)}</span></p>
+    <p class="due">${달력}<span>${t.지난달 ? "지난달 보고 마감" : "정산 마감"} ${esc(날글(t.마감))}${t.마감지남 ? " · 마감됨" : ""}${!t.지난달 && 인정마감(t) ? ` · ${esc(날짧게(인정마감(t)))} 모임까지 지원` : ""}</span><span id="fb-top">${파일함위(t)}</span></p>
   </div>
   ${S.서버옛날 || S.서버4전 ? `<div style="margin-top:12px">${서버알림()}</div>` : ""}
   ${안내}
@@ -807,11 +808,15 @@ function 할일칸(t) {
   else if (보내던) { 위 = "보내던 보고가 있어요"; 제목 = "들어갔는지 확인이 필요해요"; 글 = "보내던 보고 확인하기"; }
   else if (쓰던) { 위 = "쓰던 보고가 있어요"; 제목 = 날짜맞음(t, 초.날짜) ? `${날글(초.날짜)} 모임` : "모임 보고"; 글 = "모임 보고 이어서 쓰기"; }
   else if (t.지난달) { 위 = `${달숫자(t)}월 보고 · ${날글(t.마감)}까지`; 제목 = "빠진 모임이 있으면 지금 보고해 주세요"; 글 = `${달숫자(t)}월 모임 보고하기`; }
+  else if (인정마감(t) && 오늘값() > 인정마감(t)) {   // ★ 모임 인정 마감이 지남 — 그 날까지의 빠진 모임만 받음
+    위 = `${달숫자(t)}월 모임 지원은 ${날짧게(인정마감(t))}에 끝났어요`; 제목 = "빠진 모임이 있으면 보고해 주세요"; 글 = "빠진 모임 보고하기"; 보조 = true;
+  }
   else {
     const 오늘 = 오늘값(), w = 주차정보(오늘) || { 주: 0 };
     const 이주 = 이달모임(t).filter(m => m.주 === w.주 && m.날짜.slice(0, 7) === 오늘.slice(0, 7));
     if (이주.length) {
-      const 다음 = 다음모임날(t, 오늘);
+      let 다음 = 다음모임날(t, 오늘);
+      if (다음 && 인정마감(t) && 다음 > 인정마감(t)) 다음 = "";   // 인정 마감 뒤 모임 날은 '다음 모임'으로 알리지 않음
       위 = `${w.주}주차는 ${날짧게(이주[0].날짜)}에 보고했어요`; 제목 = 다음 ? `다음 모임 ${긴날(다음)}` : "이번 달 남은 모임 날이 없어요"; 글 = "다른 날 모임 보고하기"; 보조 = true;
     } else if (오늘모임날(t)) { 위 = `오늘 · ${w.주}주차 · 모임 날`; 제목 = 긴날(오늘); 글 = "오늘 모임 보고하기"; }
     else {
@@ -943,7 +948,7 @@ async function 보고열어두기(t, id) {
 // 보고열기 결과 → 고치기 초안 (그 보고의 사진 · 참석 · 영수증 칸을 그대로 채움 — 사진은 다시 올리지 않음)
 function 고침초안(t, c) {
   const k = "고침:" + c.보고;
-  const 초 = { 날짜: c.날짜, 참석: (c.참석 || []).slice(0, 30), 사진: [], _키: k, 고침: { 보고: c.보고, 판: c.판, 날짜: c.날짜 } };
+  const 초 = { 날짜: c.날짜, 참석: (c.참석 || []).slice(0, 30), 사진: [], _키: k, 기도: typeof c.기도 === "string" ? c.기도.slice(0, 1000) : "", 고침: { 보고: c.보고, 판: c.판, 날짜: c.날짜 } };
   const 사진 = (x, 종류, 부모) => {
     const p = { 키: "p" + (++키수), 종류, 샘터: t.id, 초안: 초, 토큰: S.토큰, file: null, pdf: !!x.pdf, 주소: x.그림 || "", 미리작은: "", 부모: 부모 || "",
       올림: x.없음 ? "실패" : "저장됨", 올림오류: x.없음 ? "이 사진을 찾지 못했어요." : "", 막힘: !!x.없음, 파일id: x.파일 || "", 올린때: Date.now(), 기존: true,
@@ -1006,8 +1011,14 @@ function 날짜범위(t) {
   const [y, m] = String(t.운영월).split("-").map(Number);
   const 끝 = `${t.운영월}-${String(new Date(y, m, 0).getDate()).padStart(2, "0")}`;
   const 오늘 = 오늘값();
-  return { min: `${t.운영월}-01`, max: 오늘 < 끝 ? 오늘 : 끝 };
+  let max = 오늘 < 끝 ? 오늘 : 끝;
+  const 인 = 인정마감(t);
+  if (인 && max > 인) max = 인;   // ★ 모임 인정 마감(⚙️설정 모임인정마감일)이 있는 달은 그 날까지만 고를 수 있음
+  return { min: `${t.운영월}-01`, max };
 }
+// 모임 인정 마감 — 서버가 샘터마다 보내는 값(그 달 안의 날짜일 때만). 없으면 "" (예전 서버 · 설정이 빈 달은 예전과 같은 화면)
+function 인정마감(t) { const v = String((t && t.인정마감) || ""); return /^\d{4}-\d{2}-\d{2}$/.test(v) && v.slice(0, 7) === String(t.운영월) ? v : ""; }
+function 인정알림(t) { const 인 = 인정마감(t); return 인 ? `<p class="note" style="margin-top:8px">${달숫자(t)}월은 ${esc(날글(인))} 모임까지 지원돼요. 그 뒤 날짜는 보고할 수 없어요.</p>` : ""; }
 function 오늘값() { const 기기 = ymd(new Date()), 서버 = (S.결과 && S.결과.오늘) || ""; return 서버 > 기기 ? 서버 : 기기; }
 function 날짜맞음(t, v) { const r = 날짜범위(t); return /^\d{4}-\d{2}-\d{2}$/.test(v || "") && v >= r.min && v <= r.max; }
 // 처음 날짜: 이번 달이면 오늘까지 중 가장 가까운 모임 요일, 지난달이면 그 달 마지막 모임 요일 (요일을 모르면 오늘 · 말일)
@@ -1069,6 +1080,7 @@ function 보고화면() {
     <label id="l-day" for="day" class="h2">모임 날짜</label>
     <input id="day" class="inp" type="date" value="${esc(초.날짜)}" min="${범위.min}" max="${범위.max}" ${범위.max < 범위.min ? "disabled" : ""}>
     <div id="day-info">${날짜알림(t, 초)}</div>
+    ${인정알림(t)}
   </section>
 
   <section class="sec" aria-labelledby="h-who">
@@ -1097,6 +1109,14 @@ function 보고화면() {
     <label for="pick-rc" class="more">${더하기}<span id="rc-more">${영수증더글(초)}</span></label>
     <div id="rc-sum">${합계칸(초)}</div>
   </section>
+  ${S.결과 && S.결과.기도 ? `
+  <section class="sec" aria-labelledby="h-pray">
+    <div class="sec-head"><h2 id="h-pray">기도제목</h2><span class="hint">선택</span></div>
+    <p class="note">이번 모임에서 나눈 기도제목이 있으면 적어 주세요. 양육국과 교역자님만 봅니다.</p>
+    <label for="pray" class="sr">기도제목</label>
+    <textarea id="pray" class="inp ta" maxlength="1000" placeholder="비워 두어도 돼요">${esc(초.기도 || "")}</textarea>
+    <p class="note" style="text-align:right"><span id="pray-n">${(초.기도 || "").length}</span> / 1,000</p>
+  </section>` : ""}
   </div>
 
   <div class="stack" id="s-foot">${제출칸(t, 초)}</div>`;
@@ -1120,6 +1140,7 @@ function 날짜알림(t, 초) {
   if (r.max < r.min) return `<p class="box amber">${느낌표()}<span>${달숫자(t)}월이 아직 시작되지 않아 날짜를 고를 수 없어요.</span></p>`;
   if (!날짜맞음(t, 초.날짜)) {
     const 글 = !초.날짜 ? "모임 날짜를 골라 주세요."
+      : 인정마감(t) && 초.날짜 > 인정마감(t) && 초.날짜.slice(0, 7) === t.운영월 ? `${달숫자(t)}월은 ${날글(인정마감(t))} 모임까지만 지원돼서, 그 뒤 날짜는 보고할 수 없어요.`
       : 초.날짜 > r.max && 초.날짜.slice(0, 7) === t.운영월 ? "아직 오지 않은 날짜예요. 모임한 날짜를 골라 주세요."
       : `${달숫자(t)}월 샘터라 ${달숫자(t)}월 날짜만 고를 수 있어요.`;
     return `<p class="box red">${느낌표()}<span>${esc(글)}</span></p>`;
@@ -1978,7 +1999,15 @@ function 이벤트붙이기() {
     const f = 동작[el.getAttribute("data-act")];
     if (f) { e.preventDefault(); f(el, e); }
   });
-  app.addEventListener("input", e => { if (e.target.matches("input[data-amt]")) 금액입력(e.target); });
+  app.addEventListener("input", e => {
+    if (e.target.matches("input[data-amt]")) 금액입력(e.target);
+    else if (e.target.id === "pray") {   // 기도제목 (선택) — 쓰던 보고에 함께 저장
+      const t = 지금샘터(), 초 = t && 초안(t); if (!초) return;
+      초.기도 = e.target.value.slice(0, 1000);
+      const n = document.getElementById("pray-n"); if (n) n.textContent = String(초.기도.length);
+      초안저장();
+    }
+  });
   app.addEventListener("focusout", e => {
     if (!e.target.matches("input[data-amt]")) return;
     const p = 사진찾기(e.target.getAttribute("data-amt"));
@@ -2043,6 +2072,7 @@ async function 보고내기(자동) {
   const 카드 = 영수증카드들(초);
   const 몸 = {
     action: 초.고침 ? "고침" : "제출", 샘터: t.id, 제출id: 초.제출.id, 날짜: 초.날짜, 참석: 초.참석.slice(),
+    기도제목: S.결과 && S.결과.기도 ? String(초.기도 || "").trim().slice(0, 1000) : "",
     인증샷: 초.사진.filter(p => p.종류 === "인증샷").map(p => p.파일id),
     영수증: 카드.map(p => ({
       파일: p.파일id, 붙임: 붙임들(p, 초).map(q => q.파일id), 구분: p.구분, 금액: Number(p.금액),
@@ -2163,6 +2193,7 @@ function 완료화면() {
       <dt>인증샷</dt><dd>${인증샷}장</dd>
       <dt>영수증</dt><dd>${영수증 ? `${영수증}장${종이 || 전자 ? ` (${[종이 ? `종이 ${종이}` : "", 전자 ? `전자 ${전자}` : ""].filter(Boolean).join(" · ")})` : ""} · ${원(합계)}원` : "없음"}</dd>
       ${영수증 ? `<dt>지원 예상</dt><dd>${원(지원)}원</dd>` : ""}
+      ${b.기도 ? `<dt>기도제목</dt><dd>함께 보냈어요</dd>` : ""}
     </dl>
     ${영수증 ? `<p class="note sm">영수증 합계, 인당 5,000원, 모임당 25,000원 중 가장 적은 금액이에요. 월말에 확인한 뒤 확정돼요.</p>` : ""}
   </section>
@@ -2222,8 +2253,8 @@ function 초안저장지금() {
       후보: p.후보 || [], 영수증날짜: p.영수증날짜 || "", 여러장: !!p.여러장, 따로: !!p.따로, 증빙: p.증빙 || null, 살핌: p.살핌 || "",
     }));
     const 제출 = 초.제출 && (초.제출.상태 === "모름" || 초.제출.상태 === "보내는중") ? { id: 초.제출.id, 상태: "모름", 안내: 초.제출.안내 || "" } : null;
-    if (!초.참석.length && !사진.length && !제출) return;
-    샘터[id] = { 날짜: 초.날짜, 참석: 초.참석.slice(), 사진, 제출 };
+    if (!초.참석.length && !사진.length && !제출 && !초.기도) return;
+    샘터[id] = { 날짜: 초.날짜, 참석: 초.참석.slice(), 사진, 제출, 기도: String(초.기도 || "").slice(0, 1000) };
   });
   const 여기 = 저장소(S.기억 ? "local" : "session"), 저기 = 저장소(S.기억 ? "session" : "local");
   try { if (저기) 저기.removeItem(초안키); } catch (e) {}
@@ -2245,7 +2276,7 @@ function 초안불러오기() {
     const t = 샘터들().find(x => x.id === id && x.상태 === "준비됨");
     if (!t || S.초안[id]) return;   // 달이 지나 목록에 없는 샘터 · 이 창에서 이미 쓰는 초안은 그대로
     const d = v.샘터[id] || {};
-    const 초 = { 날짜: 날짜맞음(t, d.날짜) ? d.날짜 : 기본날짜(t), 참석: (Array.isArray(d.참석) ? d.참석 : []).map(String).slice(0, 30), 사진: [], _키: id,
+    const 초 = { 날짜: 날짜맞음(t, d.날짜) ? d.날짜 : 기본날짜(t), 참석: (Array.isArray(d.참석) ? d.참석 : []).map(String).slice(0, 30), 사진: [], _키: id, 기도: typeof d.기도 === "string" ? d.기도.slice(0, 1000) : "",
                 제출: d.제출 && d.제출.id && d.제출.상태 === "모름" ? { id: String(d.제출.id), 상태: "모름", 안내: String(d.제출.안내 || "") } : null };
     const 새키 = {};
     (Array.isArray(d.사진) ? d.사진 : []).forEach(s => {
@@ -2267,7 +2298,7 @@ function 초안불러오기() {
     // 붙인 사진은 새 키로 이어 붙이고, 영수증이 빠졌으면 붙인 사진도 뺌
     초.사진.forEach(p => { if (p.부모) p.부모 = 새키[p.부모] || "(없음)"; });
     초.사진 = 초.사진.filter(p => !p.부모 || 초.사진.some(x => x.키 === p.부모 && !x.부모));
-    if (!초.참석.length && !초.사진.length && !초.제출) return;
+    if (!초.참석.length && !초.사진.length && !초.제출 && !초.기도) return;
     S.초안[id] = 초; n++;
     초.사진.forEach(p => {
       if (p.판독 === "읽는중") 판독넣기(p, { 파일: p.파일id });   // 읽다 만 금액은 올린 사진으로 다시 읽음
