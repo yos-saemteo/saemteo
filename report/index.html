@@ -1112,7 +1112,7 @@ function 보고화면() {
   ${S.결과 && S.결과.기도 ? `
   <section class="sec" aria-labelledby="h-pray">
     <div class="sec-head"><h2 id="h-pray">기도제목</h2><span class="hint">선택</span></div>
-    <p class="note">이번 모임에서 나눈 기도제목이 있으면 적어 주세요. 양육국과 교역자님만 봅니다.</p>
+    <p class="note">샘터에서 함께 나눌 기도제목이 있다면 작성해 주세요. 양육국과 교역자님만 봅니다.</p>
     <label for="pray" class="sr">기도제목</label>
     <textarea id="pray" class="inp ta" maxlength="1000" placeholder="비워 두어도 돼요">${esc(초.기도 || "")}</textarea>
     <p class="note" style="text-align:right"><span id="pray-n">${(초.기도 || "").length}</span> / 1,000</p>
