@@ -466,21 +466,26 @@ const 설정 = {
     }
     var 잊기붙임 = false;
     function 상태확인() {
-      var 나 = null;
-      try { 나 = JSON.parse(localStorage.getItem("saemteo.home.v1") || "null"); } catch (e) {}
-      if (!나 || !나.이름 || !/^01\d{8,9}$/.test(String(나.전화 || "")) || !/^https:\/\/script\.google\.com\//.test(설정.접수 || "")) { 모름(); return; }
+      // 누구인지: ① 홈 · 이어가기에서 확인한 이름 + 번호 전체 ② 없으면 모임 보고 페이지에서 확인한 이름 + 번호 뒤 4자리 (서버 v1.4부터 답함)
+      var 나 = null, 홈 = null, 보 = null;
+      try { 홈 = JSON.parse(localStorage.getItem("saemteo.home.v1") || "null"); 보 = JSON.parse(localStorage.getItem("saemteo.report.v1") || "null"); } catch (e) {}
+      if (홈 && 홈.이름 && /^01\d{8,9}$/.test(String(홈.전화 || "").replace(/\D/g, ""))) 나 = { 이름: String(홈.이름), 전화: String(홈.전화).replace(/\D/g, "") };
+      else if (보 && 보.이름 && /^\d{4}$/.test(String(보.번호 || ""))) 나 = { 이름: String(보.이름), 전화: String(보.번호), 뒤4: true };
+      else if (홈 && 홈.이름 && /^\d{4}$/.test(String(홈.전화 || ""))) 나 = { 이름: String(홈.이름), 전화: String(홈.전화), 뒤4: true };
+      if (!나 || !/^https:\/\/script\.google\.com\//.test(설정.접수 || "")) { 모름(); return; }
       $("again-name").textContent = 나.이름; $("again-who").hidden = false;
-      if (!잊기붙임) { 잊기붙임 = true; $("again-forget").addEventListener("click", function (e) { e.preventDefault(); try { localStorage.removeItem("saemteo.home.v1"); } catch (x) {} location.reload(); }); }
+      if (!잊기붙임) { 잊기붙임 = true; $("again-forget").addEventListener("click", function (e) { e.preventDefault(); try { localStorage.removeItem("saemteo.home.v1"); localStorage.removeItem("saemteo.report.v1"); localStorage.removeItem("saemteo.my.v1"); } catch (x) {} location.reload(); }); }
       fetch(설정.접수, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "이어가기상태", 이름: 나.이름, 전화: 나.전화 }), redirect: "follow" })
         .then(function (r) { return r.json(); })
         .then(function (res) {
+          if (res && !res.ok && res.칸 === "전화" && 나.뒤4) return;   // 예전 서버(뒤 4자리로는 답하지 않음) — 신청했는지 모르니 강조하지 않고 기본 안내 그대로
           if (!res || !res.ok || !res.샘터 || !res.샘터.length) { 모름(); return; }   // 이번 달 샘터가 없으면 기본 안내 (마감이 가까우면 강조)
           var 이름표 = function (x) { return 나.이름 + (x.팀구분 ? "_" + x.팀구분 : ""); };
           $("again-edit").hidden = !설정.고치기 || !res.샘터.some(function (x) { return x.이미; });
           var 안한 = res.샘터.filter(function (x) { return !x.이미; }).map(이름표);
           if (안한.length) 전(res.샘터.length > 1 ? 안한 : [], 나.이름); else 완료(res.샘터.length > 1 ? res.샘터.map(이름표) : []);
         })
-        .catch(function () { 모름(); });
+        .catch(function () {});   // 연결이 안 되면 신청했는지 모름 — 강조하지 않고 기본 안내 그대로
     }
     window.__이어가기확인 = 상태확인;   // 홈에서 이름 · 번호를 새로 확인하면 이 칸도 바로 다시 맞춤
     상태확인();
