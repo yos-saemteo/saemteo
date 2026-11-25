@@ -61,6 +61,11 @@ const 설정 = {
   .card.due { box-shadow: inset 0 0 0 2px #C77A0A, 0 1px 2px rgba(27,58,92,.08); background: #FFFAF0; }
   .dl { margin: 0; padding: 10px 12px; border-radius: 10px; background: #F4F7FA; font-size: 14px; line-height: 1.6; color: var(--sub2); }
   .dl b { color: var(--ink); }
+  .card.slim { padding-top: 14px; padding-bottom: 14px; gap: 8px; }
+  .card.slim .t, .card.slim .n { display: none; }
+  .card.slim .dl { background: none; padding: 0; }
+  .card.slim.due .dl { background: none; }
+  .card[hidden] { display: none; }
   .card.due .dl { background: #FBEFD9; color: #6B4506; }
   .my-lab { font-size: 13px; font-weight: 600; color: var(--sub); }
   .my-t { margin-top: 4px; font-size: 19px; font-weight: 700; }
@@ -285,11 +290,20 @@ const 설정 = {
       $("my-who").textContent = 내이름;
       $("my").hidden = false; $("my-ask").hidden = true;
       $("report-card").querySelector(".btn").hidden = 준비;   // 위 카드에 보고 버튼이 있으니 아래 카드는 마감 안내만
+      보고칸정리();
     }
+    // 내 샘터 카드에 보고 버튼이 있을 때: 아래 '모임 보고' 카드는 제목 · 설명을 접고 마감 한 줄만 (마감 안내가 없으면 카드를 숨김)
+    function 보고칸정리() {
+      var c = $("report-card"), 접음 = c.querySelector(".btn").hidden;
+      c.classList.toggle("slim", 접음);
+      c.hidden = 접음 && $("report-dl").hidden && $("report-tag").hidden;
+    }
+    window.__보고칸정리 = 보고칸정리;   // 마감 안내가 늦게 와도 다시 맞추게
     function 묻기화면(msg) {
       $("my").hidden = true; $("my-ask").hidden = false;
       if (msg) $("my-ask-n").textContent = msg;
       $("report-card").querySelector(".btn").hidden = false;
+      보고칸정리();
     }
     function 확인(이름, 번호, 손으로) {
       return fetch(설정.보고, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "본인", 이름: 이름, 번호: 번호 }), redirect: "follow" })
@@ -313,6 +327,7 @@ const 설정 = {
             if (!읽기(보고키)) 쓰기(보고키, { 이름: 이름, 번호: 번호.slice(-4), 샘터: "", 때: Date.now() });   // 모임 보고 페이지도 바로 열리게 (그 페이지가 쓰는 모양 그대로: 이름 + 뒤 4자리)
           }
           쓰기(내샘터키, { 이름: 내이름, 물은: 이름, 샘터: 샘터들, 때: Date.now() });
+          if (손으로 && window.__이어가기확인) window.__이어가기확인();
           그리기();
           return true;
         })
@@ -335,8 +350,8 @@ const 설정 = {
     // 서버 답이 몇 초 걸리므로: 지난번에 본 내 샘터가 있으면 그것부터 보여 주고 뒤에서 새로 확인, 없으면 '불러오는 중'.
     // 다른 화면(모임 보고)에 갔다 돌아오면 다시 확인해서 방금 낸 보고가 바로 보이게 함
     var 묻는말 = $("my-ask-n").textContent, 확인중 = false, 마지막확인 = 0;
-    var 표 = document.createElement("span"); 표.id = "my-sync"; 표.hidden = true; 표.textContent = " · 새로 확인하는 중…";
-    $("my-who").parentNode.insertBefore(표, $("my-who").nextSibling);
+    var 표 = document.createElement("span"); 표.id = "my-sync"; 표.hidden = true; 표.textContent = " · 새로 확인하는 중…"; 표.style.whiteSpace = "nowrap";
+    $("my-who").parentNode.appendChild(표);   // '○○○ 님 · 다른 사람이에요 · 새로 확인하는 중…' 
     function 후보들() {
       var 홈 = 읽기(홈키), 보 = 읽기(보고키), a = [];
       if (홈 && 홈.이름 && 홈.전화) a.push([String(홈.이름), String(홈.전화).replace(/\D/g, "")]);
@@ -416,6 +431,7 @@ const 설정 = {
       $("report-tag").hidden = !표; $("report-tag").textContent = 표; $("report-tag").className = "tag late";
       $("report-t").style.marginTop = 표 ? "" : "0";
       $("report-card").classList.toggle("due", 급함);
+      if (window.__보고칸정리) window.__보고칸정리();
     }
     그리기(null);
     if (!/^https:\/\/script\.google\.com\//.test(설정.접수 || "")) return;
@@ -442,22 +458,32 @@ const 설정 = {
       $("again-n").textContent = (팀들.length ? 팀들.join(", ") + " · " : "") + "달이 바뀌면 여기서 바로 모임 보고를 할 수 있어요.";
       $("again-btn").hidden = true; $("again-card").classList.remove("due");
     }
-    if (급함) { $("again-tag").textContent = 남은 <= 0 ? "오늘 마감" : "마감 " + 남은 + "일 전"; $("again-tag").className = "tag late"; }
-    var 나 = null;
-    try { 나 = JSON.parse(localStorage.getItem("saemteo.home.v1") || "null"); } catch (e) {}
-    if (!나 || !나.이름 || !나.전화 || !/^https:\/\/script\.google\.com\//.test(설정.접수 || "")) return;
-    $("again-name").textContent = 나.이름; $("again-who").hidden = false;
-    $("again-forget").addEventListener("click", function (e) { e.preventDefault(); try { localStorage.removeItem("saemteo.home.v1"); } catch (x) {} location.reload(); });
-    fetch(설정.접수, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "이어가기상태", 이름: 나.이름, 전화: 나.전화 }), redirect: "follow" })
-      .then(function (r) { return r.json(); })
-      .then(function (res) {
-        if (!res || !res.ok || !res.샘터 || !res.샘터.length) return;   // 이번 달 샘터가 없으면 기본 안내 그대로
-        var 이름표 = function (x) { return 나.이름 + (x.팀구분 ? "_" + x.팀구분 : ""); };
-        $("again-edit").hidden = !설정.고치기 || !res.샘터.some(function (x) { return x.이미; });
-        var 안한 = res.샘터.filter(function (x) { return !x.이미; }).map(이름표);
-        if (안한.length) 전(res.샘터.length > 1 ? 안한 : [], 나.이름); else 완료(res.샘터.length > 1 ? res.샘터.map(이름표) : []);
-      })
-      .catch(function () {});
+    // 신청했는지 알 수 없을 때(확인 전 · 번호 뒤 4자리만 아는 폰 · 이번 달 샘터가 없는 사람): 마감 7일 전부터는 이 칸도 강조
+    function 모름() {
+      if (!급함) return;
+      $("again-tag").textContent = 남은 <= 0 ? "오늘 마감" : "마감 " + 남은 + "일 전"; $("again-tag").className = "tag late";
+      $("again-card").classList.add("due");
+    }
+    var 잊기붙임 = false;
+    function 상태확인() {
+      var 나 = null;
+      try { 나 = JSON.parse(localStorage.getItem("saemteo.home.v1") || "null"); } catch (e) {}
+      if (!나 || !나.이름 || !/^01\d{8,9}$/.test(String(나.전화 || "")) || !/^https:\/\/script\.google\.com\//.test(설정.접수 || "")) { 모름(); return; }
+      $("again-name").textContent = 나.이름; $("again-who").hidden = false;
+      if (!잊기붙임) { 잊기붙임 = true; $("again-forget").addEventListener("click", function (e) { e.preventDefault(); try { localStorage.removeItem("saemteo.home.v1"); } catch (x) {} location.reload(); }); }
+      fetch(설정.접수, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "이어가기상태", 이름: 나.이름, 전화: 나.전화 }), redirect: "follow" })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          if (!res || !res.ok || !res.샘터 || !res.샘터.length) { 모름(); return; }   // 이번 달 샘터가 없으면 기본 안내 (마감이 가까우면 강조)
+          var 이름표 = function (x) { return 나.이름 + (x.팀구분 ? "_" + x.팀구분 : ""); };
+          $("again-edit").hidden = !설정.고치기 || !res.샘터.some(function (x) { return x.이미; });
+          var 안한 = res.샘터.filter(function (x) { return !x.이미; }).map(이름표);
+          if (안한.length) 전(res.샘터.length > 1 ? 안한 : [], 나.이름); else 완료(res.샘터.length > 1 ? res.샘터.map(이름표) : []);
+        })
+        .catch(function () { 모름(); });
+    }
+    window.__이어가기확인 = 상태확인;   // 홈에서 이름 · 번호를 새로 확인하면 이 칸도 바로 다시 맞춤
+    상태확인();
   })();
 
   document.getElementById("testbar").hidden = !설정.테스트;
